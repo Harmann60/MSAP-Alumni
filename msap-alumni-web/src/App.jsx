@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+const LOGO = '/logo.png';
 
 const NAV_TABS = ['Home', 'History & Governance', 'Register', 'Accounts & Transparency'];
 
@@ -66,18 +67,26 @@ function HomePage({ onRegister }) {
         <div className="absolute -top-16 -right-16 w-64 h-64 bg-brand-400/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-indigo-400/15 rounded-full blur-2xl pointer-events-none" />
 
-        <div className="relative max-w-3xl">
-          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-brand-300 text-xs font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
-            <span className="w-2 h-2 bg-brand-400 rounded-full animate-pulse" />
-            Est. 1973 · Pune, Maharashtra
+        <div className="relative flex flex-col md:flex-row items-center gap-10">
+          {/* Logo — hero feature */}
+          <div className="flex-shrink-0 flex items-center justify-center">
+            <div className="w-44 h-44 md:w-52 md:h-52 bg-white/10 backdrop-blur rounded-full p-3 shadow-2xl border border-white/20">
+              <img src={LOGO} alt="Association of MSAP Alumni Logo" className="w-full h-full object-contain drop-shadow-xl" />
+            </div>
           </div>
-          <h2 className="text-4xl md:text-5xl font-extrabold font-display leading-tight mb-5">
-            Welcome Back,<br />
-            <span className="text-brand-300">Pune Manipuris</span>
-          </h2>
-          <p className="text-slate-300 text-base md:text-lg max-w-2xl mb-8 leading-relaxed">
-            Strengthening bonds forged in Pune. A unified platform bridging alumni from the 1973 PMSA roots up to the registered MSAP of today.
-          </p>
+
+          <div className="flex-1 max-w-2xl">
+            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-brand-300 text-xs font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
+              <span className="w-2 h-2 bg-brand-400 rounded-full animate-pulse" />
+              Est. 1973 · Pune, Maharashtra
+            </div>
+            <h2 className="text-4xl md:text-5xl font-extrabold font-display leading-tight mb-5">
+              Welcome Back,<br />
+              <span className="text-brand-300">Pune Manipuris</span>
+            </h2>
+            <p className="text-slate-300 text-base md:text-lg mb-8 leading-relaxed">
+              Strengthening bonds forged in Pune. A unified platform bridging alumni from the 1973 PMSA roots up to the registered MSAP of today.
+            </p>
           <div className="flex flex-wrap gap-3">
             <button
               onClick={onRegister}
@@ -92,7 +101,8 @@ function HomePage({ onRegister }) {
               Contact Us
             </a>
           </div>
-        </div>
+          </div>{/* end flex-1 */}
+        </div>{/* end flex row */}
 
         {/* Stats bar */}
         <div className="relative mt-10 grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -333,7 +343,7 @@ export default function App() {
         <div className="max-w-6xl mx-auto px-4 py-3.5 flex justify-between items-center">
           {/* Logo */}
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => goTo('Home')}>
-            <div className="bg-brand-400 text-royal-950 font-extrabold w-10 h-10 rounded-full flex items-center justify-center text-lg shadow-md">M</div>
+            <img src={LOGO} alt="MSAP Alumni Logo" className="w-11 h-11 object-contain drop-shadow-md" />
             <div>
               <div className="font-bold text-base leading-tight">MSAP Alumni</div>
               <div className="text-xs text-slate-400 leading-none">Pune Chapter · Est. 1973</div>
@@ -384,7 +394,7 @@ export default function App() {
         <div className="max-w-6xl mx-auto px-6 py-10 grid md:grid-cols-3 gap-8 text-sm">
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <div className="bg-brand-400 text-royal-950 font-extrabold w-8 h-8 rounded-full flex items-center justify-center text-sm">M</div>
+              <img src={LOGO} alt="MSAP Alumni Logo" className="w-9 h-9 object-contain" />
               <span className="text-white font-semibold">MSAP Alumni</span>
             </div>
             <p className="leading-relaxed">Serving the Manipuri community in Pune and beyond since 1973.</p>
