@@ -6,41 +6,37 @@ import { Link } from 'react-router-dom';
 
 export default function HomePage() {
   return (
-    <div className="animate-slideUp">
+    <div>
       <HeroSection />
 
-      {/* Stories */}
+      {/* Meitei Mayek divider */}
+      <div className="max-w-6xl mx-auto px-5 py-2">
+        <div className="meitei-rule text-ink">
+          <div className="meitei-rule-diamond" />
+        </div>
+      </div>
+
       <StoriesSection />
 
-      {/* Events */}
       <EventsSection />
 
-      {/* Community */}
       <CommunitySection />
 
-      {/* CTA Banner */}
-      <section className="bg-forest-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-20 text-center">
-          <h2 className="text-2xl md:text-3xl font-extrabold font-display mb-4">
-            Stay Connected With Your Community
+      {/* Join strip */}
+      <section className="bg-ink-light text-parchment">
+        <div className="max-w-6xl mx-auto px-5 py-16 md:py-20 text-center">
+          <h2 className="font-display text-parchment text-2xl md:text-3xl mb-3">
+            Your community is waiting
           </h2>
-          <p className="text-forest-200/70 max-w-lg mx-auto mb-8 text-sm leading-relaxed">
-            Register today to access the alumni directory, join events, and reconnect with classmates from across decades.
+          <p className="text-muted text-sm mb-6 max-w-md mx-auto">
+            Register once. Get access to the alumni directory, event invites, and every Manipuri who studied in Pune.
           </p>
-          <div className="flex flex-wrap gap-3 justify-center">
-            <Link
-              to="/register"
-              className="bg-gold-500 hover:bg-gold-400 text-forest-950 font-bold px-8 py-3.5 rounded-xl shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl text-sm"
-            >
-              Join the Network
-            </Link>
-            <Link
-              to="/accounts"
-              className="bg-white/10 hover:bg-white/20 text-white font-semibold px-8 py-3.5 rounded-xl border border-white/20 transition-all duration-200 text-sm"
-            >
-              View Financial Reports
-            </Link>
-          </div>
+          <Link
+            to="/register"
+            className="inline-block bg-vermilion hover:bg-vermilion-light text-parchment font-semibold px-8 py-3 transition-colors text-sm"
+          >
+            Register Now
+          </Link>
         </div>
       </section>
     </div>

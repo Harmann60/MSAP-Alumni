@@ -5,117 +5,68 @@ const NAV_ITEMS = [
   {
     label: 'Events',
     children: [
-      { heading: 'Featured Events', links: [
-        { label: 'All Alumni Events', to: '/events' },
-        { label: 'Community Events', to: '/events' },
-        { label: 'Career Events', to: '/events' },
-        { label: 'Student Events', to: '/events' },
-      ]},
-      { heading: 'Annual Events', links: [
-        { label: 'Reunion 2026', to: '/events' },
+      { heading: 'Events', links: [
+        { label: 'All Events', to: '/events' },
         { label: 'Annual Meet', to: '/events' },
-        { label: 'Cultural Fest', to: '/events' },
+        { label: 'Cultural Events', to: '/events' },
+        { label: 'Career Events', to: '/events' },
+      ]},
+      { heading: 'Past Events', links: [
+        { label: '2025 Highlights', to: '/events' },
+        { label: 'Golden Jubilee', to: '/events' },
       ]},
     ],
   },
   {
     label: 'Stories',
     children: [
-      { heading: 'News & Stories', links: [
-        { label: 'Recent Stories', to: '/stories' },
+      { heading: 'Stories', links: [
+        { label: 'All Stories', to: '/stories' },
         { label: 'Alumni Spotlight', to: '/stories' },
-        { label: 'Newsletters', to: '/stories' },
+        { label: 'Class Notes', to: '/stories' },
       ]},
-      { heading: 'Learn', links: [
-        { label: 'Learning Opportunities', to: '/stories' },
-        { label: 'Recommended Reads', to: '/stories' },
+      { heading: 'Resources', links: [
+        { label: 'Newsletters', to: '/stories' },
+        { label: 'Learning', to: '/stories' },
       ]},
     ],
   },
   {
     label: 'Community',
     children: [
-      { heading: 'Clubs & Groups', links: [
-        { label: 'Discover Alumni Groups', to: '/community' },
-        { label: 'Interest & Affinity Groups', to: '/community' },
-        { label: 'Professional Groups', to: '/community' },
-      ]},
-      { heading: 'Regional', links: [
+      { heading: 'Groups', links: [
+        { label: 'All Groups', to: '/community' },
         { label: 'Pune Chapter', to: '/community' },
         { label: 'Imphal Chapter', to: '/community' },
-        { label: 'International Groups', to: '/community' },
       ]},
-      { heading: 'Students', links: [
-        { label: 'Recent Grad Resources', to: '/community' },
+      { heading: 'People', links: [
         { label: 'Young Alumni', to: '/community' },
+        { label: 'Professional Networks', to: '/community' },
       ]},
     ],
   },
   {
     label: 'About',
     children: [
-      { heading: 'About Us', links: [
-        { label: 'Get to Know MSAP Alumni', to: '/about' },
+      { heading: 'About', links: [
         { label: 'Our History', to: '/about' },
-        { label: 'Executive Leadership', to: '/about' },
-      ]},
-      { heading: 'Governance', links: [
         { label: 'Governing Body', to: '/about' },
+        { label: 'Contact', to: '/about' },
+      ]},
+      { heading: 'Trust', links: [
         { label: 'Financial Transparency', to: '/accounts' },
-        { label: 'Contact Us', to: '/about' },
+        { label: 'Society Registration', to: '/about' },
       ]},
     ],
   },
 ];
 
-function MegaMenuDropdown({ item, isOpen }) {
-  const ref = useRef(null);
-
-  if (!isOpen) return null;
-
-  return (
-    <div
-      ref={ref}
-      className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[640px] bg-white rounded-b-2xl shadow-2xl border border-forest-100 animate-slideDown z-50"
-    >
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-0 p-8">
-        {item.children.map((group, gi) => (
-          <div key={gi} className={gi > 0 ? 'border-l border-forest-50 pl-6' : ''}>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-forest-600 mb-3">
-              {group.heading}
-            </h4>
-            <ul className="space-y-2">
-              {group.links.map((link, li) => (
-                <li key={li}>
-                  <Link
-                    to={link.to}
-                    className="text-sm text-gray-600 hover:text-forest-700 hover:bg-forest-50 px-2 py-1 rounded-md transition-colors block"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export default function Navbar() {
   const [activeMega, setActiveMega] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState(null);
-  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const timeoutRef = useRef(null);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const prevPathname = useRef(location.pathname);
   useEffect(() => {
@@ -133,41 +84,20 @@ export default function Navbar() {
   };
 
   const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => setActiveMega(null), 150);
+    timeoutRef.current = setTimeout(() => setActiveMega(null), 120);
   };
 
   return (
     <>
-      {/* Top utility bar */}
-      <div className="bg-forest-950 text-forest-200 text-xs hidden md:block">
-        <div className="max-w-7xl mx-auto px-6 py-1.5 flex justify-between items-center">
-          <div className="flex gap-4">
-            <Link to="/register" className="hover:text-white transition-colors">Alumni Directory</Link>
-            <a href="mailto:alumni.msap1973@gmail.com" className="hover:text-white transition-colors">Email</a>
-          </div>
-          <div className="flex gap-4">
-            <Link to="/register" className="hover:text-white transition-colors font-medium text-gold-400">Join Now</Link>
-            <a href="mailto:alumni.msap1973@gmail.com" className="hover:text-white transition-colors">Contact</a>
-          </div>
-        </div>
-      </div>
-
-      {/* Main navigation */}
-      <nav
-        className={`bg-forest-900 text-white sticky top-0 z-50 transition-shadow duration-300 ${
-          scrolled ? 'shadow-2xl' : 'shadow-lg'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="flex justify-between items-center h-16 md:h-18">
+      <nav className="bg-ink text-parchment sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-5">
+          <div className="flex justify-between items-center h-14">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-3 shrink-0">
-              <div className="w-10 h-10 bg-white/10 backdrop-blur rounded-full flex items-center justify-center border border-white/20">
-                <span className="text-forest-300 font-bold text-lg font-display">M</span>
-              </div>
-              <div className="hidden sm:block">
-                <div className="font-bold text-sm leading-tight tracking-tight">MSAP Alumni</div>
-                <div className="text-[10px] text-forest-300 leading-none tracking-wide">Est. 1973 · Pune</div>
+            <Link to="/" className="flex items-center gap-2.5 shrink-0">
+              <img src="/logo.png" alt="MSAP Alumni" className="w-8 h-8 object-contain" onError={(e) => { e.target.style.display = 'none'; }} />
+              <div>
+                <span className="font-display text-parchment text-base leading-none block">MSAP Alumni</span>
+                <span className="text-muted text-[10px] tracking-wider uppercase">Est. 1973</span>
               </div>
             </Link>
 
@@ -181,54 +111,82 @@ export default function Navbar() {
                   onMouseLeave={handleMouseLeave}
                 >
                   <button
-                    className={`text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 flex items-center gap-1 ${
-                      activeMega === idx || location.pathname.startsWith(`/${item.label.toLowerCase()}`)
-                        ? 'text-white bg-white/15'
-                        : 'text-forest-200 hover:text-white hover:bg-white/10'
+                    className={`text-[13px] font-medium px-3.5 py-1.5 transition-colors flex items-center gap-1 ${
+                      activeMega === idx
+                        ? 'text-parchment'
+                        : 'text-muted hover:text-parchment'
                     }`}
                   >
                     {item.label}
-                    <svg className={`w-3.5 h-3.5 transition-transform ${activeMega === idx ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <svg className={`w-3 h-3 transition-transform ${activeMega === idx ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                     </svg>
                   </button>
-                  <MegaMenuDropdown item={item} isOpen={activeMega === idx} />
+                  {activeMega === idx && (
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-[480px] bg-ink-light border border-ink-lighter shadow-2xl z-50">
+                      <div className="grid grid-cols-2 gap-0 p-6">
+                        {item.children.map((group, gi) => (
+                          <div key={gi} className={gi > 0 ? 'pl-6 border-l border-ink-lighter' : ''}>
+                            <div className="text-[10px] font-semibold uppercase tracking-widest text-muted mb-2.5">{group.heading}</div>
+                            <ul className="space-y-1">
+                              {group.links.map((link, li) => (
+                                <li key={li}>
+                                  <Link
+                                    to={link.to}
+                                    className="text-sm text-parchment/70 hover:text-parchment block py-1 transition-colors"
+                                  >
+                                    {link.label}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
 
             {/* Desktop CTA */}
-            <div className="hidden lg:flex items-center gap-3">
+            <div className="hidden lg:flex items-center">
               <Link
                 to="/register"
-                className="bg-gold-500 hover:bg-gold-400 text-forest-950 text-sm font-bold px-5 py-2 rounded-lg transition-all duration-200 hover:shadow-lg"
+                className="text-[13px] font-semibold text-parchment border border-parchment/20 px-4 py-1.5 hover:bg-parchment hover:text-ink transition-colors"
               >
-                Join the Network
+                Register
               </Link>
             </div>
 
             {/* Mobile hamburger */}
             <button
-              className="lg:hidden text-white p-2 rounded-lg hover:bg-white/10 transition-colors"
+              className="lg:hidden text-parchment p-1"
               onClick={() => setMobileOpen(v => !v)}
               aria-label="Toggle menu"
             >
-              <div className={`w-5 h-0.5 bg-white transition-all mb-1.5 ${mobileOpen ? 'rotate-45 translate-y-2' : ''}`} />
-              <div className={`w-5 h-0.5 bg-white transition-all mb-1.5 ${mobileOpen ? 'opacity-0' : ''}`} />
-              <div className={`w-5 h-0.5 bg-white transition-all ${mobileOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+              {mobileOpen ? (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+                </svg>
+              )}
             </button>
           </div>
         </div>
 
         {/* Mobile menu */}
         {mobileOpen && (
-          <div className="lg:hidden bg-forest-800 border-t border-white/10 max-h-[70vh] overflow-y-auto animate-slideDown">
-            <div className="px-4 py-3 space-y-1">
+          <div className="lg:hidden bg-ink-light border-t border-ink-lighter max-h-[70vh] overflow-y-auto">
+            <div className="px-5 py-4 space-y-1">
               {NAV_ITEMS.map((item, idx) => (
                 <div key={idx}>
                   <button
                     onClick={() => setMobileExpanded(mobileExpanded === idx ? null : idx)}
-                    className="w-full flex items-center justify-between text-left text-sm font-medium text-forest-100 px-3 py-2.5 rounded-lg hover:bg-white/10 transition-colors"
+                    className="w-full flex items-center justify-between text-left text-sm font-medium text-parchment/80 py-2.5 hover:text-parchment transition-colors"
                   >
                     {item.label}
                     <svg className={`w-4 h-4 transition-transform ${mobileExpanded === idx ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -236,15 +194,15 @@ export default function Navbar() {
                     </svg>
                   </button>
                   {mobileExpanded === idx && (
-                    <div className="pl-4 pb-2 space-y-3 animate-slideDown">
+                    <div className="pl-3 pb-3 space-y-2">
                       {item.children.map((group, gi) => (
                         <div key={gi}>
-                          <div className="text-[10px] font-bold uppercase tracking-widest text-forest-400 px-3 mb-1">{group.heading}</div>
+                          <div className="text-[10px] font-semibold uppercase tracking-widest text-muted mb-1">{group.heading}</div>
                           {group.links.map((link, li) => (
                             <Link
                               key={li}
                               to={link.to}
-                              className="block text-sm text-forest-200 hover:text-white px-3 py-1.5 rounded-md hover:bg-white/10 transition-colors"
+                              className="block text-sm text-parchment/60 hover:text-parchment py-1 transition-colors"
                             >
                               {link.label}
                             </Link>
@@ -255,12 +213,12 @@ export default function Navbar() {
                   )}
                 </div>
               ))}
-              <div className="pt-2 border-t border-white/10">
+              <div className="pt-3 border-t border-ink-lighter">
                 <Link
                   to="/register"
-                  className="block w-full text-center bg-gold-500 hover:bg-gold-400 text-forest-950 text-sm font-bold px-5 py-2.5 rounded-lg transition-all"
+                  className="block w-full text-center text-sm font-semibold text-parchment border border-parchment/20 py-2.5 hover:bg-parchment hover:text-ink transition-colors"
                 >
-                  Join the Network
+                  Register
                 </Link>
               </div>
             </div>

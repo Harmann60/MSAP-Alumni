@@ -18,7 +18,7 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-cream-50 text-gray-800 font-sans flex flex-col">
+    <div className="min-h-screen bg-parchment text-stone font-sans flex flex-col">
       <ScrollToTop />
       <Navbar />
       <main className="flex-1">
