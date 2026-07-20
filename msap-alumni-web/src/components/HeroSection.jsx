@@ -65,8 +65,8 @@ export default function HeroSection() {
     <div className="relative bg-ink text-parchment overflow-hidden">
       {/* YouTube background */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 w-full h-full [&>iframe]:w-[100vw] [&>iframe]:h-[56.25vw] [&>iframe]:min-h-[100%] [&>iframe]:min-w-[177.78vh] [&>iframe]:absolute [&>iframe]:top-1/2 [&>iframe]:left-1/2 [&>iframe]:-translate-x-1/2 [&>iframe]:-translate-y-1/2 opacity-40" ref={containerRef} />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/70 to-ink/40" />
+        <div className="absolute inset-0 w-full h-full [&>iframe]:w-[100vw] [&>iframe]:h-[56.25vw] [&>iframe]:min-h-[100%] [&>iframe]:min-w-[177.78vh] [&>iframe]:absolute [&>iframe]:top-1/2 [&>iframe]:left-1/2 [&>iframe]:-translate-x-1/2 [&>iframe]:-translate-y-1/2 opacity-65" ref={containerRef} />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/50 to-ink/30" />
       </div>
 
       <div className="relative max-w-6xl mx-auto px-5 py-24 md:py-32 lg:py-40">
