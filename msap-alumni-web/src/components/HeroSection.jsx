@@ -1,11 +1,38 @@
+import { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+const CLIP_START = 12;
+const CLIP_END = 207; // 3:27
+
 export default function HeroSection() {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleLoaded = () => { video.currentTime = CLIP_START; };
+    const handleTimeUpdate = () => {
+      if (video.currentTime >= CLIP_END) {
+        video.currentTime = CLIP_START;
+      }
+    };
+
+    video.addEventListener('loadeddata', handleLoaded);
+    video.addEventListener('timeupdate', handleTimeUpdate);
+
+    return () => {
+      video.removeEventListener('loadeddata', handleLoaded);
+      video.removeEventListener('timeupdate', handleTimeUpdate);
+    };
+  }, []);
+
   return (
     <div className="relative bg-ink text-parchment overflow-hidden">
       {/* Video */}
       <div className="absolute inset-0">
         <video
+          ref={videoRef}
           autoPlay muted loop playsInline preload="auto"
           className="absolute inset-0 w-full h-full object-cover opacity-40"
           poster="/hero.png"
