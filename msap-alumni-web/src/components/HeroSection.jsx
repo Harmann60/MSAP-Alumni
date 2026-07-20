@@ -5,40 +5,67 @@ const CLIP_START = 12;
 const CLIP_END = 207; // 3:27
 
 export default function HeroSection() {
-  const videoRef = useRef(null);
+  const playerRef = useRef(null);
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+    // Load YouTube IFrame API
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(tag);
 
-    const handleLoaded = () => { video.currentTime = CLIP_START; };
-    const handleTimeUpdate = () => {
-      if (video.currentTime >= CLIP_END) {
-        video.currentTime = CLIP_START;
-      }
+    window.onYouTubeIframeAPIReady = () => {
+      playerRef.current = new window.YT.Player(containerRef.current, {
+        videoId: 'tpEstK4dwNQ',
+        playerVars: {
+          autoplay: 1,
+          mute: 1,
+          controls: 0,
+          modestbranding: 1,
+          rel: 0,
+          showinfo: 0,
+          playlist: 'tpEstK4dwNQ',
+          start: CLIP_START,
+        },
+        events: {
+          onReady: (e) => {
+            e.target.seekTo(CLIP_START, true);
+            e.target.playVideo();
+          },
+          onStateChange: (e) => {
+            // When video ends or buffers, check if past clip end
+            if (e.data === window.YT.PlayerState.ENDED) {
+              e.target.seekTo(CLIP_START, true);
+              e.target.playVideo();
+            }
+          },
+        },
+      });
     };
 
-    video.addEventListener('loadeddata', handleLoaded);
-    video.addEventListener('timeupdate', handleTimeUpdate);
+    // Check time and loop back to start
+    const interval = setInterval(() => {
+      const player = playerRef.current;
+      if (player && player.getCurrentTime) {
+        const t = player.getCurrentTime();
+        if (t >= CLIP_END) {
+          player.seekTo(CLIP_START, true);
+          player.playVideo();
+        }
+      }
+    }, 500);
 
     return () => {
-      video.removeEventListener('loadeddata', handleLoaded);
-      video.removeEventListener('timeupdate', handleTimeUpdate);
+      clearInterval(interval);
+      delete window.onYouTubeIframeAPIReady;
     };
   }, []);
 
   return (
     <div className="relative bg-ink text-parchment overflow-hidden">
-      {/* Video */}
-      <div className="absolute inset-0">
-        <video
-          ref={videoRef}
-          autoPlay muted loop playsInline preload="auto"
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
-          poster="/hero.png"
-        >
-          <source src="/hero-video.mp4" type="video/mp4" />
-        </video>
+      {/* YouTube background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 w-full h-full [&>iframe]:w-[100vw] [&>iframe]:h-[56.25vw] [&>iframe]:min-h-[100%] [&>iframe]:min-w-[177.78vh] [&>iframe]:absolute [&>iframe]:top-1/2 [&>iframe]:left-1/2 [&>iframe]:-translate-x-1/2 [&>iframe]:-translate-y-1/2 opacity-40" ref={containerRef} />
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/70 to-ink/40" />
       </div>
 
