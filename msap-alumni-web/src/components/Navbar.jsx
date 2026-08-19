@@ -3,6 +3,10 @@ import { Link, useLocation } from 'react-router-dom';
 
 const NAV_ITEMS = [
   {
+    label: 'Gallery',
+    to: '/#gallery',
+  },
+  {
     label: 'Events',
     children: [
       { heading: 'Events', links: [
@@ -103,50 +107,63 @@ export default function Navbar() {
 
             {/* Desktop nav */}
             <div className="hidden lg:flex items-center gap-0 h-full">
-              {NAV_ITEMS.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="relative h-full flex items-center"
-                  onMouseEnter={() => handleMouseEnter(idx)}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <button
-                    className={`text-[13px] font-medium px-3.5 py-1.5 transition-colors flex items-center gap-1 ${
-                      activeMega === idx
-                        ? 'text-parchment'
-                        : 'text-muted hover:text-parchment'
-                    }`}
+              {NAV_ITEMS.map((item, idx) => {
+                if (item.to) {
+                  return (
+                    <Link
+                      key={idx}
+                      to={item.to}
+                      className="text-[13px] font-medium px-3.5 py-1.5 transition-colors text-muted hover:text-parchment"
+                    >
+                      {item.label}
+                    </Link>
+                  );
+                }
+                return (
+                  <div
+                    key={idx}
+                    className="relative h-full flex items-center"
+                    onMouseEnter={() => handleMouseEnter(idx)}
+                    onMouseLeave={handleMouseLeave}
                   >
-                    {item.label}
-                    <svg className={`w-3 h-3 transition-transform ${activeMega === idx ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                  {activeMega === idx && (
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-[480px] bg-ink-light border border-ink-lighter shadow-2xl z-50">
-                      <div className="grid grid-cols-2 gap-0 p-6">
-                        {item.children.map((group, gi) => (
-                          <div key={gi} className={gi > 0 ? 'pl-6 border-l border-ink-lighter' : ''}>
-                            <div className="text-[10px] font-semibold uppercase tracking-widest text-muted mb-2.5">{group.heading}</div>
-                            <ul className="space-y-1">
-                              {group.links.map((link, li) => (
-                                <li key={li}>
-                                  <Link
-                                    to={link.to}
-                                    className="text-sm text-parchment/70 hover:text-parchment block py-1 transition-colors"
-                                  >
-                                    {link.label}
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        ))}
+                    <button
+                      className={`text-[13px] font-medium px-3.5 py-1.5 transition-colors flex items-center gap-1 ${
+                        activeMega === idx
+                          ? 'text-parchment'
+                          : 'text-muted hover:text-parchment'
+                      }`}
+                    >
+                      {item.label}
+                      <svg className={`w-3 h-3 transition-transform ${activeMega === idx ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    {activeMega === idx && (
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 w-[480px] bg-ink-light border border-ink-lighter shadow-2xl z-50">
+                        <div className="grid grid-cols-2 gap-0 p-6">
+                          {item.children.map((group, gi) => (
+                            <div key={gi} className={gi > 0 ? 'pl-6 border-l border-ink-lighter' : ''}>
+                              <div className="text-[10px] font-semibold uppercase tracking-widest text-muted mb-2.5">{group.heading}</div>
+                              <ul className="space-y-1">
+                                {group.links.map((link, li) => (
+                                  <li key={li}>
+                                    <Link
+                                      to={link.to}
+                                      className="text-sm text-parchment/70 hover:text-parchment block py-1 transition-colors"
+                                    >
+                                      {link.label}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-              ))}
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
             {/* Desktop CTA */}
@@ -182,37 +199,50 @@ export default function Navbar() {
         {mobileOpen && (
           <div className="lg:hidden bg-ink-light border-t border-ink-lighter max-h-[70vh] overflow-y-auto">
             <div className="px-5 py-4 space-y-1">
-              {NAV_ITEMS.map((item, idx) => (
-                <div key={idx}>
-                  <button
-                    onClick={() => setMobileExpanded(mobileExpanded === idx ? null : idx)}
-                    className="w-full flex items-center justify-between text-left text-sm font-medium text-parchment/80 py-2.5 hover:text-parchment transition-colors"
-                  >
-                    {item.label}
-                    <svg className={`w-4 h-4 transition-transform ${mobileExpanded === idx ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                  {mobileExpanded === idx && (
-                    <div className="pl-3 pb-3 space-y-2">
-                      {item.children.map((group, gi) => (
-                        <div key={gi}>
-                          <div className="text-[10px] font-semibold uppercase tracking-widest text-muted mb-1">{group.heading}</div>
-                          {group.links.map((link, li) => (
-                            <Link
-                              key={li}
-                              to={link.to}
-                              className="block text-sm text-parchment/60 hover:text-parchment py-1 transition-colors"
-                            >
-                              {link.label}
-                            </Link>
-                          ))}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
+              {NAV_ITEMS.map((item, idx) => {
+                if (item.to) {
+                  return (
+                    <Link
+                      key={idx}
+                      to={item.to}
+                      className="block text-sm font-medium text-parchment/80 py-2.5 hover:text-parchment transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                  );
+                }
+                return (
+                  <div key={idx}>
+                    <button
+                      onClick={() => setMobileExpanded(mobileExpanded === idx ? null : idx)}
+                      className="w-full flex items-center justify-between text-left text-sm font-medium text-parchment/80 py-2.5 hover:text-parchment transition-colors"
+                    >
+                      {item.label}
+                      <svg className={`w-4 h-4 transition-transform ${mobileExpanded === idx ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    {mobileExpanded === idx && (
+                      <div className="pl-3 pb-3 space-y-2">
+                        {item.children.map((group, gi) => (
+                          <div key={gi}>
+                            <div className="text-[10px] font-semibold uppercase tracking-widest text-muted mb-1">{group.heading}</div>
+                            {group.links.map((link, li) => (
+                              <Link
+                                key={li}
+                                to={link.to}
+                                className="block text-sm text-parchment/60 hover:text-parchment py-1 transition-colors"
+                              >
+                                {link.label}
+                              </Link>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
               <div className="pt-3 border-t border-ink-lighter">
                 <Link
                   to="/register"

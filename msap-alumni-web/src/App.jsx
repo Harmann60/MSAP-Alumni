@@ -9,10 +9,20 @@ import CommunityPage from './pages/CommunityPage'
 import AboutPage from './pages/AboutPage'
 import RegisterPage from './pages/RegisterPage'
 import AccountsPage from './pages/AccountsPage'
+import GalleryPage from './pages/GalleryPage'
 
 function ScrollToTop() {
-  const { pathname } = useLocation()
-  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }) }, [pathname])
+  const { pathname, hash } = useLocation()
+  useEffect(() => {
+    if (hash) {
+      const el = document.getElementById(hash.slice(1))
+      if (el) {
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 100)
+        return
+      }
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [pathname, hash])
   return null
 }
 
@@ -30,6 +40,7 @@ export default function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/accounts" element={<AccountsPage />} />
+          <Route path="/gallery" element={<GalleryPage />} />
         </Routes>
       </main>
       <Footer />

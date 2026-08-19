@@ -1,5 +1,6 @@
 import HeroSection from '../components/HeroSection';
 import StoriesSection from '../components/StoriesSection';
+import GallerySection from '../components/GallerySection';
 import EventsSection from '../components/EventsSection';
 import CommunitySection from '../components/CommunitySection';
 import { Link } from 'react-router-dom';
@@ -17,6 +18,15 @@ export default function HomePage() {
       </div>
 
       <StoriesSection />
+
+      {/* Meitei Mayek divider */}
+      <div className="max-w-6xl mx-auto px-5 py-2">
+        <div className="meitei-rule text-ink">
+          <div className="meitei-rule-diamond" />
+        </div>
+      </div>
+
+      <GallerySection />
 
       <EventsSection />
 

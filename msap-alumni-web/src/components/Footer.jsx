@@ -26,6 +26,7 @@ export default function Footer() {
               <li><Link to="/events" className="hover:text-parchment transition-colors">Events</Link></li>
               <li><Link to="/stories" className="hover:text-parchment transition-colors">Stories</Link></li>
               <li><Link to="/community" className="hover:text-parchment transition-colors">Community</Link></li>
+              <li><Link to="/gallery" className="hover:text-parchment transition-colors">Gallery</Link></li>
             </ul>
           </div>
 
