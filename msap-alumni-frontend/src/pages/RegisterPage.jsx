@@ -2,33 +2,28 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { submitRegistration } from '../services/alumniService';
 
-function FormField({ label, name, type = 'text', placeholder, required, value, onChange, icon, hint }) {
+function FormField({ label, name, type = 'text', placeholder, required, value, onChange, hint }) {
   return (
     <div>
       <div className="flex items-center justify-between mb-1.5">
-        <label className="text-[13px] font-bold uppercase tracking-wider text-ink flex items-center gap-1">
+        <label
+          htmlFor={name}
+          className="text-[13px] font-bold uppercase tracking-wider text-ink flex items-center gap-1"
+        >
           {label} {required && <span className="text-lavender font-bold">*</span>}
         </label>
         {hint && <span className="text-xs text-muted">{hint}</span>}
       </div>
-      <div className="relative">
-        {icon && (
-          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted text-sm">
-            {icon}
-          </div>
-        )}
-        <input
-          type={type}
-          name={name}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          required={required}
-          className={`w-full border border-main bg-white ${
-            icon ? 'pl-10' : 'pl-4'
-          } pr-4 py-3 rounded-sm text-[15px] text-ink font-medium focus:outline-none focus:border-lavender focus:ring-2 focus:ring-lavender/25 transition-all placeholder:text-muted/50`}
-        />
-      </div>
+      <input
+        id={name}
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        required={required}
+        className="w-full border border-main bg-white pl-4 pr-4 py-3 rounded-sm text-[15px] text-ink font-medium focus:outline-none focus:border-lavender focus:ring-2 focus:ring-lavender/25 transition-all placeholder:text-muted/50"
+      />
     </div>
   );
 }
@@ -212,7 +207,6 @@ export default function RegisterPage() {
                   label="Full Name"
                   name="fullName"
                   placeholder="e.g. Ningthouja Lemba"
-                  icon="👤"
                   required
                   value={formData.fullName}
                   onChange={handleChange}
@@ -222,7 +216,6 @@ export default function RegisterPage() {
                   name="email"
                   type="email"
                   placeholder="you@email.com"
-                  icon="✉️"
                   required
                   hint="Used for verification notices"
                   value={formData.email}
@@ -234,7 +227,6 @@ export default function RegisterPage() {
                   label="Phone / WhatsApp Number"
                   name="phone"
                   placeholder="+91 98765 43210"
-                  icon="📱"
                   value={formData.phone}
                   onChange={handleChange}
                 />
@@ -252,7 +244,6 @@ export default function RegisterPage() {
                   label="Pune College / University"
                   name="puneCollege"
                   placeholder="e.g. Symbiosis, Fergusson, COEP, MIT"
-                  icon="🏛"
                   value={formData.puneCollege}
                   onChange={handleChange}
                 />
@@ -261,7 +252,6 @@ export default function RegisterPage() {
                   name="batchYear"
                   type="number"
                   placeholder="e.g. 2016"
-                  icon="📅"
                   value={formData.batchYear}
                   onChange={handleChange}
                 />
@@ -271,7 +261,6 @@ export default function RegisterPage() {
                   label="Current City / Country"
                   name="currentLocation"
                   placeholder="e.g. Pune, Bengaluru, London, Imphal"
-                  icon="📍"
                   value={formData.currentLocation}
                   onChange={handleChange}
                 />
@@ -279,7 +268,6 @@ export default function RegisterPage() {
                   label="Current Profession / Role"
                   name="profession"
                   placeholder="e.g. Architect, Software Engineer, Doctor"
-                  icon="💼"
                   value={formData.profession}
                   onChange={handleChange}
                 />
@@ -312,7 +300,6 @@ export default function RegisterPage() {
                   name="password"
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Min. 6 characters"
-                  icon="🔑"
                   required
                   value={formData.password}
                   onChange={handleChange}
@@ -322,7 +309,6 @@ export default function RegisterPage() {
                   name="confirmPassword"
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Re-type password"
-                  icon="🔒"
                   required
                   value={formData.confirmPassword}
                   onChange={handleChange}

@@ -9,7 +9,7 @@ const DEFAULT_EVENTS = [
     year: '2026',
     time: '10:00 AM – 6:00 PM IST',
     title: '51st Annual MSAP Alumni Meet 2026',
-    location: 'Symbiosis Campus &middot; Viman Nagar, Pune',
+    location: 'Symbiosis Campus · Viman Nagar, Pune',
     category: 'Flagship',
     description:
       'The premier annual reunion for all Manipuri graduates who studied in Pune. Keynote panel, networking lunch, cultural performances, and the annual general body session.',
@@ -33,7 +33,7 @@ const DEFAULT_EVENTS = [
     year: '2026',
     time: '4:00 PM – 9:00 PM IST',
     title: 'Yaoshang Cultural Evening & Thabal',
-    location: 'Classic Grande &middot; Imphal, Manipur',
+    location: 'Classic Grande · Imphal, Manipur',
     category: 'Cultural',
     description:
       'A joyful evening of traditional Meitei folk music, dance, Thabal Chongba, and culinary celebrations honoring our cultural roots.',
@@ -45,7 +45,7 @@ const DEFAULT_EVENTS = [
     year: '2026',
     time: '6:00 PM – 8:00 PM IST',
     title: 'New Graduates Pune Welcome & Orientation',
-    location: 'FC Road &middot; Pune, Maharashtra',
+    location: 'FC Road · Pune, Maharashtra',
     category: 'Onboarding',
     description:
       'Welcome evening for new graduates transitioning into life and work across Maharashtra and the broader diaspora.',
@@ -57,7 +57,7 @@ const DEFAULT_EVENTS = [
     year: '2026',
     time: '5:00 PM – 8:00 PM IST',
     title: 'MSAP Winter Social & Fireside Chat',
-    location: 'Bengaluru Chapter &middot; Indiranagar',
+    location: 'Bengaluru Chapter · Indiranagar',
     category: 'Chapter',
     description:
       'Informal mixer for Pune alumni working and living in the Bengaluru technology and academic hub.',
@@ -120,7 +120,7 @@ export default function EventsPage() {
   return (
     <div className="bg-page min-h-[90vh]">
       {/* Page header */}
-      <div className="max-w-6xl mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
+      <div className="max-w-7xl mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
         <div className="grid lg:grid-cols-12 gap-x-10 gap-y-6 items-end">
           <div className="lg:col-span-8">
             <p className="eyebrow mb-5">Annual calendar</p>
@@ -172,7 +172,7 @@ export default function EventsPage() {
       </div>
 
       {/* Events listing */}
-      <div className="max-w-6xl mx-auto px-5 pb-20 md:pb-28">
+      <div className="max-w-7xl mx-auto px-5 pb-20 md:pb-28">
         <ol className="divide-y divide-main border-t border-main">
           {filteredEvents.map((event) => {
             const isRsvpd = !!rsvpStatus[event.id];
@@ -198,7 +198,7 @@ export default function EventsPage() {
                       {event.title}
                     </h2>
                     <p className="text-[15px] text-stone/85 mb-3">
-                      <span dangerouslySetInnerHTML={{ __html: `📍 ${event.location}` }} />
+                      <span>{event.location}</span>
                       <span className="mx-2 text-muted">·</span>
                       <span>{event.time}</span>
                       <span className="mx-2 text-muted">·</span>

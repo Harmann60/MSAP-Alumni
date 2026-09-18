@@ -305,29 +305,24 @@ export default function AlumniLoginPage() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-ink mb-1.5">
+                <label htmlFor="alumni-email" className="block text-xs font-bold uppercase tracking-wider text-ink mb-1.5">
                   Email Address
                 </label>
-                <div className="relative">
-                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted text-sm">
-                    ✉️
-                  </span>
-                  <input
-                    id="alumni-email"
-                    type="email"
-                    autoComplete="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    placeholder="you@email.com"
-                    className="w-full border border-main bg-white pl-10 pr-4 py-3 rounded-sm text-[15px] text-ink font-medium focus:outline-none focus:border-lavender focus:ring-2 focus:ring-lavender/25 transition-all placeholder:text-muted/50"
-                  />
-                </div>
+                <input
+                  id="alumni-email"
+                  type="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  placeholder="you@email.com"
+                  className="w-full border border-main bg-white pl-4 pr-4 py-3 rounded-sm text-[15px] text-ink font-medium focus:outline-none focus:border-lavender focus:ring-2 focus:ring-lavender/25 transition-all placeholder:text-muted/50"
+                />
               </div>
 
               <div>
                 <div className="flex justify-between items-center mb-1.5">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-ink">
+                  <label htmlFor="alumni-password" className="block text-xs font-bold uppercase tracking-wider text-ink">
                     {mode === 'login' ? 'Password' : 'New Password'}
                   </label>
                   <button
@@ -335,46 +330,36 @@ export default function AlumniLoginPage() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="text-xs font-semibold text-muted hover:text-lavender cursor-pointer"
                   >
-                    {showPassword ? 'Hide 👁' : 'Show 👁'}
+                    {showPassword ? 'Hide' : 'Show'}
                   </button>
                 </div>
-                <div className="relative">
-                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted text-sm">
-                    🔑
-                  </span>
-                  <input
-                    id="alumni-password"
-                    type={showPassword ? 'text' : 'password'}
-                    autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    placeholder="Min. 6 characters"
-                    className="w-full border border-main bg-white pl-10 pr-4 py-3 rounded-sm text-[15px] text-ink font-medium focus:outline-none focus:border-lavender focus:ring-2 focus:ring-lavender/25 transition-all placeholder:text-muted/50"
-                  />
-                </div>
+                <input
+                  id="alumni-password"
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder="Min. 6 characters"
+                  className="w-full border border-main bg-white pl-4 pr-4 py-3 rounded-sm text-[15px] text-ink font-medium focus:outline-none focus:border-lavender focus:ring-2 focus:ring-lavender/25 transition-all placeholder:text-muted/50"
+                />
               </div>
 
               {mode === 'setPassword' && (
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-ink mb-1.5">
+                  <label htmlFor="alumni-confirm-password" className="block text-xs font-bold uppercase tracking-wider text-ink mb-1.5">
                     Confirm Password
                   </label>
-                  <div className="relative">
-                    <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted text-sm">
-                      🔒
-                    </span>
-                    <input
-                      id="alumni-confirm-password"
-                      type={showPassword ? 'text' : 'password'}
-                      autoComplete="new-password"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      required
-                      placeholder="Re-enter password"
-                      className="w-full border border-main bg-white pl-10 pr-4 py-3 rounded-sm text-[15px] text-ink font-medium focus:outline-none focus:border-lavender focus:ring-2 focus:ring-lavender/25 transition-all placeholder:text-muted/50"
-                    />
-                  </div>
+                  <input
+                    id="alumni-confirm-password"
+                    type={showPassword ? 'text' : 'password'}
+                    autoComplete="new-password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    placeholder="Re-enter password"
+                    className="w-full border border-main bg-white pl-4 pr-4 py-3 rounded-sm text-[15px] text-ink font-medium focus:outline-none focus:border-lavender focus:ring-2 focus:ring-lavender/25 transition-all placeholder:text-muted/50"
+                  />
                 </div>
               )}
 

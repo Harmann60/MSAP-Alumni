@@ -39,7 +39,7 @@ export default function AboutPage() {
   return (
     <div className="bg-page min-h-[90vh]">
       {/* Page header */}
-      <div className="max-w-6xl mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
+      <div className="max-w-7xl mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
         <p className="eyebrow mb-5">1973 to 2026 &middot; 50+ years</p>
         <h1 className="display-lg text-4xl md:text-5xl mb-3">Our heritage & governance</h1>
         <p className="text-stone text-base sm:text-lg max-w-xl">
@@ -47,7 +47,7 @@ export default function AboutPage() {
         </p>
       </div>
 
-      <div className="max-w-6xl mx-auto px-5 pb-20 md:pb-28 space-y-20">
+      <div className="max-w-7xl mx-auto px-5 pb-20 md:pb-28 space-y-20">
         {/* Mission — editorial prose */}
         <section className="max-w-3xl">
           <p className="eyebrow mb-5">Our foundational mission</p>

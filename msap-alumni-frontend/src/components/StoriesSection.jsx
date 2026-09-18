@@ -37,7 +37,7 @@ export default function StoriesSection() {
   const [featured, ...rest] = STORIES;
 
   return (
-    <section className="max-w-6xl mx-auto px-5 py-16 md:py-24">
+    <section className="max-w-7xl mx-auto px-5 py-16 md:py-24">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
         <div>
           <p className="eyebrow mb-4">01 &mdash; Alumni chronicles</p>

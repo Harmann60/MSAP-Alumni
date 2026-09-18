@@ -8,7 +8,7 @@ export default function GallerySection({ showHeading = true }) {
   const [viewerAlbum, setViewerAlbum] = useState(null);
 
   return (
-    <section id="gallery" className="max-w-6xl mx-auto px-5 py-14 md:py-20">
+    <section id="gallery" className="max-w-7xl mx-auto px-5 py-14 md:py-20">
       {showHeading && (
         <div className="mb-12">
           <p className="eyebrow mb-4">Photo archives</p>

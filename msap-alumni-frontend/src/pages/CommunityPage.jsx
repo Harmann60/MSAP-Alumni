@@ -78,7 +78,7 @@ export default function CommunityPage() {
   return (
     <div className="bg-page min-h-[90vh]">
       {/* Page header */}
-      <div className="max-w-6xl mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
+      <div className="max-w-7xl mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
         <p className="eyebrow mb-5">Chapters & professional networks</p>
         <h1 className="display-lg text-4xl md:text-5xl mb-3">Our global community</h1>
         <p className="text-stone text-base sm:text-lg max-w-xl">
@@ -87,7 +87,7 @@ export default function CommunityPage() {
         </p>
       </div>
 
-      <div className="max-w-6xl mx-auto px-5 pb-20 md:pb-28">
+      <div className="max-w-7xl mx-auto px-5 pb-20 md:pb-28">
         {/* Stats — typographic, ruled */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-y-8 mb-16 border-t border-main">
           {STATS.map((stat) => (

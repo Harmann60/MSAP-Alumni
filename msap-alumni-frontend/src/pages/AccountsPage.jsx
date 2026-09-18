@@ -30,7 +30,7 @@ export default function AccountsPage() {
   return (
     <div className="bg-page min-h-[90vh]">
       {/* Page header */}
-      <div className="max-w-6xl mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
+      <div className="max-w-7xl mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
         <p className="eyebrow mb-5">Financial governance & audit</p>
         <h1 className="display-lg text-4xl md:text-5xl mb-3">Financial transparency</h1>
         <p className="text-stone text-base sm:text-lg max-w-xl">

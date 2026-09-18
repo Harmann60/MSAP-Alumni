@@ -55,7 +55,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-sm border-b border-main">
-      <div className="max-w-6xl mx-auto px-5">
+      <div className="max-w-7xl mx-auto px-5">
         <div className="flex items-center justify-between gap-4 h-16">
           {/* Brand */}
           <Link to="/" className="flex items-center gap-3 shrink-0 group" aria-label="MSAP Alumni — Home">
@@ -147,7 +147,7 @@ export default function Navbar() {
       {/* Mobile menu */}
       {mobileOpen && (
         <nav aria-label="Mobile" className="lg:hidden border-t border-main bg-card">
-          <div className="max-w-6xl mx-auto px-5 py-4 space-y-1">
+          <div className="max-w-7xl mx-auto px-5 py-4 space-y-1">
             {NAV_LINKS.map((link) => {
               const active = location.pathname === link.to;
               return (

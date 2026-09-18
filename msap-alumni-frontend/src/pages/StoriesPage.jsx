@@ -102,7 +102,7 @@ export default function StoriesPage() {
   return (
     <div className="bg-page min-h-[90vh]">
       {/* Page header */}
-<div className="max-w-6xl mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
+<div className="max-w-7xl mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mb-4">
           <div>
             <p className="eyebrow mb-4">Alumni chronicles</p>
@@ -138,7 +138,7 @@ export default function StoriesPage() {
         </nav>
       </div>
 
-      <div className="max-w-6xl mx-auto px-5 pb-20 md:pb-28">
+      <div className="max-w-7xl mx-auto px-5 pb-20 md:pb-28">
         {/* Featured spread */}
         {featured && (
           <article className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-16">

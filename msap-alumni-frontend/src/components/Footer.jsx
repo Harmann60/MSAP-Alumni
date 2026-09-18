@@ -20,7 +20,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-card border-t-[3px] border-lavender">
-      <div className="max-w-6xl mx-auto px-5 py-16 md:py-20">
+      <div className="max-w-7xl mx-auto px-5 py-16 md:py-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-x-8 gap-y-12">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-4">
@@ -123,7 +123,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-main bg-page">
-        <div className="max-w-6xl mx-auto px-5 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-muted">
+        <div className="max-w-7xl mx-auto px-5 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-muted">
           <span>&copy; {year} Association of MSAP Alumni. All rights reserved.</span>
           <span className="flex items-center gap-6">
             <span className="cursor-default hover:text-lavender transition-colors">Privacy</span>

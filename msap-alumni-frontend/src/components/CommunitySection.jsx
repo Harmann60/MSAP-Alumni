@@ -11,7 +11,7 @@ const CHAPTERS = [
 
 export default function CommunitySection() {
   return (
-    <section className="max-w-6xl mx-auto px-5 py-16 md:py-24">
+    <section className="max-w-7xl mx-auto px-5 py-16 md:py-24">
       <div className="grid lg:grid-cols-12 gap-x-12 gap-y-10">
         <div className="lg:col-span-4">
           <p className="eyebrow mb-4">03 &mdash; The alumni network</p>

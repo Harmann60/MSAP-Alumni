@@ -36,7 +36,7 @@ const EVENTS = [
 export default function EventsSection() {
   return (
     <section className="bg-section-alt border-y border-main">
-      <div className="max-w-6xl mx-auto px-5 py-16 md:py-24">
+      <div className="max-w-7xl mx-auto px-5 py-16 md:py-24">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
           <div>
             <p className="eyebrow mb-4">02 &mdash; Annual calendar</p>
