@@ -49,7 +49,7 @@ MSAP-Alumni-main/
 │   │   └── validators/     # Zod schema validators
 │   └── tests/              # Automated test suite (Security, Email, Auth)
 │
-└── msap-alumni-web/      # React 18 + Vite SPA + Tailwind CSS
+└── msap-alumni-frontend/   # React 18 + Vite SPA + Tailwind CSS
     └── src/
         ├── components/     # UI components (Navbar, Footer, Modals)
         ├── pages/          # Public, Alumni & Admin views
@@ -103,7 +103,7 @@ npm test
 ### 3. Frontend Setup
 In a new terminal:
 ```bash
-cd msap-alumni-web
+cd msap-alumni-frontend
 npm install
 cp .env.example .env
 npm run dev
