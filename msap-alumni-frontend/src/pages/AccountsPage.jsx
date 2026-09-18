@@ -34,7 +34,7 @@ export default function AccountsPage() {
       {/* Header */}
       <div className="max-w-6xl mx-auto px-5 pt-16 pb-10 md:pt-20 md:pb-12 text-center md:text-left">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-card text-lavender text-xs font-bold uppercase tracking-wider mb-4 border border-main">
-          <span>📊</span> Financial Governance & Audit
+          Financial Governance & Audit
         </div>
         <h1 className="font-display text-ink text-3xl sm:text-5xl font-bold tracking-tight mb-3">
           Financial Transparency
@@ -63,7 +63,7 @@ export default function AccountsPage() {
           <div className="px-6 md:px-8 py-5 border-b border-main flex items-center justify-between bg-section-alt">
             <h3 className="font-display text-ink text-lg font-bold">Financial Registry & Ledger</h3>
             <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100/70 border border-emerald-300 px-3 py-1 rounded-full">
-              {loading ? 'Refreshing...' : '✓ All accounts verified'}
+              {loading ? 'Refreshing...' : 'All accounts verified'}
             </span>
           </div>
 

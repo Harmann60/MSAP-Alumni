@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 
 const CHAPTERS = [
-  { name: 'Pune Flagship Chapter', region: 'Maharashtra', members: '850+ Alumni', icon: '🏛' },
-  { name: 'Imphal & Manipur Chapter', region: 'North East', members: '620+ Alumni', icon: '⛰' },
-  { name: 'Bengaluru Tech Network', region: 'Karnataka', members: '340+ Alumni', icon: '💻' },
-  { name: 'Delhi NCR Chapter', region: 'Capital Region', members: '290+ Alumni', icon: '🌆' },
-  { name: 'Global Diaspora Circle', region: 'US, UK, Europe, SEA', members: '180+ Alumni', icon: '🌍' },
-  { name: 'Young Alumni & Mentorship', region: 'Recent Grads (2020–2026)', members: '410+ Members', icon: '🎓' },
+  { name: 'Pune Flagship Chapter', region: 'Maharashtra', members: '850+ Alumni' },
+  { name: 'Imphal & Manipur Chapter', region: 'North East', members: '620+ Alumni' },
+  { name: 'Bengaluru Tech Network', region: 'Karnataka', members: '340+ Alumni' },
+  { name: 'Delhi NCR Chapter', region: 'Capital Region', members: '290+ Alumni' },
+  { name: 'Global Diaspora Circle', region: 'US, UK, Europe, SEA', members: '180+ Alumni' },
+  { name: 'Young Alumni & Mentorship', region: 'Recent Grads (2020–2026)', members: '410+ Members' },
 ];
 
 export default function CommunitySection() {
@@ -17,7 +17,7 @@ export default function CommunitySection() {
         <div className="lg:col-span-5 section-highlight-card p-8 sm:p-10 relative overflow-hidden">
           <div className="relative">
             <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-page text-lavender-dark text-xs font-bold uppercase tracking-wider mb-4 border-1.5 border-lavender/35 shadow-sm">
-              <span>🤝</span> Regional Chapters & Networks
+              Regional Chapters & Networks
             </div>
 
             <h2 className="font-display text-ink text-3xl sm:text-4xl font-bold mb-4 leading-tight">

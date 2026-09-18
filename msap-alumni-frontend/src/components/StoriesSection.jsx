@@ -35,9 +35,6 @@ export default function StoriesSection() {
     <section className="relative max-w-6xl mx-auto px-5 pt-10 pb-16 md:pt-14 md:pb-24">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-card text-lavender-dark text-xs font-bold uppercase tracking-wider mb-3 border-1.5 border-lavender/35 shadow-sm">
-            <span>📖</span> Chronicles & Milestones
-          </div>
           <h2 className="font-display text-ink text-3xl sm:text-4xl font-bold tracking-tight">
             Stories from MSAP Alumni
           </h2>

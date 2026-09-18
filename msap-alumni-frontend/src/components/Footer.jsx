@@ -23,7 +23,7 @@ export default function Footer() {
               Connecting generations of Manipuri students who lived and learned in Pune since 1973. A registered non-profit alumni association.
             </p>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-card border border-main text-[11px] text-stone font-semibold">
-              <span>🏛</span> Society Reg. No. 915/M/SR/2025
+              Society Reg. No. 915/M/SR/2025
             </div>
           </div>
 
@@ -63,7 +63,7 @@ export default function Footer() {
               href="mailto:alumni.msap1973@gmail.com"
               className="text-lavender hover:underline block mb-3 font-semibold text-xs flex items-center gap-1.5"
             >
-              <span>✉️</span> alumni.msap1973@gmail.com
+              alumni.msap1973@gmail.com
             </a>
             <p className="text-stone/75 text-[11px] leading-relaxed mb-4">
               Sagolband Moirang Leirak, Imphal West, 795001 &middot; Pune Chapter Office, Maharashtra

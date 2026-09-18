@@ -142,7 +142,7 @@ export default function AlumniLoginPage() {
           <img src="/logo.png" alt="MSAP Alumni" className="w-full h-full object-contain drop-shadow-sm" />
         </div>
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-card text-lavender text-xs font-bold uppercase tracking-wider mb-3 border border-main">
-          <span>🏛</span> MSAP Alumni Gateway
+          MSAP Alumni Gateway
         </div>
         <h1 className="font-display text-ink text-3xl sm:text-4xl font-bold tracking-tight">
           {mode === 'login' ? 'Alumni Sign In' : 'Activate Account Password'}
@@ -194,7 +194,6 @@ export default function AlumniLoginPage() {
           {/* Success Banner */}
           {successMessage && (
             <div className="mx-6 sm:mx-8 mt-6 p-4 rounded-2xl border border-emerald-300 bg-emerald-100/70 text-emerald-800 text-xs font-semibold flex items-center gap-2">
-              <span className="text-base">✓</span>
               <span>{successMessage}</span>
             </div>
           )}
@@ -205,7 +204,6 @@ export default function AlumniLoginPage() {
               {errorType === 'not_registered' ? (
                 <div className="p-4 rounded-2xl border border-red-300 bg-red-100/70 text-red-800 text-xs leading-relaxed space-y-2.5">
                   <div className="flex items-start gap-2">
-                    <span className="text-base">⚠️</span>
                     <div>
                       <strong className="block font-bold">Email Not Registered</strong>
                       <span>{error}</span>
@@ -234,7 +232,6 @@ export default function AlumniLoginPage() {
               ) : errorType === 'needs_password' ? (
                 <div className="p-4 rounded-2xl border border-lavender/40 bg-[#E4DCF5] text-lavender text-xs leading-relaxed space-y-2.5">
                   <div className="flex items-start gap-2">
-                    <span className="text-base">🎉</span>
                     <div>
                       <strong className="block font-bold">Account Approved!</strong>
                       <span>{error}</span>
@@ -254,7 +251,6 @@ export default function AlumniLoginPage() {
                 </div>
               ) : (
                 <div className="p-4 rounded-2xl border border-red-300 bg-red-100/70 text-red-800 text-xs font-semibold flex items-center gap-2">
-                  <span>⚠️</span>
                   <span>{error}</span>
                 </div>
               )}
@@ -310,7 +306,6 @@ export default function AlumniLoginPage() {
                 </label>
                 <div className="relative">
                   <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted text-sm">
-                    ✉️
                   </span>
                   <input
                     id="alumni-email"
@@ -335,12 +330,11 @@ export default function AlumniLoginPage() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="text-[11px] font-semibold text-muted hover:text-lavender cursor-pointer"
                   >
-                    {showPassword ? 'Hide 👁' : 'Show 👁'}
+                    {showPassword ? 'Hide' : 'Show'}
                   </button>
                 </div>
                 <div className="relative">
                   <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted text-sm">
-                    🔑
                   </span>
                   <input
                     id="alumni-password"
@@ -362,7 +356,6 @@ export default function AlumniLoginPage() {
                   </label>
                   <div className="relative">
                     <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted text-sm">
-                      🔒
                     </span>
                     <input
                       id="alumni-confirm-password"

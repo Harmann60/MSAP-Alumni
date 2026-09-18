@@ -7,7 +7,7 @@ const DEFAULT_EVENTS = [
     month: 'AUG',
     day: '15',
     year: '2026',
-    time: '10:00 AM – 6:00 PM IST',
+    time: '10:00 AM - 6:00 PM IST',
     title: '51st Annual MSAP Alumni Meet 2026',
     location: 'Symbiosis Campus &middot; Viman Nagar, Pune',
     category: 'Flagship',
@@ -20,7 +20,7 @@ const DEFAULT_EVENTS = [
     month: 'SEP',
     day: '10',
     year: '2026',
-    time: '7:00 PM – 9:00 PM IST',
+    time: '7:00 PM - 9:00 PM IST',
     title: 'Global Career & Tech Networking Night',
     location: 'Virtual via Google Meet',
     category: 'Career',
@@ -33,7 +33,7 @@ const DEFAULT_EVENTS = [
     month: 'MAR',
     day: '03',
     year: '2026',
-    time: '4:00 PM – 9:00 PM IST',
+    time: '4:00 PM - 9:00 PM IST',
     title: 'Yaoshang Cultural Evening & Thabal',
     location: 'Classic Grande &middot; Imphal, Manipur',
     category: 'Cultural',
@@ -46,7 +46,7 @@ const DEFAULT_EVENTS = [
     month: 'JUL',
     day: '20',
     year: '2026',
-    time: '6:00 PM – 8:00 PM IST',
+    time: '6:00 PM - 8:00 PM IST',
     title: 'New Graduates Pune Welcome & Orientation',
     location: 'FC Road &middot; Pune, Maharashtra',
     category: 'Onboarding',
@@ -59,7 +59,7 @@ const DEFAULT_EVENTS = [
     month: 'NOV',
     day: '14',
     year: '2026',
-    time: '5:00 PM – 8:00 PM IST',
+    time: '5:00 PM - 8:00 PM IST',
     title: 'MSAP Winter Social & Fireside Chat',
     location: 'Bengaluru Chapter &middot; Indiranagar',
     category: 'Chapter',
@@ -116,7 +116,7 @@ export default function EventsPage() {
       {/* Header */}
       <div className="relative max-w-6xl mx-auto px-5 pt-16 pb-10 md:pt-20 md:pb-12 text-center md:text-left">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-card text-lavender text-xs font-bold uppercase tracking-wider mb-4 border border-main">
-          <span>🗓</span> Gatherings & Reunions
+          Gatherings & Reunions
         </div>
         <h1 className="font-display text-ink text-3xl sm:text-5xl font-bold tracking-tight mb-3">
           Events & Gatherings
@@ -181,9 +181,9 @@ export default function EventsPage() {
 
                   {/* Metadata line */}
                   <div className="space-y-1.5 text-xs text-muted font-medium mb-4">
-                    <div className="flex items-center gap-2 text-stone font-semibold" dangerouslySetInnerHTML={{ __html: `📍 ${event.location}` }} />
+                    <div className="flex items-center gap-2 text-stone font-semibold">{event.location}</div>
                     <div className="flex items-center gap-2">
-                      <span>🕒 {event.time}</span>
+                      <span>{event.time}</span>
                     </div>
                   </div>
 
@@ -195,7 +195,7 @@ export default function EventsPage() {
                 {/* Footer RSVP Action */}
                 <div className="pt-5 border-t border-main flex items-center justify-between gap-4">
                   <span className="text-xs text-muted font-semibold">
-                    {isRsvpd ? '✓ RSVP Confirmed' : 'RSVP Open to Alumni'}
+                    {isRsvpd ? 'RSVP Confirmed' : 'RSVP Open to Alumni'}
                   </span>
 
                   <button
@@ -206,7 +206,7 @@ export default function EventsPage() {
                         : 'bg-lavender hover:bg-lavender-dark text-white shadow-sm'
                     }`}
                   >
-                    {isRsvpd ? 'Attending ✓' : 'RSVP Now →'}
+                    {isRsvpd ? 'Attending' : 'RSVP Now →'}
                   </button>
                 </div>
               </div>

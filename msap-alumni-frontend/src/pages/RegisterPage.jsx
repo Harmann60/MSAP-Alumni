@@ -90,7 +90,7 @@ export default function RegisterPage() {
       <div className="relative bg-page min-h-[85vh] flex items-center justify-center px-5 py-16">
         <div className="relative max-w-lg w-full text-center p-8 sm:p-10 bg-card border-2 border-lavender/35 rounded-3xl shadow-[0_20px_60px_-15px_rgba(58,27,115,0.18)] animate-heroIn">
           <div className="w-16 h-16 rounded-2xl bg-emerald-100/70 text-emerald-700 border border-emerald-300 flex items-center justify-center text-3xl font-bold mx-auto mb-5 shadow-sm">
-            ✓
+            Confirmed
           </div>
 
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100/60 text-emerald-800 text-xs font-bold uppercase tracking-wider mb-3 border border-emerald-200">
@@ -107,11 +107,11 @@ export default function RegisterPage() {
 
           <div className="p-4 rounded-2xl bg-page border border-main text-left text-xs space-y-2 mb-8">
             <div className="flex items-center gap-2 text-stone font-semibold">
-              <span>📧 Confirmation Sent:</span>
+              <span>Confirmation Sent:</span>
               <span className="text-ink">{formData.email}</span>
             </div>
             <div className="flex items-center gap-2 text-stone font-semibold">
-              <span>🏛 College Stated:</span>
+              <span>College Stated:</span>
               <span className="text-ink">{formData.puneCollege || 'Pune Institution'} ({formData.batchYear || 'Alumnus'})</span>
             </div>
           </div>
@@ -157,7 +157,7 @@ export default function RegisterPage() {
           <img src="/logo.png" alt="MSAP Alumni" className="w-full h-full object-contain drop-shadow-sm" />
         </div>
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-card text-lavender text-xs font-bold uppercase tracking-wider mb-4 border border-main">
-          <span>🎓</span> Official Alumni Verification
+          Official Alumni Verification
         </div>
         <h1 className="font-display text-ink text-3xl sm:text-5xl font-bold tracking-tight mb-3">
           Join the MSAP Alumni Network
@@ -180,13 +180,12 @@ export default function RegisterPage() {
               </p>
             </div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-card border border-main text-[11px] font-bold text-lavender shadow-2xs self-start sm:self-auto">
-              <span>🔒</span> 256-Bit Encrypted
+              256-Bit Encrypted
             </div>
           </div>
 
           {errorMessage && (
             <div className="mx-6 sm:mx-8 mt-6 p-4 rounded-2xl border border-red-300 bg-red-100/70 text-red-800 text-xs font-semibold flex items-center gap-2.5">
-              <span className="text-base">⚠️</span>
               <span>{errorMessage}</span>
             </div>
           )}
@@ -215,7 +214,6 @@ export default function RegisterPage() {
                   label="Full Name"
                   name="fullName"
                   placeholder="e.g. Ningthouja Lemba"
-                  icon="👤"
                   required
                   value={formData.fullName}
                   onChange={handleChange}
@@ -225,7 +223,6 @@ export default function RegisterPage() {
                   name="email"
                   type="email"
                   placeholder="you@email.com"
-                  icon="✉️"
                   required
                   hint="Used for verification notices"
                   value={formData.email}
@@ -237,7 +234,6 @@ export default function RegisterPage() {
                   label="Phone / WhatsApp Number"
                   name="phone"
                   placeholder="+91 98765 43210"
-                  icon="📱"
                   value={formData.phone}
                   onChange={handleChange}
                 />
@@ -255,7 +251,6 @@ export default function RegisterPage() {
                   label="Pune College / University"
                   name="puneCollege"
                   placeholder="e.g. Symbiosis, Fergusson, COEP, MIT"
-                  icon="🏛"
                   value={formData.puneCollege}
                   onChange={handleChange}
                 />
@@ -264,7 +259,6 @@ export default function RegisterPage() {
                   name="batchYear"
                   type="number"
                   placeholder="e.g. 2016"
-                  icon="📅"
                   value={formData.batchYear}
                   onChange={handleChange}
                 />
@@ -274,7 +268,6 @@ export default function RegisterPage() {
                   label="Current City / Country"
                   name="currentLocation"
                   placeholder="e.g. Pune, Bengaluru, London, Imphal"
-                  icon="📍"
                   value={formData.currentLocation}
                   onChange={handleChange}
                 />
@@ -282,7 +275,6 @@ export default function RegisterPage() {
                   label="Current Profession / Role"
                   name="profession"
                   placeholder="e.g. Architect, Software Engineer, Doctor"
-                  icon="💼"
                   value={formData.profession}
                   onChange={handleChange}
                 />
@@ -301,7 +293,7 @@ export default function RegisterPage() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="text-xs font-semibold text-muted hover:text-lavender cursor-pointer"
                 >
-                  {showPassword ? 'Hide Passwords 👁' : 'Show Passwords 👁'}
+                  {showPassword ? 'Hide Passwords' : 'Show Passwords'}
                 </button>
               </div>
 
@@ -315,7 +307,6 @@ export default function RegisterPage() {
                   name="password"
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Min. 6 characters"
-                  icon="🔑"
                   required
                   value={formData.password}
                   onChange={handleChange}
@@ -325,7 +316,6 @@ export default function RegisterPage() {
                   name="confirmPassword"
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Re-type password"
-                  icon="🔒"
                   required
                   value={formData.confirmPassword}
                   onChange={handleChange}

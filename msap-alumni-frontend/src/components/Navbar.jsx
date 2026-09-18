@@ -8,17 +8,17 @@ const NAV_ITEMS = [
       {
         heading: 'Gatherings & Meets',
         links: [
-          { label: 'All Upcoming Events', to: '/events', icon: '🗓' },
-          { label: 'Annual Flagship Meet', to: '/events', icon: '🏛' },
-          { label: 'Cultural Gatherings', to: '/events', icon: '🎭' },
-          { label: 'Career & Mentorship', to: '/events', icon: '💼' },
+          { label: 'All Upcoming Events', to: '/events' },
+          { label: 'Annual Flagship Meet', to: '/events' },
+          { label: 'Cultural Gatherings', to: '/events' },
+          { label: 'Career & Mentorship', to: '/events' },
         ],
       },
       {
         heading: 'Reunion Archives',
         links: [
-          { label: 'Golden Jubilee 50th', to: '/events', icon: '🏅' },
-          { label: 'Photo Highlights & Memories', to: '/events', icon: '📸' },
+          { label: 'Golden Jubilee 50th', to: '/events' },
+          { label: 'Photo Highlights & Memories', to: '/events' },
         ],
       },
     ],
@@ -29,16 +29,16 @@ const NAV_ITEMS = [
       {
         heading: 'Voices & Chronicles',
         links: [
-          { label: 'All Stories & Articles', to: '/stories', icon: '📰' },
-          { label: 'Alumni Spotlights', to: '/stories', icon: '🌟' },
-          { label: 'Class Notes & Milestones', to: '/stories', icon: '📝' },
+          { label: 'All Stories & Articles', to: '/stories' },
+          { label: 'Alumni Spotlights', to: '/stories' },
+          { label: 'Class Notes & Milestones', to: '/stories' },
         ],
       },
       {
         heading: 'Publications',
         links: [
-          { label: 'Annual Newsletters', to: '/stories', icon: '📬' },
-          { label: 'Student Memories Archive', to: '/stories', icon: '🎓' },
+          { label: 'Annual Newsletters', to: '/stories' },
+          { label: 'Student Memories Archive', to: '/stories' },
         ],
       },
     ],
@@ -49,17 +49,17 @@ const NAV_ITEMS = [
       {
         heading: 'Regional Chapters',
         links: [
-          { label: 'All Chapters & Networks', to: '/community', icon: '🌍' },
-          { label: 'Pune Flagship Chapter', to: '/community', icon: '📍' },
-          { label: 'Imphal & Manipur Network', to: '/community', icon: '⛰' },
-          { label: 'Bengaluru Tech Circle', to: '/community', icon: '💻' },
+          { label: 'All Chapters & Networks', to: '/community' },
+          { label: 'Pune Flagship Chapter', to: '/community' },
+          { label: 'Imphal & Manipur Network', to: '/community' },
+          { label: 'Bengaluru Tech Circle', to: '/community' },
         ],
       },
       {
         heading: 'Directory',
         links: [
-          { label: 'Young Alumni Network', to: '/community', icon: '🚀' },
-          { label: 'Professional Directory', to: '/community', icon: '👥' },
+          { label: 'Young Alumni Network', to: '/community' },
+          { label: 'Professional Directory', to: '/community' },
         ],
       },
     ],
@@ -70,16 +70,16 @@ const NAV_ITEMS = [
       {
         heading: 'The Association',
         links: [
-          { label: 'Our 50-Year History', to: '/about', icon: '📜' },
-          { label: 'Governing Body & Leadership', to: '/about', icon: '🏛' },
-          { label: 'Contact Us', to: '/about', icon: '✉️' },
+          { label: 'Our 50-Year History', to: '/about' },
+          { label: 'Governing Body & Leadership', to: '/about' },
+          { label: 'Contact Us', to: '/about' },
         ],
       },
       {
         heading: 'Trust & Governance',
         links: [
-          { label: 'Financial Transparency', to: '/accounts', icon: '📊' },
-          { label: 'Society Registration', to: '/about', icon: '⚖️' },
+          { label: 'Financial Transparency', to: '/accounts' },
+          { label: 'Society Registration', to: '/about' },
         ],
       },
     ],
@@ -204,7 +204,6 @@ export default function Navbar() {
                         {item.children.map((group, gi) => (
                           <div key={gi} className={gi > 0 ? 'pl-6 border-l border-main' : ''}>
                             <div className="text-[11px] font-bold uppercase tracking-wider text-lavender mb-3 flex items-center gap-1.5">
-                              <span>✦</span>
                               {group.heading}
                             </div>
                             <ul className="space-y-1">
@@ -214,7 +213,6 @@ export default function Navbar() {
                                     to={link.to}
                                     className="group/item flex items-center gap-2.5 text-[13.5px] font-medium text-stone hover:text-lavender p-2 rounded-xl hover:bg-section-alt/70 transition-all"
                                   >
-                                    <span className="text-base">{link.icon}</span>
                                     <span className="group-hover/item:translate-x-0.5 transition-transform">
                                       {link.label}
                                     </span>
@@ -230,7 +228,7 @@ export default function Navbar() {
                       <div className="bg-section-alt px-6 py-2.5 border-t border-main flex items-center justify-between text-[12px] text-muted font-medium">
                         <span>Manipuri Students' Association Pune</span>
                         <Link to="/about" className="text-lavender font-bold hover:underline">
-                          Learn about trust →
+                          Learn about trust
                         </Link>
                       </div>
                     </div>

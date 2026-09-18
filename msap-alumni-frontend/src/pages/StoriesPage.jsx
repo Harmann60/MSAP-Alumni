@@ -111,7 +111,7 @@ export default function StoriesPage() {
       {/* Header */}
       <div className="relative max-w-6xl mx-auto px-5 pt-16 pb-10 md:pt-20 md:pb-12 text-center md:text-left">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-card text-lavender text-xs font-bold uppercase tracking-wider mb-4 border border-main">
-          <span>📖</span> Alumni Chronicles & Spotlights
+          Alumni Chronicles & Spotlights
         </div>
         <h1 className="font-display text-ink text-3xl sm:text-5xl font-bold tracking-tight mb-3">
           Stories of Journey & Impact

@@ -9,13 +9,6 @@ export default function HomePage() {
     <div>
       <HeroSection />
 
-      {/* Cultural Meitei Mayek single divider */}
-      <div className="max-w-4xl mx-auto px-5 my-2">
-        <div className="meitei-rule">
-          <div className="meitei-rule-diamond" />
-        </div>
-      </div>
-
       <StoriesSection />
 
       <EventsSection />
@@ -61,13 +54,13 @@ export default function HomePage() {
             {/* Quick trust badges */}
             <div className="mt-10 pt-8 border-t border-lavender/20 flex flex-wrap items-center justify-center gap-6 text-xs text-muted font-semibold">
               <span className="flex items-center gap-1.5">
-                <span className="text-verified font-bold">✓</span> Admin Verified Records
+                Admin Verified Records
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="text-verified font-bold">✓</span> Privacy Protected
+                Privacy Protected
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="text-verified font-bold">✓</span> Official MSAP Network
+                Official MSAP Network
               </span>
             </div>
           </div>

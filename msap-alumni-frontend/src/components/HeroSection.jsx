@@ -19,7 +19,7 @@ export default function HeroSection() {
             <h1 className="font-display text-ink text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.12] mb-6 font-semibold">
               For 50 years, Manipuri students came to Pune.
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-lavender-dark via-lavender to-lavender-light italic font-medium">
+              <span className="text-blue-900 italic font-medium">
                 This is where we stay connected.
               </span>
             </h1>

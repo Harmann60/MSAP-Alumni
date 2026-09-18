@@ -13,6 +13,13 @@ import AdminLoginPage from './pages/AdminLoginPage'
 import AdminDashboardPage from './pages/AdminDashboardPage'
 import AlumniLoginPage from './pages/AlumniLoginPage'
 import GalleryPage from './pages/GalleryPage'
+//Comunity Pages
+import PuneFlagshipChapter from './pages/Community Pages/Pune-Flagship-Chapter'
+import ImphalManipurNetwork from './pages/Community Pages/Imphal-Manipur-Network'
+import BengaluruTechCircle from './pages/Community Pages/Bengaluru-Tech-Circle'
+import HealthcareMedicalGuild from './pages/Community Pages/Healthcare-Medical-Guild'
+import DelhiNCRChapter from './pages/Community Pages/Delhi-NCR-Chapter'
+import YoungAlumniMentorshipCircle from './pages/Community Pages/Young-Alumni-Mentorship-Circle'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -52,6 +59,13 @@ export default function App() {
           <Route path="/login" element={<AlumniLoginPage />} />
           <Route path="/accounts" element={<AccountsPage />} />
           <Route path="/gallery" element={<GalleryPage />} />
+          //Comunity Routes
+          <Route path="/community/pune-flagship-chapter" element={<PuneFlagshipChapter />} />
+          <Route path="/community/imphal-manipur-network" element={<ImphalManipurNetwork />} />
+          <Route path="/community/bengaluru-tech-circle" element={<BengaluruTechCircle />} />
+          <Route path="/community/healthcare-medical-guild" element={<HealthcareMedicalGuild />} />
+          <Route path="/community/delhi-ncr-chapter" element={<DelhiNCRChapter />} />
+          <Route path="/community/young-alumni-mentorship-circle" element={<YoungAlumniMentorshipCircle />} />
         </Routes>
       </main>
       <Footer />

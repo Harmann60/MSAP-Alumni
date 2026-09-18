@@ -54,7 +54,7 @@ export default function EventsSection() {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
           <div>
             <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-card border-1.5 border-lavender/35 text-lavender-dark text-xs font-bold uppercase tracking-wider mb-3 shadow-sm">
-              <span>🗓</span> Calendar of Gatherings
+              Calendar of Gatherings
             </div>
             <h2 className="font-display text-ink text-3xl sm:text-4xl font-bold tracking-tight">
               Reunions & Upcoming Events
@@ -103,9 +103,9 @@ export default function EventsSection() {
                 </h3>
 
                 <div className="space-y-1 text-xs text-muted font-medium mb-4">
-                  <div className="flex items-center gap-1.5" dangerouslySetInnerHTML={{ __html: `📍 ${event.location}` }} />
+                  <div className="flex items-center gap-1.5">{event.location}</div>
                   <div className="flex items-center gap-1.5 text-stone/70">
-                    <span>🕒 {event.time}</span>
+                    <span>{event.time}</span>
                   </div>
                 </div>
               </div>

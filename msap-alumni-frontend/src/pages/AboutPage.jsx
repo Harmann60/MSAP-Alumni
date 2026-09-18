@@ -14,7 +14,7 @@ const TIMELINE = [
     highlight: 'Constitution & Name',
   },
   {
-    year: '2000–2020s',
+    year: '2000-2020s',
     title: 'Decades of Cultural & Academic Tradition',
     desc: 'Annual Yaoshang sports, Ningol Chakouba, freshers meets, and blood donation drives became cherished fixtures in Pune’s student landscape.',
     highlight: 'Community Life',
@@ -26,7 +26,7 @@ const TIMELINE = [
     highlight: 'Golden Jubilee',
   },
   {
-    year: '2025–Present',
+    year: '2025-Present',
     title: 'Formally Registered Alumni Body',
     desc: 'Officially registered as Society No. 915/M/SR/2025 under the Societies Registration Act with chapters across Pune, Imphal, Bengaluru, and globally.',
     highlight: 'Official Society',
@@ -46,7 +46,7 @@ export default function AboutPage() {
       {/* Header */}
       <div className="relative max-w-6xl mx-auto px-5 pt-16 pb-10 md:pt-20 md:pb-12 text-center md:text-left">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-card text-lavender text-xs font-bold uppercase tracking-wider mb-4 border border-main">
-          <span>📜</span> 1973 to 2026 &middot; 50+ Years
+          1973 to 2026 &middot; 50+ Years
         </div>
         <h1 className="font-display text-ink text-3xl sm:text-5xl font-bold tracking-tight mb-3">
           Our Heritage & Governance
@@ -75,10 +75,10 @@ export default function AboutPage() {
 
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-page text-xs font-bold text-ink border border-main">
-                🏛 Registered Society: 915/M/SR/2025
+                Registered Society: 915/M/SR/2025
               </span>
               <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-page text-xs font-bold text-ink border border-main">
-                📍 Imphal West & Pune
+                Imphal West & Pune
               </span>
             </div>
           </div>
@@ -179,7 +179,7 @@ export default function AboutPage() {
                 href="mailto:alumni.msap1973@gmail.com"
                 className="inline-flex items-center gap-2 text-lavender font-bold text-sm hover:underline"
               >
-                <span>✉️ alumni.msap1973@gmail.com</span>
+                <span>alumni.msap1973@gmail.com</span>
               </a>
               <div className="mt-4 pt-4 border-t border-main">
                 <Link to="/accounts" className="text-xs font-bold text-ink hover:text-lavender transition-colors">

@@ -268,7 +268,7 @@ function RegistrationRow({ reg, isExpanded, onToggle, onApprove, onReject, onDel
             onMouseOver={(e) => { e.currentTarget.style.transform = 'scale(1.2)'; }}
             onMouseOut={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
           >
-            ✏️
+            Edit
           </button>
           <button
             id={`quick-delete-${reg.id}`}
@@ -291,7 +291,7 @@ function RegistrationRow({ reg, isExpanded, onToggle, onApprove, onReject, onDel
             onMouseOver={(e) => { e.currentTarget.style.color = '#DC2626'; e.currentTarget.style.transform = 'scale(1.2)'; }}
             onMouseOut={(e) => { e.currentTarget.style.color = '#9E92B5'; e.currentTarget.style.transform = 'scale(1)'; }}
           >
-            🗑
+            Delete
           </button>
           <span style={{ fontSize: 11, color: '#9B9484', userSelect: 'none' }}>
             {isExpanded ? '▲ Collapse' : '▼ Manage'}
@@ -313,7 +313,7 @@ function RegistrationRow({ reg, isExpanded, onToggle, onApprove, onReject, onDel
                   </span>
                   {saveSuccess && (
                     <span style={{ fontSize: 12, color: '#16A34A', fontWeight: 600, background: '#dcfce7', padding: '2px 8px', borderRadius: 4 }}>
-                      ✓ Changes saved successfully!
+                      Changes saved successfully!
                     </span>
                   )}
                 </div>
@@ -332,7 +332,7 @@ function RegistrationRow({ reg, isExpanded, onToggle, onApprove, onReject, onDel
                       onMouseOver={(e) => { e.currentTarget.style.background = '#7C5CFC'; e.currentTarget.style.color = '#fff'; }}
                       onMouseOut={(e) => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = '#7C5CFC'; }}
                     >
-                      ✏️ Edit Information
+                      Edit Information
                     </button>
                   ) : (
                     <button
@@ -344,7 +344,7 @@ function RegistrationRow({ reg, isExpanded, onToggle, onApprove, onReject, onDel
                         cursor: 'pointer',
                       }}
                     >
-                      ✕ Cancel Edit
+                      Cancel Edit
                     </button>
                   )}
                 </div>
@@ -482,7 +482,7 @@ function RegistrationRow({ reg, isExpanded, onToggle, onApprove, onReject, onDel
                         opacity: saving ? 0.7 : 1,
                       }}
                     >
-                      {saving ? 'Saving changes…' : '💾 Save Changes'}
+                            {saving ? 'Saving changes…' : 'Save Changes'}
                     </button>
                     <button
                       type="button"
@@ -528,7 +528,7 @@ function RegistrationRow({ reg, isExpanded, onToggle, onApprove, onReject, onDel
                       <div style={{ padding: '18px', border: '1px solid #bbf7d0', background: '#f0fdf4' }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                           <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: '#16A34A', letterSpacing: '0.08em' }}>
-                            ✓ Active Verified Alumnus
+                            Active Verified Alumnus
                           </span>
                           <span style={{ fontSize: 11, color: '#15803D' }}>Can log in & browse network</span>
                         </div>
@@ -560,7 +560,7 @@ function RegistrationRow({ reg, isExpanded, onToggle, onApprove, onReject, onDel
                               cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
                             }}
                           >
-                            🗑 Remove User from Database
+                            Remove User from Database
                           </button>
                         </div>
                       </div>
@@ -568,7 +568,7 @@ function RegistrationRow({ reg, isExpanded, onToggle, onApprove, onReject, onDel
                       <div style={{ padding: '18px', border: '1px solid #fecaca', background: '#fef2f2' }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                           <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: '#DC2626', letterSpacing: '0.08em' }}>
-                            ✕ Registration Rejected
+                            Registration Rejected
                           </span>
                         </div>
                         {reg.admin_notes && (
@@ -587,7 +587,7 @@ function RegistrationRow({ reg, isExpanded, onToggle, onApprove, onReject, onDel
                               cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
                             }}
                           >
-                            ✓ Re-Approve (Verify)
+                            Re-Approve (Verify)
                           </button>
                           <button
                             type="button"
@@ -599,7 +599,7 @@ function RegistrationRow({ reg, isExpanded, onToggle, onApprove, onReject, onDel
                               cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
                             }}
                           >
-                            🗑 Delete Permanently
+                            Delete Permanently
                           </button>
                         </div>
                       </div>
@@ -635,7 +635,7 @@ function RegistrationRow({ reg, isExpanded, onToggle, onApprove, onReject, onDel
                               opacity: actionLoading === reg.id ? 0.6 : 1, transition: 'opacity 0.15s',
                             }}
                           >
-                            {actionLoading === reg.id ? 'Saving…' : '✓ Approve'}
+                            {actionLoading === reg.id ? 'Saving…' : 'Approve'}
                           </button>
                           <button
                             id={`reject-${reg.id}`}
@@ -650,7 +650,7 @@ function RegistrationRow({ reg, isExpanded, onToggle, onApprove, onReject, onDel
                               opacity: actionLoading === reg.id ? 0.6 : 1, transition: 'all 0.15s',
                             }}
                           >
-                            ✕ Reject
+                            Reject
                           </button>
                           <button
                             id={`delete-${reg.id}`}
@@ -676,7 +676,7 @@ function RegistrationRow({ reg, isExpanded, onToggle, onApprove, onReject, onDel
                             }}
                             title="Permanently remove from database"
                           >
-                            🗑 Delete
+                            Delete
                           </button>
                         </div>
                       </div>
