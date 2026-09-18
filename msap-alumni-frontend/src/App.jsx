@@ -16,7 +16,7 @@ import GalleryPage from './pages/GalleryPage'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
-  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }) }, [pathname])
+  useEffect(() => { window.scrollTo(0, 0) }, [pathname])
   return null
 }
 

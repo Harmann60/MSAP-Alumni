@@ -123,12 +123,4 @@ const ALBUMS = [
   },
 ];
 
-export const FEATURED_PHOTOS = [
-  { id: 1, src: ALBUMS[0].photos[0], title: "Tree Plantation Drive" },
-  { id: 2, src: ALBUMS[1].photos[0], title: "Annual Alumni Meet 2025" },
-  { id: 3, src: ALBUMS[2].photos[0], title: "Yaoshang Cultural Evening" },
-  { id: 4, src: ALBUMS[3].photos[0], title: "Career Networking Night" },
-  { id: 5, src: ALBUMS[4].photos[0], title: "Holi Celebration 2026" },
-];
-
 export default ALBUMS;

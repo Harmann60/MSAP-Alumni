@@ -15,11 +15,15 @@ export default function FeaturedCarousel({ albums }) {
     setCurrent((c) => (c - 1 + featured.length) % featured.length);
   }, [featured.length]);
 
+  const reduceMotion =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   useEffect(() => {
-    if (paused) return;
+    if (paused || reduceMotion || featured.length < 2) return;
     const id = setInterval(next, 5000);
     return () => clearInterval(id);
-  }, [paused, next]);
+  }, [paused, reduceMotion, next, featured.length]);
 
   const handleTouchStart = (e) => setTouchStart(e.touches[0].clientX);
   const handleTouchEnd = (e) => {
@@ -36,6 +40,8 @@ export default function FeaturedCarousel({ albums }) {
       className="relative w-full"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
@@ -46,6 +52,7 @@ export default function FeaturedCarousel({ albums }) {
             key={album.id}
             className="absolute inset-0 transition-opacity duration-700 ease-in-out"
             style={{ opacity: i === current ? 1 : 0, zIndex: i === current ? 1 : 0 }}
+            aria-hidden={i !== current}
           >
             <img
               src={album.coverImage}

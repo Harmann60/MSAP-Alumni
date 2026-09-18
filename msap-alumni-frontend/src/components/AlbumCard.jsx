@@ -2,6 +2,7 @@ export default function AlbumCard({ album, onView }) {
   return (
     <article className="group">
       <button
+        type="button"
         onClick={() => onView(album)}
         className="block w-full text-left cursor-pointer focus-visible:outline-offset-4"
         aria-label={`Open album: ${album.title}`}

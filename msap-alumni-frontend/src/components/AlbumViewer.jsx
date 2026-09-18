@@ -68,7 +68,7 @@ export default function AlbumViewer({ album, onClose }) {
         <img
           src={photos[current]}
           alt={`${album.title} - Photo ${current + 1}`}
-          className="max-w-full max-h-full object-contain rounded-lg"
+          className="max-w-full max-h-full object-contain"
         />
       </div>
 
@@ -93,7 +93,7 @@ export default function AlbumViewer({ album, onClose }) {
               i === current ? 'border-white' : 'border-transparent opacity-60 hover:opacity-100'
             }`}
           >
-            <img src={photo} alt="" className="w-full h-full object-cover" />
+            <img src={photo} alt="" className="w-full h-full object-cover" loading="lazy" />
           </button>
         ))}
       </div>

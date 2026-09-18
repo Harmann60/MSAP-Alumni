@@ -79,7 +79,7 @@ export default function StoriesPage() {
             source: item.source || 'MSAP News',
             category: item.category || 'General',
             date: item.published_date || item.date || '2026',
-            image: item.image_url || item.image || DEFAULT_STORIES[0].image,
+            image: item.image_url || item.image || null,
             excerpt: item.excerpt,
           }));
           setStories(mapped);
@@ -136,17 +136,28 @@ export default function StoriesPage() {
         {/* Featured spread */}
         {featured && (
           <article className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-16">
-            <div className="lg:col-span-7">
-              <div className="media-frame">
-                <div className="aspect-[16/10] bg-section-alt overflow-hidden">
-                  <img
-                    src={featured.image}
-                    alt={featured.title}
-                    className="w-full h-full object-cover"
-                  />
+            {featured.image ? (
+              <div className="lg:col-span-7">
+                <div className="media-frame">
+                  <div className="aspect-[4/3] sm:aspect-[16/10] bg-section-alt overflow-hidden">
+                    <img
+                      src={featured.image}
+                      alt={featured.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="lg:col-span-7">
+                <div
+                  className="border border-main border-t-4 border-t-lavender flex items-center justify-center min-h-[16rem] sm:min-h-[20rem] bg-card"
+                  aria-hidden="true"
+                >
+                  <span className="font-display text-lavender italic text-7xl leading-none select-none">“</span>
+                </div>
+              </div>
+            )}
             <div className="lg:col-span-5">
               <p className="text-xs font-bold uppercase tracking-[0.14em] text-lavender mb-3">
                 Featured &middot; {featured.source} &middot; {featured.date}
@@ -167,16 +178,22 @@ export default function StoriesPage() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
           {rest.map((story, idx) => (
             <article key={story.id} className={`${idx > 0 ? 'sm:border-t-0' : ''} border-t border-main sm:pt-0 pt-6`}>
-              <div className="media-frame mb-5">
-                <div className="aspect-[16/10] bg-section-alt overflow-hidden">
-                  <img
-                    src={story.image}
-                    alt={story.title}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
+              {story.image ? (
+                <div className="media-frame mb-5">
+                  <div className="aspect-[16/10] bg-section-alt overflow-hidden">
+                    <img
+                      src={story.image}
+                      alt={story.title}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="mb-5 flex items-center border-l-2 border-lavender pl-4 h-24 bg-card" aria-hidden="true">
+                  <span className="font-display text-lavender italic text-4xl leading-none select-none">“</span>
+                </div>
+              )}
               <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted mb-2">
                 {story.source} &middot; {story.date}
               </p>

@@ -97,8 +97,8 @@ export default function RegisterPage() {
           </h2>
           <p className="text-stone text-base leading-relaxed mb-8">
             Thank you, <strong className="text-ink">{formData.fullName}</strong>. Your registration
-            has been recorded securely. Our administrator will verify your Pune college alumni
-            credentials within <span className="font-semibold text-lavender">2&ndash;3 business days</span>.
+            has been recorded. Our administrator will verify your Pune college alumni credentials
+            before your account is activated.
           </p>
 
           <dl className="border-t border-main text-left divide-y divide-main">
@@ -178,7 +178,7 @@ export default function RegisterPage() {
                 Submissions are reviewed by the MSAP executive committee for verified credentials.
               </p>
             </div>
-            <p className="text-sm text-muted shrink-0">256-bit encrypted &middot; secure</p>
+            <p className="text-sm text-muted shrink-0">Verified before account activation</p>
           </div>
 
           {errorMessage && (

@@ -64,6 +64,12 @@ const DEFAULT_EVENTS = [
   },
 ];
 
+const parseEventDate = (value) => {
+    if (!value) return null;
+    const dt = new Date(value);
+    return Number.isNaN(dt.getTime()) ? null : dt;
+};
+
 export default function EventsPage() {
   const [events, setEvents] = useState(DEFAULT_EVENTS);
   const [activeCategory, setActiveCategory] = useState('All');
@@ -73,17 +79,23 @@ export default function EventsPage() {
     fetchEvents()
       .then((data) => {
         if (data && Array.isArray(data) && data.length > 0) {
-          const mapped = data.map((item) => ({
-            id: item.id,
-            month: 'October',
-            day: '15',
-            year: '2026',
-            time: item.time_display || item.time || '6:00 PM IST',
-            title: item.title,
-            location: item.location,
-            category: item.category || 'General',
-            description: item.description,
-          }));
+          const mapped = data
+            .map((item) => {
+              const date = parseEventDate(item.event_date);
+              if (!item.title) return null;
+              return {
+                id: item.id,
+                month: date ? date.toLocaleString('en-US', { month: 'long' }) : 'October',
+                day: date ? String(date.getDate()).padStart(2, '0') : '15',
+                year: date ? String(date.getFullYear()) : 'TBC',
+                time: item.time_display || item.time || 'TBA',
+                title: item.title,
+                location: item.location,
+                category: item.category || 'General',
+                description: item.description,
+              };
+            })
+            .filter(Boolean);
           setEvents(mapped);
         }
       })
