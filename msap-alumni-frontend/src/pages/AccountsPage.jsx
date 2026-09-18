@@ -13,7 +13,6 @@ const DEFAULT_TOTAL = '₹5,34,850';
 export default function AccountsPage() {
   const [accounts, setAccounts] = useState(DEFAULT_ACCOUNTS);
   const [total, setTotal] = useState(DEFAULT_TOTAL);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchAccounts()
@@ -25,8 +24,7 @@ export default function AccountsPage() {
       })
       .catch((err) => {
         console.warn('Using offline financial records:', err.message);
-      })
-      .finally(() => setLoading(false));
+      });
   }, []);
 
   return (
@@ -58,10 +56,10 @@ export default function AccountsPage() {
         {/* Ledger table */}
         <section className="border border-main rounded-sm overflow-hidden">
           <div className="px-6 md:px-8 py-5 border-b border-main bg-section-alt">
-            <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap items-end justify-between gap-3">
               <h3 className="font-display text-ink text-lg font-bold">Financial registry & ledger</h3>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-verified">
-                {loading ? 'Refreshing…' : '✓ All accounts verified'}
+              <span className="text-sm text-muted">
+                FY 2025&ndash;26 &middot; Last updated January 2026
               </span>
             </div>
           </div>
@@ -69,7 +67,7 @@ export default function AccountsPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-muted text-[11px] font-bold uppercase tracking-wider border-b border-main bg-page/80">
+                <tr className="text-left text-muted text-xs font-bold uppercase tracking-wider border-b border-main bg-page/80">
                   <th scope="col" className="px-6 md:px-8 py-3.5">Account / Fund</th>
                   <th scope="col" className="px-6 md:px-8 py-3.5 text-right">Balance</th>
                   <th scope="col" className="px-6 md:px-8 py-3.5">Status</th>
@@ -82,7 +80,7 @@ export default function AccountsPage() {
                     <td className="px-6 md:px-8 py-4 text-right font-mono font-bold text-stone">
                       {row.balance_formatted || row.balance}
                     </td>
-                    <td className="px-6 md:px-8 py-4 text-[11px] font-bold uppercase tracking-wider text-muted">
+                    <td className="px-6 md:px-8 py-4 text-xs font-bold uppercase tracking-wider text-muted">
                       {row.status}
                     </td>
                   </tr>
@@ -102,7 +100,7 @@ export default function AccountsPage() {
         </section>
 
         {/* Note */}
-        <p className="text-sm text-stone/80 leading-relaxed">
+        <p className="text-[15px] text-stone/80 leading-relaxed">
           For audit reports, bank statements, or official vouchers, email{' '}
           <a href="mailto:alumni.msap1973@gmail.com" className="text-lavender hover:underline font-semibold">
             alumni.msap1973@gmail.com

@@ -41,8 +41,8 @@ export default function StoriesSection() {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
         <div>
           <p className="eyebrow mb-4">Alumni Chronicles</p>
-          <h2 className="display-lg text-3xl sm:text-4xl">Stories from our alumni</h2>
-          <p className="text-stone/80 text-[15px] mt-3 max-w-xl">
+          <h2 className="display-lg text-3xl sm:text-4xl md:text-[2.75rem]">Stories from our alumni</h2>
+          <p className="text-stone text-base sm:text-lg mt-3 max-w-xl">
             Journeys of leadership, lifelong friendship, and fifty years of memories — told in the
             voices of the people who lived them.
           </p>
@@ -57,7 +57,7 @@ export default function StoriesSection() {
       <article className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-14">
         <div className="lg:col-span-7">
           <div className="media-frame">
-            <div className="aspect-[16/10] bg-section-alt overflow-hidden">
+            <div className="aspect-[4/3] sm:aspect-[16/10] bg-section-alt overflow-hidden">
               <img
                 src={featured.image}
                 alt={featured.title}
@@ -68,13 +68,13 @@ export default function StoriesSection() {
           </div>
         </div>
         <div className="lg:col-span-5">
-          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-lavender mb-3">
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-lavender mb-3">
             {featured.category} &middot; {featured.date}
           </p>
-          <h3 className="font-display text-ink text-2xl sm:text-3xl font-bold leading-snug mb-4">
+          <h3 className="font-display text-ink text-3xl sm:text-4xl font-bold leading-tight mb-4">
             {featured.title}
           </h3>
-          <p className="text-stone text-[15px] leading-relaxed mb-5">{featured.excerpt}</p>
+          <p className="text-stone text-base leading-relaxed mb-5">{featured.excerpt}</p>
           <Link to="/stories" className="text-link link-underline">
             Read the full chronicle
             <span className="arrow" aria-hidden="true">→</span>
@@ -86,13 +86,13 @@ export default function StoriesSection() {
       <div className="grid md:grid-cols-2 gap-x-12 gap-y-10">
         {rest.map((story) => (
           <article key={story.id} className="border-t border-main pt-6">
-            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted mb-2">
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted mb-2">
               {story.category} &middot; {story.date}
             </p>
             <h3 className="font-display text-ink text-xl font-bold leading-snug mb-3 hover:text-lavender transition-colors">
               <Link to="/stories">{story.title}</Link>
             </h3>
-            <p className="text-stone/85 text-[14.5px] leading-relaxed line-clamp-2 mb-4">
+            <p className="text-stone/85 text-[15px] leading-relaxed line-clamp-2 mb-4">
               {story.excerpt}
             </p>
             <Link to="/stories" className="text-link">

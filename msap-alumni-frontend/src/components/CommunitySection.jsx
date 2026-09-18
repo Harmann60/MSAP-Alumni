@@ -15,14 +15,14 @@ export default function CommunitySection() {
       <div className="grid lg:grid-cols-12 gap-x-12 gap-y-10">
         <div className="lg:col-span-4">
           <p className="eyebrow mb-4">Our network</p>
-          <h2 className="display-lg text-3xl sm:text-4xl mb-4">Connect across cities & generations</h2>
-          <p className="text-stone text-[15px] leading-relaxed mb-7">
+          <h2 className="display-lg text-3xl sm:text-4xl md:text-[2.75rem] mb-4">Connect across cities & generations</h2>
+          <p className="text-stone text-base leading-relaxed mb-7">
             Whether you left Pune last year or in 1980, your alumni family is here — across regional
             chapters, professional circles, and mentorship networks.
           </p>
           <Link
             to="/community"
-            className="inline-block bg-lavender hover:bg-lavender-dark text-white text-[15px] font-bold px-7 py-3.5 rounded-sm transition-colors"
+            className="inline-block bg-lavender hover:bg-lavender-dark text-white text-base font-bold px-7 py-3.5 rounded-sm transition-colors"
           >
             Browse all chapters
           </Link>
@@ -40,12 +40,12 @@ export default function CommunitySection() {
                   className="flex items-baseline justify-between gap-4"
                 >
                   <span>
-                    <span className="block font-display text-ink text-lg font-bold leading-tight group-hover:text-lavender transition-colors">
+                    <span className="block font-display text-ink text-xl font-bold leading-tight group-hover:text-lavender transition-colors">
                       {chapter.name}
                     </span>
-                    <span className="block text-sm text-muted mt-0.5">{chapter.region}</span>
+                    <span className="block text-[15px] text-muted mt-1">{chapter.region}</span>
                   </span>
-                  <span className="text-[11px] font-bold uppercase tracking-widest text-lavender shrink-0">
+                  <span className="text-[13px] font-bold uppercase tracking-wider text-lavender shrink-0">
                     {chapter.members}
                   </span>
                 </Link>

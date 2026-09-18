@@ -6,10 +6,10 @@ function FormField({ label, name, type = 'text', placeholder, required, value, o
   return (
     <div>
       <div className="flex items-center justify-between mb-1.5">
-        <label className="text-xs font-bold uppercase tracking-wider text-ink flex items-center gap-1">
+        <label className="text-[13px] font-bold uppercase tracking-wider text-ink flex items-center gap-1">
           {label} {required && <span className="text-lavender font-bold">*</span>}
         </label>
-        {hint && <span className="text-[11px] text-muted">{hint}</span>}
+        {hint && <span className="text-xs text-muted">{hint}</span>}
       </div>
       <div className="relative">
         {icon && (
@@ -26,7 +26,7 @@ function FormField({ label, name, type = 'text', placeholder, required, value, o
           required={required}
           className={`w-full border border-main bg-white ${
             icon ? 'pl-10' : 'pl-4'
-          } pr-4 py-3 rounded-sm text-[15px] text-ink font-medium focus:outline-none focus:border-lavender focus:ring-2 focus:ring-lavender/25 transition-all placeholder:text-muted/50 shadow-2xs`}
+          } pr-4 py-3 rounded-sm text-[15px] text-ink font-medium focus:outline-none focus:border-lavender focus:ring-2 focus:ring-lavender/25 transition-all placeholder:text-muted/50`}
         />
       </div>
     </div>
@@ -88,38 +88,36 @@ export default function RegisterPage() {
   if (submitted) {
     return (
       <div className="relative bg-page min-h-[85vh] flex items-center justify-center px-5 py-16">
-        <div className="relative max-w-lg w-full text-center p-8 sm:p-10 bg-card border border-main rounded-sm animate-heroIn">
-          <div className="w-16 h-16 rounded-2xl bg-emerald-100/70 text-emerald-700 border border-emerald-300 flex items-center justify-center text-3xl font-bold mx-auto mb-5 shadow-sm">
-            ✓
-          </div>
-
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100/60 text-emerald-800 text-xs font-bold uppercase tracking-wider mb-3 border border-emerald-200">
-            Submission Confirmed
-          </div>
-
-          <h2 className="font-display text-ink text-2xl sm:text-3xl font-bold mb-3">
-            Welcome to the MSAP Community
+        <div className="relative max-w-lg w-full text-center border-t-[3px] border-lavender bg-card p-8 sm:p-10">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-lavender mb-4">
+            Submission received
+          </p>
+          <h2 className="font-display text-ink text-3xl sm:text-4xl font-bold mb-4">
+            Welcome to the MSAP community
           </h2>
-
-          <p className="text-stone text-[14.5px] leading-relaxed mb-6">
-            Thank you, <strong className="text-ink">{formData.fullName}</strong>. Your account credentials have been securely stored. Our administrator will verify your Pune college alumni credentials within <span className="font-semibold text-lavender">2–3 business days</span>.
+          <p className="text-stone text-base leading-relaxed mb-8">
+            Thank you, <strong className="text-ink">{formData.fullName}</strong>. Your registration
+            has been recorded securely. Our administrator will verify your Pune college alumni
+            credentials within <span className="font-semibold text-lavender">2&ndash;3 business days</span>.
           </p>
 
-          <div className="p-4 rounded-2xl bg-page border border-main text-left text-xs space-y-2 mb-8">
-            <div className="flex items-center gap-2 text-stone font-semibold">
-              <span>📧 Confirmation Sent:</span>
-              <span className="text-ink">{formData.email}</span>
+          <dl className="border-t border-main text-left divide-y divide-main">
+            <div className="py-3.5 flex items-baseline justify-between gap-4">
+              <dt className="text-sm text-muted">Confirmation email</dt>
+              <dd className="text-[15px] font-semibold text-ink">{formData.email}</dd>
             </div>
-            <div className="flex items-center gap-2 text-stone font-semibold">
-              <span>🏛 College Stated:</span>
-              <span className="text-ink">{formData.puneCollege || 'Pune Institution'} ({formData.batchYear || 'Alumnus'})</span>
+            <div className="py-3.5 flex items-baseline justify-between gap-4">
+              <dt className="text-sm text-muted">College stated</dt>
+              <dd className="text-[15px] font-semibold text-ink">
+                {formData.puneCollege || 'Pune Institution'} ({formData.batchYear || 'Alumnus'})
+              </dd>
             </div>
-          </div>
+          </dl>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               to="/login"
-              className="w-full sm:w-auto bg-lavender hover:bg-lavender-dark text-white font-bold px-7 py-3.5 rounded-sm text-sm transition-all shadow-md shadow-lavender/20"
+              className="w-full sm:w-auto bg-lavender hover:bg-lavender-dark text-white font-bold px-7 py-3.5 rounded-sm text-[15px] transition-colors"
             >
               Go to Sign In →
             </Link>
@@ -139,7 +137,7 @@ export default function RegisterPage() {
                   hp_website: '',
                 });
               }}
-              className="text-xs font-semibold text-muted hover:text-lavender py-2 px-4 transition-colors"
+              className="text-sm font-semibold text-muted hover:text-lavender py-2 px-4 transition-colors cursor-pointer"
             >
               Submit another registration
             </button>
@@ -153,45 +151,44 @@ export default function RegisterPage() {
     <div className="relative bg-page min-h-[90vh] py-14 sm:py-20 overflow-hidden">
       {/* Header */}
       <div className="relative max-w-4xl mx-auto px-5 text-center mb-10">
-        <div className="w-16 h-16 mx-auto mb-3">
-          <img src="/logo.png" alt="MSAP Alumni" className="w-full h-full object-contain drop-shadow-sm" />
+        <div className="w-16 h-16 mx-auto mb-4">
+          <img src="/logo.png" alt="MSAP Alumni" className="w-full h-full object-contain" />
         </div>
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-card text-lavender text-xs font-bold uppercase tracking-wider mb-4 border border-main">
-          <span>🎓</span> Official Alumni Verification
-        </div>
-        <h1 className="font-display text-ink text-3xl sm:text-5xl font-bold tracking-tight mb-3">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-lavender mb-4">
+          Official alumni verification
+        </p>
+        <h1 className="font-display text-ink text-3xl sm:text-5xl font-bold tracking-tight mb-4">
           Join the MSAP Alumni Network
         </h1>
         <p className="text-stone text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
-          Verify your credentials as a former Manipuri student in Pune to access the alumni directory, events, and mentorship initiatives.
+          Verify your credentials as a former Manipuri student in Pune to access the alumni
+          directory, events, and mentorship initiatives.
         </p>
       </div>
 
       <div className="relative max-w-3xl mx-auto px-5">
-        <div className="bg-card border border-main rounded-sm shadow-none overflow-hidden">
+        <div className="bg-card border border-main overflow-hidden">
           {/* Card Top Banner */}
-          <div className="p-6 sm:p-8 bg-section-alt border-b border-main flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="p-6 sm:p-8 bg-section-alt border-b border-main flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h2 className="font-display text-ink text-2xl font-bold">
                 Alumni Registration Form
               </h2>
-              <p className="text-muted text-xs font-medium mt-1">
+              <p className="text-sm text-muted mt-1">
                 Submissions are reviewed by the MSAP executive committee for verified credentials.
               </p>
             </div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-card border border-main text-[11px] font-bold text-lavender shadow-2xs self-start sm:self-auto">
-              <span>🔒</span> 256-Bit Encrypted
-            </div>
+            <p className="text-sm text-muted shrink-0">256-bit encrypted &middot; secure</p>
           </div>
 
           {errorMessage && (
-            <div className="mx-6 sm:mx-8 mt-6 p-4 rounded-2xl border border-red-300 bg-red-100/70 text-red-800 text-xs font-semibold flex items-center gap-2.5">
-              <span className="text-base">⚠️</span>
+            <div className="mx-6 sm:mx-8 mt-6 p-4 border border-red-300 bg-red-100/70 text-red-800 text-sm leading-relaxed flex items-start gap-2.5">
+              <span aria-hidden="true">⚠️</span>
               <span>{errorMessage}</span>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-7">
+          <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-9">
             {/* Honeypot field */}
             <input
               type="text"
@@ -205,11 +202,11 @@ export default function RegisterPage() {
             />
 
             {/* Section 1: Personal Details */}
-            <div>
-              <div className="flex items-center gap-2 pb-2 mb-4 border-b border-main text-xs font-bold uppercase tracking-wider text-lavender">
+            <fieldset>
+              <legend className="flex items-baseline gap-3 pb-2 mb-5 border-b border-main text-[13px] font-bold uppercase tracking-wider text-lavender w-full">
                 <span>01</span>
                 <span>Personal Information</span>
-              </div>
+              </legend>
               <div className="grid sm:grid-cols-2 gap-5">
                 <FormField
                   label="Full Name"
@@ -242,14 +239,14 @@ export default function RegisterPage() {
                   onChange={handleChange}
                 />
               </div>
-            </div>
+            </fieldset>
 
             {/* Section 2: Pune Academic History */}
-            <div>
-              <div className="flex items-center gap-2 pb-2 mb-4 border-b border-main text-xs font-bold uppercase tracking-wider text-lavender">
+            <fieldset>
+              <legend className="flex items-baseline gap-3 pb-2 mb-5 border-b border-main text-[13px] font-bold uppercase tracking-wider text-lavender w-full">
                 <span>02</span>
                 <span>Pune Academic Experience</span>
-              </div>
+              </legend>
               <div className="grid sm:grid-cols-2 gap-5">
                 <FormField
                   label="Pune College / University"
@@ -287,27 +284,27 @@ export default function RegisterPage() {
                   onChange={handleChange}
                 />
               </div>
-            </div>
+            </fieldset>
 
             {/* Section 3: Account Password */}
-            <div>
-              <div className="flex items-center justify-between pb-2 mb-4 border-b border-main">
-                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-lavender">
-                  <span>03</span>
-                  <span>Portal Account Password</span>
-                </div>
+            <fieldset>
+              <legend className="flex items-baseline gap-3 pb-2 mb-5 border-b border-main text-[13px] font-bold uppercase tracking-wider text-lavender w-full">
+                <span>03</span>
+                <span>Portal Account Password</span>
+              </legend>
+
+              <div className="flex items-center justify-between mb-4">
+                <p className="text-sm text-muted">
+                  Choose the password you'll use to log in to the Alumni Directory once approved.
+                </p>
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="text-xs font-semibold text-muted hover:text-lavender cursor-pointer"
+                  className="text-sm font-semibold text-muted hover:text-lavender cursor-pointer whitespace-nowrap"
                 >
-                  {showPassword ? 'Hide Passwords 👁' : 'Show Passwords 👁'}
+                  {showPassword ? 'Hide Passwords' : 'Show Passwords'}
                 </button>
               </div>
-
-              <p className="text-muted text-xs mb-4">
-                Choose the password you'll use to log in to the Alumni Directory once approved.
-              </p>
 
               <div className="grid sm:grid-cols-2 gap-5">
                 <FormField
@@ -331,14 +328,14 @@ export default function RegisterPage() {
                   onChange={handleChange}
                 />
               </div>
-            </div>
+            </fieldset>
 
             {/* Submit CTA */}
-            <div className="pt-4">
+            <div className="pt-2">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full btn-hover bg-lavender hover:bg-lavender-dark text-white font-bold py-4 rounded-sm shadow-[0_10px_30px_rgba(78,45,146,0.3)] transition-all text-base disabled:opacity-60 cursor-pointer flex items-center justify-center gap-2"
+                className="w-full bg-lavender hover:bg-lavender-dark text-white font-bold py-4 rounded-sm transition-colors text-base disabled:opacity-60 cursor-pointer flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   <>
@@ -356,7 +353,7 @@ export default function RegisterPage() {
                 )}
               </button>
 
-              <p className="text-center text-xs text-muted mt-4">
+              <p className="text-center text-sm text-muted mt-4">
                 Already registered or verified?{' '}
                 <Link to="/login" className="text-lavender font-bold hover:underline">
                   Sign in to your account

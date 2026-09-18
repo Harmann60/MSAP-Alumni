@@ -111,15 +111,15 @@ export default function StoriesPage() {
         </p>
 
         {/* Filter tabs */}
-        <nav aria-label="Filter stories by category" className="flex flex-wrap gap-x-7 gap-y-2 mt-9">
-          {filters.map((f) => {
-            const active = activeFilter === f;
-            return (
-              <button
-                key={f}
-                onClick={() => setActiveFilter(f)}
-                aria-pressed={active}
-                className={`pb-1.5 text-[13.5px] font-semibold border-b-2 transition-colors cursor-pointer ${
+<nav aria-label="Filter stories by category" className="flex flex-wrap gap-x-8 gap-y-2 mt-9">
+            {filters.map((f) => {
+              const active = activeFilter === f;
+              return (
+                <button
+                  key={f}
+                  onClick={() => setActiveFilter(f)}
+                  aria-pressed={active}
+                  className={`pb-1.5 text-[15px] font-semibold border-b-2 transition-colors cursor-pointer ${
                   active
                     ? 'text-lavender border-lavender'
                     : 'text-stone border-transparent hover:text-lavender hover:border-lavender/40'
@@ -148,13 +148,13 @@ export default function StoriesPage() {
               </div>
             </div>
             <div className="lg:col-span-5">
-              <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-lavender mb-3">
+              <p className="text-xs font-bold uppercase tracking-[0.14em] text-lavender mb-3">
                 Featured &middot; {featured.source} &middot; {featured.date}
               </p>
-              <h2 className="font-display text-ink text-2xl sm:text-3xl font-bold leading-snug mb-4">
+              <h2 className="font-display text-ink text-3xl sm:text-4xl font-bold leading-tight mb-4">
                 {featured.title}
               </h2>
-              <p className="text-stone text-[15px] leading-relaxed mb-5">{featured.excerpt}</p>
+              <p className="text-stone text-base leading-relaxed mb-5">{featured.excerpt}</p>
               <Link to="/stories" className="text-link link-underline">
                 Read the full chronicle
                 <span className="arrow" aria-hidden="true">→</span>
@@ -177,7 +177,7 @@ export default function StoriesPage() {
                   />
                 </div>
               </div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted mb-2">
+              <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted mb-2">
                 {story.source} &middot; {story.date}
               </p>
               <h3 className="font-display text-ink text-xl font-bold leading-snug mb-3 group-hover:text-lavender transition-colors">
@@ -185,7 +185,7 @@ export default function StoriesPage() {
                   {story.title}
                 </Link>
               </h3>
-              <p className="text-stone/85 text-[14px] leading-relaxed line-clamp-3 mb-4">
+              <p className="text-stone/85 text-[15px] leading-relaxed line-clamp-3 mb-4">
                 {story.excerpt}
               </p>
               <Link to="/stories" className="text-link">

@@ -68,14 +68,14 @@ export default function Navbar() {
               <span className="block font-display text-ink text-lg font-bold leading-none group-hover:text-lavender transition-colors">
                 MSAP Alumni
               </span>
-              <span className="block text-muted text-[9.5px] tracking-[0.22em] uppercase font-semibold mt-1">
+              <span className="block text-muted text-[10.5px] tracking-[0.2em] uppercase font-semibold mt-1">
                 Association &middot; Est. 1973
               </span>
             </span>
           </Link>
 
           {/* Desktop nav */}
-          <nav aria-label="Primary" className="hidden lg:flex items-center gap-7">
+          <nav aria-label="Primary" className="hidden lg:flex items-center gap-8">
             {NAV_LINKS.map((link) => {
               const active = location.pathname === link.to;
               return (
@@ -83,7 +83,7 @@ export default function Navbar() {
                   key={link.to}
                   to={link.to}
                   aria-current={active ? 'page' : undefined}
-                  className={`text-[13.5px] font-semibold tracking-wide pb-1 border-b-2 transition-colors ${
+                  className={`text-[15px] font-semibold tracking-wide pb-1 border-b-2 transition-colors ${
                     active
                       ? 'text-lavender border-lavender'
                       : 'text-stone border-transparent hover:text-lavender hover:border-lavender/40'
@@ -111,12 +111,12 @@ export default function Navbar() {
               </div>
             ) : (
               <>
-                <Link to="/login" className="text-[13.5px] font-semibold text-stone hover:text-lavender transition-colors">
+                <Link to="/login" className="text-[15px] font-semibold text-stone hover:text-lavender transition-colors">
                   Sign in
                 </Link>
                 <Link
                   to="/register"
-                  className="bg-lavender hover:bg-lavender-dark text-white text-[13.5px] font-bold px-5 py-2.5 rounded-sm transition-colors"
+                  className="bg-lavender hover:bg-lavender-dark text-white text-[15px] font-bold px-5 py-2.5 rounded-sm transition-colors"
                 >
                   Register
                 </Link>
@@ -155,7 +155,7 @@ export default function Navbar() {
                   key={link.to}
                   to={link.to}
                   aria-current={active ? 'page' : undefined}
-                  className={`block py-2.5 text-[15px] font-semibold border-b border-main/60 first:border-t-0 ${
+                  className={`block py-3 text-base font-semibold border-b border-main/60 first:border-t-0 ${
                     active ? 'text-lavender' : 'text-stone hover:text-lavender transition-colors'
                   }`}
                 >

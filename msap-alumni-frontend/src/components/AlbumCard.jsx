@@ -16,11 +16,11 @@ export default function AlbumCard({ album, onView }) {
           </div>
         </div>
 
-        <h3 className="font-display text-ink text-lg font-bold leading-snug mb-1.5 group-hover:text-lavender transition-colors">
+        <h3 className="font-display text-ink text-xl font-bold leading-snug mb-1.5 group-hover:text-lavender transition-colors">
           {album.title}
         </h3>
 
-        <p className="text-sm text-muted">
+        <p className="text-[15px] text-muted">
           {album.eventDate} &middot; {album.photos.length} photo{album.photos.length === 1 ? '' : 's'}
         </p>
 

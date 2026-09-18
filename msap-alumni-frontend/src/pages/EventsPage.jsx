@@ -109,15 +109,15 @@ export default function EventsPage() {
     <div className="bg-page min-h-[90vh]">
       {/* Page header */}
       <div className="max-w-6xl mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
-        <p className="eyebrow mb-5">Calendar of gatherings</p>
+        <p className="eyebrow mb-5">Calendar &middot; Season 2025&ndash;26</p>
         <h1 className="display-lg text-4xl md:text-5xl mb-3">Events & gatherings</h1>
-        <p className="text-stone text-base sm:text-lg max-w-xl">
+        <p className="text-stone text-lg max-w-xl">
           Join fellow alumni at annual reunions, chapter mixers, mentorship sessions, and cultural
           celebrations.
         </p>
 
         {/* Filter tabs */}
-        <nav aria-label="Filter events by type" className="flex flex-wrap gap-x-7 gap-y-2 mt-9">
+        <nav aria-label="Filter events by type" className="flex flex-wrap gap-x-8 gap-y-2 mt-9">
           {categories.map((cat) => {
             const active = activeCategory === cat;
             return (
@@ -125,7 +125,7 @@ export default function EventsPage() {
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 aria-pressed={active}
-                className={`pb-1.5 text-[13.5px] font-semibold border-b-2 transition-colors cursor-pointer ${
+                className={`pb-1.5 text-[15px] font-semibold border-b-2 transition-colors cursor-pointer ${
                   active
                     ? 'text-lavender border-lavender'
                     : 'text-stone border-transparent hover:text-lavender hover:border-lavender/40'
@@ -143,15 +143,16 @@ export default function EventsPage() {
         <ol className="divide-y divide-main border-t border-main">
           {filteredEvents.map((event) => {
             const isRsvpd = !!rsvpStatus[event.id];
+            const isFlagship = event.category?.toLowerCase() === 'flagship';
             return (
-              <li key={event.id} className="py-8">
+              <li key={event.id} className={isFlagship ? 'py-8 pl-6 lg:pl-8 border-l-2 border-lavender' : 'py-8 pl-6'}>
                 <div className="grid lg:grid-cols-12 gap-x-8 gap-y-5 items-start">
                   {/* Date */}
                   <div className="lg:col-span-2 flex lg:block items-baseline gap-3">
-                    <span className="font-display text-4xl font-bold text-ink leading-none">
+                    <span className="font-display text-5xl font-bold text-ink leading-none">
                       {event.day}
                     </span>
-                    <span className="text-[11px] font-bold uppercase tracking-widest text-muted leading-tight">
+                    <span className="text-xs font-bold uppercase tracking-widest text-muted leading-tight">
                       {event.month}
                       <br />
                       {event.year}
@@ -160,17 +161,17 @@ export default function EventsPage() {
 
                   {/* Details */}
                   <div className="lg:col-span-7">
-                    <h2 className="font-display text-ink text-2xl font-bold leading-snug mb-2">
+                    <h2 className="font-display text-ink text-2xl sm:text-[1.7rem] font-bold leading-snug mb-2">
                       {event.title}
                     </h2>
-                    <p className="text-sm text-stone/80 mb-3">
+                    <p className="text-[15px] text-stone/85 mb-3">
                       <span dangerouslySetInnerHTML={{ __html: `📍 ${event.location}` }} />
                       <span className="mx-2 text-muted">·</span>
                       <span>{event.time}</span>
                       <span className="mx-2 text-muted">·</span>
-                      <span className="text-lavender font-semibold">{event.category}</span>
+                      <span className="text-muted">{event.category}</span>
                     </p>
-                    <p className="text-stone text-[14.5px] leading-relaxed max-w-2xl">
+                    <p className="text-stone text-[15px] leading-relaxed max-w-2xl">
                       {event.description}
                     </p>
                   </div>

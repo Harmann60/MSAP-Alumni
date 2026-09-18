@@ -13,7 +13,7 @@ export default function GallerySection({ showHeading = true }) {
         <div className="mb-12">
           <p className="eyebrow mb-4">Photo archives</p>
           <h2 className="display-lg text-3xl sm:text-4xl">Gallery</h2>
-          <p className="text-stone/80 text-[15px] mt-3 max-w-xl">
+          <p className="text-stone/80 text-base mt-3 max-w-xl">
             Moments captured from our events, reunions, cultural festivals, and gatherings.
           </p>
         </div>

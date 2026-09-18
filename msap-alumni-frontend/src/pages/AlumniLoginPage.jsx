@@ -141,13 +141,13 @@ export default function AlumniLoginPage() {
         <div className="w-16 h-16 mx-auto mb-3">
           <img src="/logo.png" alt="MSAP Alumni" className="w-full h-full object-contain drop-shadow-sm" />
         </div>
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-card text-lavender text-xs font-bold uppercase tracking-wider mb-3 border border-main">
-          <span>🏛</span> MSAP Alumni Gateway
-        </div>
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-lavender mb-3">
+          MSAP Alumni Gateway
+        </p>
         <h1 className="font-display text-ink text-3xl sm:text-4xl font-bold tracking-tight">
           {mode === 'login' ? 'Alumni Sign In' : 'Activate Account Password'}
         </h1>
-        <p className="text-muted text-sm mt-2">
+        <p className="text-muted text-[15px] mt-2">
           {mode === 'login'
             ? 'Access the verified directory, exclusive event invites, and chapter updates.'
             : 'For approved alumni: set your permanent password to activate full network access.'}
@@ -166,7 +166,7 @@ export default function AlumniLoginPage() {
                 setError('');
                 setErrorType('');
               }}
-              className={`py-2.5 px-3 text-xs font-bold rounded-sm transition-all cursor-pointer ${
+              className={`py-2.5 px-3 text-[13px] font-bold rounded-sm transition-all cursor-pointer ${
                 mode === 'login'
                   ? 'bg-card text-ink shadow-sm'
                   : 'text-stone/70 hover:text-ink'
@@ -181,7 +181,7 @@ export default function AlumniLoginPage() {
                 setError('');
                 setErrorType('');
               }}
-              className={`py-2.5 px-3 text-xs font-bold rounded-sm transition-all cursor-pointer ${
+              className={`py-2.5 px-3 text-[13px] font-bold rounded-sm transition-all cursor-pointer ${
                 mode === 'setPassword'
                   ? 'bg-card text-ink shadow-sm'
                   : 'text-stone/70 hover:text-ink'
@@ -193,7 +193,7 @@ export default function AlumniLoginPage() {
 
           {/* Success Banner */}
           {successMessage && (
-            <div className="mx-6 sm:mx-8 mt-6 p-4 rounded-2xl border border-emerald-300 bg-emerald-100/70 text-emerald-800 text-xs font-semibold flex items-center gap-2">
+            <div className="mx-6 sm:mx-8 mt-6 p-4 rounded-sm border border-emerald-300 bg-emerald-100/70 text-emerald-800 text-sm font-semibold flex items-center gap-2">
               <span className="text-base">✓</span>
               <span>{successMessage}</span>
             </div>
@@ -203,7 +203,7 @@ export default function AlumniLoginPage() {
           {error && (
             <div className="mx-6 sm:mx-8 mt-6">
               {errorType === 'not_registered' ? (
-                <div className="p-4 rounded-2xl border border-red-300 bg-red-100/70 text-red-800 text-xs leading-relaxed space-y-2.5">
+                <div className="p-4 rounded-sm border border-red-300 bg-red-100/70 text-red-800 text-sm leading-relaxed space-y-2.5">
                   <div className="flex items-start gap-2">
                     <span className="text-base">⚠️</span>
                     <div>
@@ -219,7 +219,7 @@ export default function AlumniLoginPage() {
                   </Link>
                 </div>
               ) : errorType === 'pending' ? (
-                <div className="p-4 rounded-2xl border border-amber-300 bg-amber-100/70 text-amber-900 text-xs leading-relaxed space-y-1.5">
+                <div className="p-4 rounded-sm border border-amber-300 bg-amber-100/70 text-amber-900 text-sm leading-relaxed space-y-1.5">
                   <div className="flex items-start gap-2">
                     <span className="text-base">⏳</span>
                     <div>
@@ -227,12 +227,12 @@ export default function AlumniLoginPage() {
                       <span>{error}</span>
                     </div>
                   </div>
-                  <p className="text-[11px] text-amber-800 mt-1">
+                  <p className="text-xs text-amber-800 mt-1">
                     Once the administrator verifies your credentials, you will receive an email confirmation.
                   </p>
                 </div>
               ) : errorType === 'needs_password' ? (
-                <div className="p-4 rounded-2xl border border-lavender/40 bg-[#E4DCF5] text-lavender text-xs leading-relaxed space-y-2.5">
+                <div className="p-4 rounded-sm border border-lavender/40 bg-[#E4DCF5] text-lavender text-sm leading-relaxed space-y-2.5">
                   <div className="flex items-start gap-2">
                     <span className="text-base">🎉</span>
                     <div>
@@ -253,7 +253,7 @@ export default function AlumniLoginPage() {
                   </button>
                 </div>
               ) : (
-                <div className="p-4 rounded-2xl border border-red-300 bg-red-100/70 text-red-800 text-xs font-semibold flex items-center gap-2">
+                <div className="p-4 rounded-sm border border-red-300 bg-red-100/70 text-red-800 text-sm font-semibold flex items-center gap-2">
                   <span>⚠️</span>
                   <span>{error}</span>
                 </div>
@@ -295,7 +295,7 @@ export default function AlumniLoginPage() {
                 {/* Or divider */}
                 <div className="relative flex items-center justify-center my-3">
                   <div className="border-t border-main w-full" />
-                  <span className="bg-card px-3 text-[11px] uppercase tracking-wider text-muted font-bold relative">
+                  <span className="bg-card px-3 text-xs uppercase tracking-wider text-muted font-bold relative">
                     or with email
                   </span>
                   <div className="border-t border-main w-full" />
@@ -333,7 +333,7 @@ export default function AlumniLoginPage() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="text-[11px] font-semibold text-muted hover:text-lavender cursor-pointer"
+                    className="text-xs font-semibold text-muted hover:text-lavender cursor-pointer"
                   >
                     {showPassword ? 'Hide 👁' : 'Show 👁'}
                   </button>

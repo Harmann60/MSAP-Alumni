@@ -40,8 +40,8 @@ export default function EventsSection() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
           <div>
             <p className="eyebrow mb-4">Calendar of gatherings</p>
-            <h2 className="display-lg text-3xl sm:text-4xl">Reunions & upcoming events</h2>
-            <p className="text-stone/80 text-[15px] mt-3 max-w-xl">
+            <h2 className="display-lg text-3xl sm:text-4xl md:text-[2.75rem]">Reunions & upcoming events</h2>
+            <p className="text-stone text-base sm:text-lg mt-3 max-w-xl">
               From the flagship Pune annual meet to chapter mixers and cultural celebrations across
               India and the diaspora.
             </p>
@@ -62,9 +62,9 @@ export default function EventsSection() {
                 }`}
               >
                 {/* Date */}
-                <div className="flex items-baseline gap-3 lg:w-40 shrink-0">
-                  <span className="font-display text-4xl font-bold text-ink leading-none">{event.day}</span>
-                  <span className="text-[11px] font-bold uppercase tracking-widest text-muted leading-tight">
+                <div className="flex items-baseline gap-3 lg:w-44 shrink-0">
+                  <span className="font-display text-5xl font-bold text-ink leading-none">{event.day}</span>
+                  <span className="text-xs font-bold uppercase tracking-widest text-muted leading-tight">
                     {event.month}
                     <br />
                     {event.year}
@@ -73,22 +73,21 @@ export default function EventsSection() {
 
                 {/* Title + location */}
                 <div className="flex-1">
-                  <h3 className="font-display text-ink text-xl sm:text-2xl font-bold leading-snug mb-1.5 group-hover:text-lavender transition-colors">
+                  <h3 className="font-display text-ink text-2xl sm:text-[1.7rem] font-bold leading-snug mb-1.5 group-hover:text-lavender transition-colors">
                     {event.title}
                   </h3>
-                  <p className="text-sm text-stone/80">
+                  <p className="text-[15px] text-stone/85">
                     <span dangerouslySetInnerHTML={{ __html: `📍 ${event.location}` }} />
                     <span className="mx-2 text-muted">·</span>
                     <span>{event.time}</span>
                     <span className="mx-2 text-muted">·</span>
-                    <span className="text-lavender font-semibold">{event.category}</span>
+                    <span className="text-muted">{event.category}</span>
                   </p>
                 </div>
 
                 {/* Action */}
-                <span className="text-link shrink-0">
-                  View details
-                  <span className="arrow" aria-hidden="true">→</span>
+                <span className="text-sm font-semibold text-muted hover:text-lavender transition-colors shrink-0">
+                  View details <span aria-hidden="true">→</span>
                 </span>
               </Link>
             </li>

@@ -92,8 +92,8 @@ export default function CommunityPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-y-8 mb-16 border-t border-main">
           {STATS.map((stat) => (
             <div key={stat.label} className="pt-6 pr-6">
-              <div className="font-display text-ink text-3xl font-bold">{stat.value}</div>
-              <div className="text-muted text-[11px] font-bold uppercase tracking-widest mt-1">
+              <div className="font-display text-ink text-4xl font-bold">{stat.value}</div>
+              <div className="text-muted text-xs font-bold uppercase tracking-widest mt-1">
                 {stat.label}
               </div>
             </div>
@@ -107,21 +107,21 @@ export default function CommunityPage() {
 
         <ul className="border-t border-main">
           {groups.map((group, idx) => (
-            <li key={group.id || idx} className="border-b border-main py-6">
+            <li key={group.id || idx} className="border-b border-main py-7">
               <div className="grid lg:grid-cols-12 gap-x-8 gap-y-3 items-baseline group">
                 <div className="lg:col-span-3">
-                  <span className="font-display text-ink text-xl font-bold leading-tight group-hover:text-lavender transition-colors">
+                  <span className="font-display text-ink text-2xl font-bold leading-tight group-hover:text-lavender transition-colors">
                     {group.title}
                   </span>
                 </div>
-                <div className="lg:col-span-3 text-sm text-stone/80">
+                <div className="lg:col-span-3 text-[15px] text-stone/85">
                   {group.location || 'Maharashtra & beyond'}
                 </div>
-                <div className="lg:col-span-4 text-[14px] text-stone/85 leading-relaxed">
+                <div className="lg:col-span-4 text-[15px] text-stone/85 leading-relaxed">
                   {group.description}
                 </div>
                 <div className="lg:col-span-2 flex lg:justify-end">
-                  <span className="text-[11px] font-bold uppercase tracking-widest text-lavender">
+                  <span className="text-[13px] font-bold uppercase tracking-wider text-lavender">
                     {group.members_count || '100+'} members
                   </span>
                 </div>
@@ -136,13 +136,13 @@ export default function CommunityPage() {
             <h2 className="display-xl text-[clamp(1.6rem,3vw,2.4rem)] text-[#FAF8F4] mb-4">
               Want to establish a regional chapter?
             </h2>
-            <p className="text-[#E7E1F3] text-[15px] leading-relaxed mb-8 max-w-lg mx-auto">
+            <p className="text-[#E7E1F3] text-base leading-relaxed mb-8 max-w-lg mx-auto">
               If you have fellow Pune alumni in your city or a specialized industry circle, our
               executive committee can help charter your official chapter.
             </p>
             <Link
               to="/about"
-              className="inline-block bg-[#FAF8F4] hover:bg-white text-ink text-[15px] font-bold px-8 py-3.5 rounded-sm transition-colors"
+              className="inline-block bg-[#FAF8F4] hover:bg-white text-ink text-base font-bold px-8 py-3.5 rounded-sm transition-colors"
             >
               Contact the alumni committee
             </Link>

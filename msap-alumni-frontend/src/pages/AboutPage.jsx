@@ -88,9 +88,9 @@ export default function AboutPage() {
                   className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-lavender border-2 border-page"
                   aria-hidden="true"
                 />
-                <div className="font-display text-2xl font-bold text-lavender mb-1.5">{item.year}</div>
+                <div className="font-display text-3xl font-bold text-lavender mb-1.5">{item.year}</div>
                 <h3 className="font-display text-ink text-xl font-bold mb-2">{item.title}</h3>
-                <p className="text-stone text-[15px] leading-relaxed max-w-2xl">{item.desc}</p>
+                <p className="text-stone text-base leading-relaxed max-w-2xl">{item.desc}</p>
               </li>
             ))}
           </ol>
@@ -100,7 +100,7 @@ export default function AboutPage() {
         <section>
           <p className="eyebrow mb-5">Association governance</p>
           <h2 className="display-lg text-3xl sm:text-4xl mb-4">The governing body</h2>
-          <p className="text-stone text-[15px] mb-10 max-w-xl">
+          <p className="text-stone text-base mb-10 max-w-xl">
             Operated under democratic bylaws and an elected alumni executive council.
           </p>
 
@@ -115,7 +115,7 @@ export default function AboutPage() {
                 </dt>
                 <dd>
                   <span className="font-display text-ink text-lg font-bold block">{m.name}</span>
-                  <span className="text-stone/80 text-sm">{m.note}</span>
+                  <span className="text-stone/80 text-[15px]">{m.note}</span>
                 </dd>
               </div>
             ))}
@@ -129,7 +129,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
             <div className="border-t border-main pt-5">
               <h3 className="text-ink font-bold text-lg mb-2">Registered headquarters</h3>
-              <p className="text-stone text-[15px] leading-relaxed">
+              <p className="text-stone text-base leading-relaxed">
                 Sagolband Moirang Leirak, Imphal West, 795001, Manipur, India
                 <br />
                 <span className="text-muted text-sm">Registration No. 915/M/SR/2025</span>
@@ -137,7 +137,7 @@ export default function AboutPage() {
             </div>
             <div className="border-t border-main pt-5">
               <h3 className="text-ink font-bold text-lg mb-2">Pune liaison office</h3>
-              <p className="text-stone text-[15px] leading-relaxed">
+              <p className="text-stone text-base leading-relaxed">
                 FC Road / Deccan Gymkhana, Pune, Maharashtra 411004
               </p>
             </div>
