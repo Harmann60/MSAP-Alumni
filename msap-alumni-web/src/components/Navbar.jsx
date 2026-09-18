@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 const NAV_ITEMS = [
   {
     label: 'Gallery',
-    to: '/#gallery',
+    to: '/gallery',
   },
   {
     label: 'Events',
