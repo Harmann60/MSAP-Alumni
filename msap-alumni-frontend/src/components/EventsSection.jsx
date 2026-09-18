@@ -39,7 +39,7 @@ export default function EventsSection() {
       <div className="max-w-6xl mx-auto px-5 py-16 md:py-24">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
           <div>
-            <p className="eyebrow mb-4">Calendar of gatherings</p>
+            <p className="eyebrow mb-4">02 &mdash; Annual calendar</p>
             <h2 className="display-lg text-3xl sm:text-4xl md:text-[2.75rem]">Reunions & upcoming events</h2>
             <p className="text-stone text-base sm:text-lg mt-3 max-w-xl">
               From the flagship Pune annual meet to chapter mixers and cultural celebrations across

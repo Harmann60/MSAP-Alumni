@@ -13,7 +13,14 @@ export default function HeroSection() {
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-14 items-center">
           {/* Editorial copy */}
           <div className="lg:col-span-6">
-            <p className="eyebrow mb-6">Association of MSAP Alumni &middot; Est. 1973</p>
+            <div className="flex items-baseline justify-between gap-4 border-t border-main pt-4 mb-8">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-lavender">
+                Association of MSAP Alumni
+              </p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
+                Est. 1973
+              </p>
+            </div>
 
             <h1 className="display-xl text-[clamp(2.4rem,5vw,4.1rem)] mb-7">
               For fifty years, Manipuri students came to Pune to build their futures.

@@ -121,12 +121,33 @@ export default function EventsPage() {
     <div className="bg-page min-h-[90vh]">
       {/* Page header */}
       <div className="max-w-6xl mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
-        <p className="eyebrow mb-5">Calendar &middot; Season 2025&ndash;26</p>
-        <h1 className="display-lg text-4xl md:text-5xl mb-3">Events & gatherings</h1>
-        <p className="text-stone text-lg max-w-xl">
-          Join fellow alumni at annual reunions, chapter mixers, mentorship sessions, and cultural
-          celebrations.
-        </p>
+        <div className="grid lg:grid-cols-12 gap-x-10 gap-y-6 items-end">
+          <div className="lg:col-span-8">
+            <p className="eyebrow mb-5">Annual calendar</p>
+            <h1 className="display-lg text-4xl md:text-5xl mb-3">Events & gatherings</h1>
+            <p className="text-stone text-lg max-w-xl">
+              Reunions, chapter mixers, mentorship sessions, and cultural celebrations across the
+              2025&ndash;26 season.
+            </p>
+          </div>
+
+          <div className="lg:col-span-4 lg:border-l lg:border-main lg:pl-8 lg:pb-1">
+            <dl className="divide-y divide-main text-[15px]">
+              <div className="py-2.5 flex items-baseline justify-between gap-5">
+                <dt className="text-muted">Flagship meet</dt>
+                <dd className="font-bold text-ink shrink-0">15 Aug 2026</dd>
+              </div>
+              <div className="py-2.5 flex items-baseline justify-between gap-5">
+                <dt className="text-muted">Open to</dt>
+                <dd className="font-bold text-ink shrink-0">All verified alumni</dd>
+              </div>
+              <div className="py-2.5 flex items-baseline justify-between gap-5">
+                <dt className="text-muted">RSVP</dt>
+                <dd className="font-bold text-ink shrink-0">Alumni portal &middot; free</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
 
         {/* Filter tabs */}
         <nav aria-label="Filter events by type" className="flex flex-wrap gap-x-8 gap-y-2 mt-9">

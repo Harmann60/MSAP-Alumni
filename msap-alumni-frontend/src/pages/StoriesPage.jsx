@@ -102,16 +102,22 @@ export default function StoriesPage() {
   return (
     <div className="bg-page min-h-[90vh]">
       {/* Page header */}
-      <div className="max-w-6xl mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
-        <p className="eyebrow mb-5">Alumni chronicles</p>
-        <h1 className="display-lg text-4xl md:text-5xl mb-3">Stories of journey & impact</h1>
-        <p className="text-stone text-base sm:text-lg max-w-xl">
-          Fifty years of student life, global careers, cultural heritage, and giving back to Pune and
-          Manipur.
+<div className="max-w-6xl mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mb-4">
+          <div>
+            <p className="eyebrow mb-4">Alumni chronicles</p>
+            <h1 className="display-lg text-4xl md:text-5xl">Stories of journey &amp; impact</h1>
+          </div>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted md:pb-2 shrink-0">
+            An alumni publication
+          </p>
+        </div>
+        <p className="text-stone text-base sm:text-lg max-w-2xl">
+          Fifty years of student life, global careers, and giving back to Pune and Manipur.
         </p>
 
         {/* Filter tabs */}
-<nav aria-label="Filter stories by category" className="flex flex-wrap gap-x-8 gap-y-2 mt-9">
+        <nav aria-label="Filter stories by category" className="flex flex-wrap gap-x-8 gap-y-2 mt-9">
             {filters.map((f) => {
               const active = activeFilter === f;
               return (

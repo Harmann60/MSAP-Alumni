@@ -14,7 +14,7 @@ export default function CommunitySection() {
     <section className="max-w-6xl mx-auto px-5 py-16 md:py-24">
       <div className="grid lg:grid-cols-12 gap-x-12 gap-y-10">
         <div className="lg:col-span-4">
-          <p className="eyebrow mb-4">Our network</p>
+          <p className="eyebrow mb-4">03 &mdash; The alumni network</p>
           <h2 className="display-lg text-3xl sm:text-4xl md:text-[2.75rem] mb-4">Connect across cities & generations</h2>
           <p className="text-stone text-base leading-relaxed mb-7">
             Whether you left Pune last year or in 1980, your alumni family is here — across regional
