@@ -156,7 +156,7 @@ export default function AlumniLoginPage() {
 
       {/* Login Card */}
       <div className="w-full max-w-md animate-heroInDelay">
-        <div className="border-2 border-lavender/35 bg-card rounded-3xl shadow-[0_20px_60px_-15px_rgba(58,27,115,0.18)] overflow-hidden">
+        <div className="border border-main bg-card rounded-sm overflow-hidden">
           {/* Segmented Mode Switcher */}
           <div className="p-3 bg-section-alt border-b border-main grid grid-cols-2 gap-2">
             <button
@@ -166,7 +166,7 @@ export default function AlumniLoginPage() {
                 setError('');
                 setErrorType('');
               }}
-              className={`py-2.5 px-3 text-xs font-bold rounded-xl transition-all cursor-pointer ${
+              className={`py-2.5 px-3 text-xs font-bold rounded-sm transition-all cursor-pointer ${
                 mode === 'login'
                   ? 'bg-card text-ink shadow-sm'
                   : 'text-stone/70 hover:text-ink'
@@ -181,7 +181,7 @@ export default function AlumniLoginPage() {
                 setError('');
                 setErrorType('');
               }}
-              className={`py-2.5 px-3 text-xs font-bold rounded-xl transition-all cursor-pointer ${
+              className={`py-2.5 px-3 text-xs font-bold rounded-sm transition-all cursor-pointer ${
                 mode === 'setPassword'
                   ? 'bg-card text-ink shadow-sm'
                   : 'text-stone/70 hover:text-ink'
@@ -213,7 +213,7 @@ export default function AlumniLoginPage() {
                   </div>
                   <Link
                     to="/register"
-                    className="inline-block w-full text-center bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 px-4 rounded-xl transition-all shadow-sm"
+                    className="inline-block w-full text-center bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 px-4 rounded-sm transition-all shadow-sm"
                   >
                     Submit Alumni Verification Application →
                   </Link>
@@ -247,7 +247,7 @@ export default function AlumniLoginPage() {
                       setError('');
                       setErrorType('');
                     }}
-                    className="w-full bg-lavender hover:bg-lavender-dark text-white font-bold py-2.5 px-4 rounded-xl transition-all shadow-sm cursor-pointer"
+                    className="w-full bg-lavender hover:bg-lavender-dark text-white font-bold py-2.5 px-4 rounded-sm transition-all shadow-sm cursor-pointer"
                   >
                     Set Your Password Now →
                   </button>
@@ -269,7 +269,7 @@ export default function AlumniLoginPage() {
                   type="button"
                   onClick={handleGoogleSignIn}
                   disabled={loading}
-                  className="w-full flex items-center justify-center gap-3 border border-main bg-white hover:bg-page text-ink font-bold py-3.5 px-4 rounded-xl shadow-2xs transition-all hover:border-lavender hover:-translate-y-0.5 cursor-pointer disabled:opacity-60 text-sm"
+                  className="w-full flex items-center justify-center gap-3 border border-main bg-white hover:bg-page text-ink font-bold py-3.5 px-4 rounded-sm shadow-2xs transition-all hover:border-lavender hover:-translate-y-0.5 cursor-pointer disabled:opacity-60 text-sm"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
                     <path
@@ -320,7 +320,7 @@ export default function AlumniLoginPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     placeholder="you@email.com"
-                    className="w-full border border-main bg-white pl-10 pr-4 py-3 rounded-xl text-[15px] text-ink font-medium focus:outline-none focus:border-lavender focus:ring-2 focus:ring-lavender/25 transition-all placeholder:text-muted/50"
+                    className="w-full border border-main bg-white pl-10 pr-4 py-3 rounded-sm text-[15px] text-ink font-medium focus:outline-none focus:border-lavender focus:ring-2 focus:ring-lavender/25 transition-all placeholder:text-muted/50"
                   />
                 </div>
               </div>
@@ -350,7 +350,7 @@ export default function AlumniLoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     placeholder="Min. 6 characters"
-                    className="w-full border border-main bg-white pl-10 pr-4 py-3 rounded-xl text-[15px] text-ink font-medium focus:outline-none focus:border-lavender focus:ring-2 focus:ring-lavender/25 transition-all placeholder:text-muted/50"
+                    className="w-full border border-main bg-white pl-10 pr-4 py-3 rounded-sm text-[15px] text-ink font-medium focus:outline-none focus:border-lavender focus:ring-2 focus:ring-lavender/25 transition-all placeholder:text-muted/50"
                   />
                 </div>
               </div>
@@ -372,7 +372,7 @@ export default function AlumniLoginPage() {
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       required
                       placeholder="Re-enter password"
-                      className="w-full border border-main bg-white pl-10 pr-4 py-3 rounded-xl text-[15px] text-ink font-medium focus:outline-none focus:border-lavender focus:ring-2 focus:ring-lavender/25 transition-all placeholder:text-muted/50"
+                      className="w-full border border-main bg-white pl-10 pr-4 py-3 rounded-sm text-[15px] text-ink font-medium focus:outline-none focus:border-lavender focus:ring-2 focus:ring-lavender/25 transition-all placeholder:text-muted/50"
                     />
                   </div>
                 </div>
@@ -382,7 +382,7 @@ export default function AlumniLoginPage() {
                 id="alumni-submit-btn"
                 type="submit"
                 disabled={loading}
-                className="w-full btn-hover bg-lavender hover:bg-lavender-dark text-white font-bold py-4 rounded-xl shadow-[0_8px_25px_rgba(78,45,146,0.3)] transition-all text-[15px] disabled:opacity-50 cursor-pointer mt-2 flex items-center justify-center gap-2"
+                className="w-full btn-hover bg-lavender hover:bg-lavender-dark text-white font-bold py-4 rounded-sm shadow-[0_8px_25px_rgba(78,45,146,0.3)] transition-all text-[15px] disabled:opacity-50 cursor-pointer mt-2 flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <span>Processing...</span>

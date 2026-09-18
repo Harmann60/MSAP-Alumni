@@ -8,23 +8,21 @@ export default function GallerySection({ showHeading = true }) {
   const [viewerAlbum, setViewerAlbum] = useState(null);
 
   return (
-    <section id="gallery" className="max-w-6xl mx-auto px-5 py-16 md:py-24">
+    <section id="gallery" className="max-w-6xl mx-auto px-5 py-14 md:py-20">
       {showHeading && (
-        <div className="text-center mb-10">
-          <h2 className="font-display text-ink text-2xl md:text-3xl uppercase tracking-wide">
-            Gallery
-          </h2>
-          <div className="w-16 h-px bg-primary mx-auto mt-4" />
+        <div className="mb-12">
+          <p className="eyebrow mb-4">Photo archives</p>
+          <h2 className="display-lg text-3xl sm:text-4xl">Gallery</h2>
+          <p className="text-stone/80 text-[15px] mt-3 max-w-xl">
+            Moments captured from our events, reunions, cultural festivals, and gatherings.
+          </p>
         </div>
       )}
 
       <FeaturedCarousel albums={ALBUMS} />
 
-      <div className="text-center mt-16 md:mt-20 mb-10">
-        <h3 className="text-xs font-semibold uppercase tracking-widest text-muted">
-          Previous Album(s)
-        </h3>
-        <div className="w-12 h-px bg-parchment-dark mx-auto mt-3" />
+      <div className="my-14 border-t border-main pt-10">
+        <p className="eyebrow">All albums</p>
       </div>
 
       <AlbumGrid albums={ALBUMS} onViewAlbum={setViewerAlbum} />

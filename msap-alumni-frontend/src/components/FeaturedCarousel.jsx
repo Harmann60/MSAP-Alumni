@@ -40,7 +40,7 @@ export default function FeaturedCarousel({ albums }) {
       onTouchEnd={handleTouchEnd}
     >
       {/* Image container */}
-      <div className="relative aspect-[16/9] sm:aspect-[21/9] overflow-hidden rounded-xl bg-parchment-dark">
+      <div className="relative aspect-[16/9] sm:aspect-[21/9] overflow-hidden rounded-sm bg-parchment-dark">
         {featured.map((album, i) => (
           <div
             key={album.id}

@@ -26,7 +26,7 @@ function FormField({ label, name, type = 'text', placeholder, required, value, o
           required={required}
           className={`w-full border border-main bg-white ${
             icon ? 'pl-10' : 'pl-4'
-          } pr-4 py-3 rounded-xl text-[15px] text-ink font-medium focus:outline-none focus:border-lavender focus:ring-2 focus:ring-lavender/25 transition-all placeholder:text-muted/50 shadow-2xs`}
+          } pr-4 py-3 rounded-sm text-[15px] text-ink font-medium focus:outline-none focus:border-lavender focus:ring-2 focus:ring-lavender/25 transition-all placeholder:text-muted/50 shadow-2xs`}
         />
       </div>
     </div>
@@ -88,7 +88,7 @@ export default function RegisterPage() {
   if (submitted) {
     return (
       <div className="relative bg-page min-h-[85vh] flex items-center justify-center px-5 py-16">
-        <div className="relative max-w-lg w-full text-center p-8 sm:p-10 bg-card border-2 border-lavender/35 rounded-3xl shadow-[0_20px_60px_-15px_rgba(58,27,115,0.18)] animate-heroIn">
+        <div className="relative max-w-lg w-full text-center p-8 sm:p-10 bg-card border border-main rounded-sm animate-heroIn">
           <div className="w-16 h-16 rounded-2xl bg-emerald-100/70 text-emerald-700 border border-emerald-300 flex items-center justify-center text-3xl font-bold mx-auto mb-5 shadow-sm">
             ✓
           </div>
@@ -119,7 +119,7 @@ export default function RegisterPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               to="/login"
-              className="w-full sm:w-auto bg-lavender hover:bg-lavender-dark text-white font-bold px-7 py-3.5 rounded-xl text-sm transition-all shadow-md shadow-lavender/20"
+              className="w-full sm:w-auto bg-lavender hover:bg-lavender-dark text-white font-bold px-7 py-3.5 rounded-sm text-sm transition-all shadow-md shadow-lavender/20"
             >
               Go to Sign In →
             </Link>
@@ -168,7 +168,7 @@ export default function RegisterPage() {
       </div>
 
       <div className="relative max-w-3xl mx-auto px-5">
-        <div className="bg-card border-2 border-lavender/35 rounded-3xl shadow-[0_20px_60px_-15px_rgba(58,27,115,0.18)] overflow-hidden">
+        <div className="bg-card border border-main rounded-sm shadow-none overflow-hidden">
           {/* Card Top Banner */}
           <div className="p-6 sm:p-8 bg-section-alt border-b border-main flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
@@ -338,7 +338,7 @@ export default function RegisterPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full btn-hover bg-lavender hover:bg-lavender-dark text-white font-bold py-4 rounded-xl shadow-[0_10px_30px_rgba(78,45,146,0.3)] transition-all text-base disabled:opacity-60 cursor-pointer flex items-center justify-center gap-2"
+                className="w-full btn-hover bg-lavender hover:bg-lavender-dark text-white font-bold py-4 rounded-sm shadow-[0_10px_30px_rgba(78,45,146,0.3)] transition-all text-base disabled:opacity-60 cursor-pointer flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   <>

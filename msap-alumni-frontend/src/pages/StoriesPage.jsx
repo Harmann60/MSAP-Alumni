@@ -9,10 +9,9 @@ const DEFAULT_STORIES = [
     source: 'MSAP Alumni Spotlight',
     category: 'Spotlight',
     date: 'June 2026',
-    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=500&fit=crop',
+    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=800&fit=crop',
     excerpt:
       'How a small group of Manipuri students in Pune went on to lead technology careers across Silicon Valley — and what inspired them to establish the MSAP tech scholarship.',
-    readTime: '5 min read',
   },
   {
     id: 2,
@@ -20,10 +19,9 @@ const DEFAULT_STORIES = [
     source: 'Alumni Magazine',
     category: 'Milestone',
     date: 'September 2025',
-    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=500&fit=crop',
+    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&h=800&fit=crop',
     excerpt:
       'Over 200 alumni gathered at Symbiosis Ishanya Auditorium in Pune to celebrate half a century of campus unity, song, and lifelong community bonds.',
-    readTime: '6 min read',
   },
   {
     id: 3,
@@ -31,10 +29,9 @@ const DEFAULT_STORIES = [
     source: 'Cultural Desk',
     category: 'Culture',
     date: 'March 2026',
-    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=500&fit=crop',
+    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1200&h=800&fit=crop',
     excerpt:
       'Every March, Manipuris in Pune gather to celebrate Yaoshang, proving that cultural heritage and vibrant community spirit endure across geography.',
-    readTime: '4 min read',
   },
   {
     id: 4,
@@ -42,10 +39,9 @@ const DEFAULT_STORIES = [
     source: 'MSAP Secretariat',
     category: 'Community',
     date: 'April 2026',
-    image: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&h=500&fit=crop',
+    image: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=1200&h=800&fit=crop',
     excerpt:
       'The spring verification campaign connected dozens of recent graduates with senior mentors in healthcare, civil services, and software engineering.',
-    readTime: '3 min read',
   },
   {
     id: 5,
@@ -53,10 +49,9 @@ const DEFAULT_STORIES = [
     source: 'Career Network',
     category: 'Career',
     date: 'March 2026',
-    image: 'https://images.unsplash.com/photo-1531538606174-e1ed98e5ef2e?w=800&h=500&fit=crop',
+    image: 'https://images.unsplash.com/photo-1531538606174-e1ed98e5ef2e?w=1200&h=800&fit=crop',
     excerpt:
       'Pune alumni are offering 1-on-1 career navigation for Manipur students transitioning from college to corporate and academic careers.',
-    readTime: '4 min read',
   },
   {
     id: 6,
@@ -64,10 +59,9 @@ const DEFAULT_STORIES = [
     source: 'Alumni Magazine',
     category: 'Spotlight',
     date: 'February 2026',
-    image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&h=500&fit=crop',
+    image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&h=800&fit=crop',
     excerpt:
       'Memories of hostel study circles in Deccan Gymkhana that paved the way to public administration and social impact.',
-    readTime: '5 min read',
   },
 ];
 
@@ -87,7 +81,6 @@ export default function StoriesPage() {
             date: item.published_date || item.date || '2026',
             image: item.image_url || item.image || DEFAULT_STORIES[0].image,
             excerpt: item.excerpt,
-            readTime: '4 min read',
           }));
           setStories(mapped);
         }
@@ -107,126 +100,99 @@ export default function StoriesPage() {
   const rest = filteredStories.slice(1);
 
   return (
-    <div className="relative bg-page min-h-[90vh]">
-      {/* Header */}
-      <div className="relative max-w-6xl mx-auto px-5 pt-16 pb-10 md:pt-20 md:pb-12 text-center md:text-left">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-card text-lavender text-xs font-bold uppercase tracking-wider mb-4 border border-main">
-          <span>📖</span> Alumni Chronicles & Spotlights
-        </div>
-        <h1 className="font-display text-ink text-3xl sm:text-5xl font-bold tracking-tight mb-3">
-          Stories of Journey & Impact
-        </h1>
+    <div className="bg-page min-h-[90vh]">
+      {/* Page header */}
+      <div className="max-w-6xl mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
+        <p className="eyebrow mb-5">Alumni chronicles</p>
+        <h1 className="display-lg text-4xl md:text-5xl mb-3">Stories of journey & impact</h1>
         <p className="text-stone text-base sm:text-lg max-w-xl">
-          Fifty years of student life, global careers, cultural heritage, and giving back to Pune and Manipur.
+          Fifty years of student life, global careers, cultural heritage, and giving back to Pune and
+          Manipur.
         </p>
 
-        {/* Filter Pills */}
-        <div className="flex flex-wrap items-center gap-2 mt-8">
-          {filters.map((f) => (
-            <button
-              key={f}
-              onClick={() => setActiveFilter(f)}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                activeFilter === f
-                  ? 'bg-lavender text-white shadow-md shadow-lavender/20'
-                  : 'bg-card border border-main text-stone hover:border-lavender hover:text-lavender'
-              }`}
-            >
-              {f}
-            </button>
-          ))}
-        </div>
+        {/* Filter tabs */}
+        <nav aria-label="Filter stories by category" className="flex flex-wrap gap-x-7 gap-y-2 mt-9">
+          {filters.map((f) => {
+            const active = activeFilter === f;
+            return (
+              <button
+                key={f}
+                onClick={() => setActiveFilter(f)}
+                aria-pressed={active}
+                className={`pb-1.5 text-[13.5px] font-semibold border-b-2 transition-colors cursor-pointer ${
+                  active
+                    ? 'text-lavender border-lavender'
+                    : 'text-stone border-transparent hover:text-lavender hover:border-lavender/40'
+                }`}
+              >
+                {f}
+              </button>
+            );
+          })}
+        </nav>
       </div>
 
-      <div className="relative max-w-6xl mx-auto px-5 pb-20 md:pb-28">
-        {/* Featured story card */}
+      <div className="max-w-6xl mx-auto px-5 pb-20 md:pb-28">
+        {/* Featured spread */}
         {featured && (
-          <div className="mb-14">
-            <Link
-              to="/stories"
-              className="group card-lift block bg-card border border-main hover:border-lavender/50 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
-            >
-              <div className="grid lg:grid-cols-12">
-                <div className="lg:col-span-7 aspect-[16/10] lg:aspect-auto overflow-hidden bg-section-alt relative min-h-[300px]">
+          <article className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-16">
+            <div className="lg:col-span-7">
+              <div className="media-frame">
+                <div className="aspect-[16/10] bg-section-alt overflow-hidden">
                   <img
                     src={featured.image}
                     alt={featured.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-cover"
                   />
-                  <div className="absolute top-4 left-4">
-                    <span className="text-xs font-bold uppercase tracking-wider bg-card/95 backdrop-blur-md text-lavender px-3.5 py-1 rounded-full border border-main shadow-sm">
-                      Featured Story
-                    </span>
-                  </div>
-                </div>
-
-                <div className="lg:col-span-5 p-8 sm:p-10 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-muted mb-3">
-                      <span className="text-lavender font-semibold">{featured.source}</span>
-                      <span>&middot;</span>
-                      <span>{featured.date}</span>
-                    </div>
-
-                    <h2 className="font-display text-ink text-2xl sm:text-3xl font-bold mb-4 leading-tight group-hover:text-lavender transition-colors">
-                      {featured.title}
-                    </h2>
-
-                    <p className="text-stone text-[15px] leading-relaxed mb-6 font-normal">
-                      {featured.excerpt}
-                    </p>
-                  </div>
-
-                  <div className="pt-4 border-t border-main flex items-center justify-between text-xs font-bold text-lavender">
-                    <span>Read Full Chronicle</span>
-                    <span className="group-hover:translate-x-1.5 transition-transform text-base">→</span>
-                  </div>
                 </div>
               </div>
-            </Link>
-          </div>
+            </div>
+            <div className="lg:col-span-5">
+              <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-lavender mb-3">
+                Featured &middot; {featured.source} &middot; {featured.date}
+              </p>
+              <h2 className="font-display text-ink text-2xl sm:text-3xl font-bold leading-snug mb-4">
+                {featured.title}
+              </h2>
+              <p className="text-stone text-[15px] leading-relaxed mb-5">{featured.excerpt}</p>
+              <Link to="/stories" className="text-link link-underline">
+                Read the full chronicle
+                <span className="arrow" aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </article>
         )}
 
-        {/* Stories Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {rest.map((story) => (
-            <Link
-              key={story.id}
-              to="/stories"
-              className="group card-lift bg-card border border-main hover:border-lavender/50 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
-            >
-              <div className="aspect-[16/10] overflow-hidden bg-section-alt relative">
-                <img
-                  src={story.image}
-                  alt={story.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute top-3.5 left-3.5">
-                  <span className="text-[10px] font-bold uppercase tracking-wider bg-card/95 backdrop-blur-md text-lavender px-3 py-1 rounded-full border border-main shadow-2xs">
-                    {story.category || 'Article'}
-                  </span>
+        {/* Supporting stories */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+          {rest.map((story, idx) => (
+            <article key={story.id} className={`${idx > 0 ? 'sm:border-t-0' : ''} border-t border-main sm:pt-0 pt-6`}>
+              <div className="media-frame mb-5">
+                <div className="aspect-[16/10] bg-section-alt overflow-hidden">
+                  <img
+                    src={story.image}
+                    alt={story.title}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
                 </div>
               </div>
-
-              <div className="p-6 flex-1 flex flex-col justify-between">
-                <div>
-                  <div className="text-[11px] font-semibold uppercase tracking-wider text-muted mb-2">
-                    {story.source} &middot; {story.date}
-                  </div>
-                  <h3 className="font-display text-ink text-xl font-bold leading-snug mb-3 group-hover:text-lavender transition-colors">
-                    {story.title}
-                  </h3>
-                  <p className="text-[14px] text-stone leading-relaxed line-clamp-3">
-                    {story.excerpt}
-                  </p>
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-main text-xs font-bold text-lavender flex items-center justify-between">
-                  <span>Read Story</span>
-                  <span className="group-hover:translate-x-1.5 transition-transform text-base">→</span>
-                </div>
-              </div>
-            </Link>
+              <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted mb-2">
+                {story.source} &middot; {story.date}
+              </p>
+              <h3 className="font-display text-ink text-xl font-bold leading-snug mb-3 group-hover:text-lavender transition-colors">
+                <Link to="/stories" className="hover:text-lavender transition-colors">
+                  {story.title}
+                </Link>
+              </h3>
+              <p className="text-stone/85 text-[14px] leading-relaxed line-clamp-3 mb-4">
+                {story.excerpt}
+              </p>
+              <Link to="/stories" className="text-link">
+                Read story
+                <span className="arrow" aria-hidden="true">→</span>
+              </Link>
+            </article>
           ))}
         </div>
       </div>

@@ -5,64 +5,59 @@ import { fetchCommunityGroups } from '../services/dataService';
 const DEFAULT_GROUPS = [
   {
     id: 1,
-    title: 'Pune Flagship Chapter',
+    title: 'Pune',
     group_type: 'Regional',
     members_count: '850+',
-    icon: '🏛',
     location: 'Pune, Maharashtra',
-    description:
-      'The foundational home chapter. Regular campus meetups, social gatherings, career roundtables, and student emergency support in Pune.',
+    description: 'The foundational home chapter — campus meetups, career roundtables, and student support.',
   },
   {
     id: 2,
-    title: 'Imphal & Manipur Network',
+    title: 'Imphal & Manipur',
     group_type: 'Regional',
     members_count: '620+',
-    icon: '⛰',
     location: 'Imphal, Manipur',
-    description:
-      'Homecoming alumni based across the state of Manipur, actively connected through annual festival dinners, youth scholarships, and community projects.',
+    description: 'Homecoming alumni across Manipur, connected through festival dinners and community projects.',
   },
   {
     id: 3,
-    title: 'Bengaluru Tech Circle',
+    title: 'Bengaluru',
     group_type: 'Professional',
     members_count: '340+',
-    icon: '💻',
     location: 'Bengaluru, Karnataka',
-    description:
-      'Engineers, founders, product managers, and researchers collaborating on technology ventures, career referrals, and mentorship.',
+    description: 'Engineers, founders, product managers, and researchers collaborating on ventures and mentorship.',
   },
   {
     id: 4,
-    title: 'Healthcare & Medical Guild',
+    title: 'Healthcare & Medical',
     group_type: 'Professional',
     members_count: '110+',
-    icon: '🩺',
-    location: 'Pan-India & Global',
-    description:
-      'Doctors, surgeons, dentists, and health researchers who studied in Pune offering medical guidance and student health advice.',
+    location: 'Pan-India & global',
+    description: 'Doctors and health researchers who studied in Pune, offering medical guidance and student health advice.',
   },
   {
     id: 5,
-    title: 'Delhi NCR Chapter',
+    title: 'Delhi NCR',
     group_type: 'Regional',
     members_count: '290+',
-    icon: '🌆',
     location: 'Delhi & NCR',
-    description:
-      'Civil servants, policy professionals, journalists, and corporate leaders gathering for policy dialogues and cultural reunions.',
+    description: 'Civil servants, policy professionals, journalists, and corporate leaders gathering for policy dialogues.',
   },
   {
     id: 6,
-    title: 'Young Alumni & Mentorship Circle',
+    title: 'Young Alumni & Mentorship',
     group_type: 'Youth & Career',
     members_count: '410+',
-    icon: '🎓',
     location: 'Global',
-    description:
-      'Recent graduates from 2020–2026 receiving 1-on-1 resume reviews, interview coaching, and relocation support.',
+    description: 'Recent graduates from 2020–2026 receiving 1-on-1 resume reviews, interview coaching, and relocation support.',
   },
+];
+
+const STATS = [
+  { value: '6+', label: 'Active chapters' },
+  { value: '2,000+', label: 'Connected alumni' },
+  { value: '24+', label: 'Countries represented' },
+  { value: '50+', label: 'Years of solidarity' },
 ];
 
 export default function CommunityPage() {
@@ -81,106 +76,78 @@ export default function CommunityPage() {
   }, []);
 
   return (
-    <div className="relative bg-page min-h-[90vh]">
-      {/* Header */}
-      <div className="relative max-w-6xl mx-auto px-5 pt-16 pb-10 md:pt-20 md:pb-12 text-center md:text-left">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-card text-lavender text-xs font-bold uppercase tracking-wider mb-4 border border-main">
-          <span>🤝</span> Chapters & Professional Networks
-        </div>
-        <h1 className="font-display text-ink text-3xl sm:text-5xl font-bold tracking-tight mb-3">
-          Our Global Community
-        </h1>
+    <div className="bg-page min-h-[90vh]">
+      {/* Page header */}
+      <div className="max-w-6xl mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
+        <p className="eyebrow mb-5">Chapters & professional networks</p>
+        <h1 className="display-lg text-4xl md:text-5xl mb-3">Our global community</h1>
         <p className="text-stone text-base sm:text-lg max-w-xl">
-          Connect with MSAP alumni across regional chapters, professional circles, and shared interest networks worldwide.
+          Connect with MSAP alumni across regional chapters, professional circles, and shared-interest
+          networks worldwide.
         </p>
       </div>
 
-      <div className="relative max-w-6xl mx-auto px-5 pb-20 md:pb-28">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 bg-card border border-main rounded-3xl p-8 shadow-sm mb-14">
-          {[
-            { value: `${groups.length}+`, label: 'Active Chapters', icon: '🏛' },
-            { value: '2,000+', label: 'Connected Alumni', icon: '👥' },
-            { value: '24+', label: 'Countries Represented', icon: '🌍' },
-            { value: '50+', label: 'Years of Solidarity', icon: '🏅' },
-          ].map((stat, i) => (
-            <div key={i} className="flex items-center gap-4">
-              <span className="w-12 h-12 rounded-2xl bg-page border border-main text-2xl flex items-center justify-center shrink-0">
-                {stat.icon}
-              </span>
-              <div>
-                <div className="font-display text-ink text-2xl sm:text-3xl font-bold">{stat.value}</div>
-                <div className="text-muted text-xs font-bold uppercase tracking-wider mt-0.5">{stat.label}</div>
+      <div className="max-w-6xl mx-auto px-5 pb-20 md:pb-28">
+        {/* Stats — typographic, ruled */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-8 mb-16 border-t border-main">
+          {STATS.map((stat) => (
+            <div key={stat.label} className="pt-6 pr-6">
+              <div className="font-display text-ink text-3xl font-bold">{stat.value}</div>
+              <div className="text-muted text-[11px] font-bold uppercase tracking-widest mt-1">
+                {stat.label}
               </div>
             </div>
           ))}
         </div>
 
-        {/* Groups Grid */}
-        <div className="mb-6 flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-widest text-lavender">
-            Regional Chapters & Industry Networks
-          </span>
+        {/* Directory */}
+        <div className="mb-8">
+          <h2 className="display-lg text-2xl sm:text-3xl mb-1">Regional chapters & industry circles</h2>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+        <ul className="border-t border-main">
           {groups.map((group, idx) => (
-            <div
-              key={group.id || idx}
-              className="group card-lift p-7 bg-card border border-main hover:border-lavender/50 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="w-10 h-10 rounded-xl bg-page border border-main text-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                    {group.icon || '🏛'}
-                  </span>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-lavender bg-lavender-soft px-3 py-1 rounded-full border border-lavender/25">
-                    {group.group_type || 'Chapter'}
+            <li key={group.id || idx} className="border-b border-main py-6">
+              <div className="grid lg:grid-cols-12 gap-x-8 gap-y-3 items-baseline group">
+                <div className="lg:col-span-3">
+                  <span className="font-display text-ink text-xl font-bold leading-tight group-hover:text-lavender transition-colors">
+                    {group.title}
                   </span>
                 </div>
-
-                <h2 className="font-display text-ink text-xl font-bold mb-2 group-hover:text-lavender transition-colors">
-                  {group.title}
-                </h2>
-
-                <div className="text-xs font-semibold text-stone/70 mb-3 flex items-center gap-1.5">
-                  <span>📍 {group.location || 'Maharashtra & Beyond'}</span>
-                  <span>&middot;</span>
-                  <span className="text-lavender font-bold">{group.members_count || '100+'} Members</span>
+                <div className="lg:col-span-3 text-sm text-stone/80">
+                  {group.location || 'Maharashtra & beyond'}
                 </div>
-
-                <p className="text-stone text-[14px] leading-relaxed font-normal">
+                <div className="lg:col-span-4 text-[14px] text-stone/85 leading-relaxed">
                   {group.description}
-                </p>
+                </div>
+                <div className="lg:col-span-2 flex lg:justify-end">
+                  <span className="text-[11px] font-bold uppercase tracking-widest text-lavender">
+                    {group.members_count || '100+'} members
+                  </span>
+                </div>
               </div>
-
-              <div className="mt-6 pt-4 border-t border-main flex items-center justify-between text-xs font-bold text-lavender">
-                <span>View Chapter Directory</span>
-                <span className="group-hover:translate-x-1.5 transition-transform text-base">→</span>
-              </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
 
-        {/* Start a chapter CTA card */}
-        <div className="relative bg-card border border-main p-8 sm:p-12 rounded-3xl text-center shadow-lg shadow-black/5 max-w-3xl mx-auto overflow-hidden">
-          <div className="relative">
-            <span className="text-3xl mb-3 block">🌐</span>
-            <h2 className="font-display text-ink text-2xl sm:text-3xl font-bold mb-3">
-              Want to Establish a Regional Chapter?
+        {/* Start a chapter — editorial band */}
+        <section className="mt-16 bg-lavender-deep text-[#FAF8F4]">
+          <div className="max-w-2xl mx-auto px-5 py-14 md:py-20 text-center">
+            <h2 className="display-xl text-[clamp(1.6rem,3vw,2.4rem)] text-[#FAF8F4] mb-4">
+              Want to establish a regional chapter?
             </h2>
-            <p className="text-stone text-sm sm:text-base mb-8 max-w-md mx-auto leading-relaxed">
-              If you have fellow Pune alumni in your city or specialized industry circle, our executive committee can help charter your official chapter.
+            <p className="text-[#E7E1F3] text-[15px] leading-relaxed mb-8 max-w-lg mx-auto">
+              If you have fellow Pune alumni in your city or a specialized industry circle, our
+              executive committee can help charter your official chapter.
             </p>
             <Link
               to="/about"
-              className="inline-flex items-center gap-2 bg-lavender hover:bg-lavender-dark text-white font-bold px-8 py-3.5 rounded-xl shadow-md text-sm transition-all hover:-translate-y-0.5"
+              className="inline-block bg-[#FAF8F4] hover:bg-white text-ink text-[15px] font-bold px-8 py-3.5 rounded-sm transition-colors"
             >
-              <span>Contact the Alumni Committee</span>
-              <span>→</span>
+              Contact the alumni committee
             </Link>
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );
