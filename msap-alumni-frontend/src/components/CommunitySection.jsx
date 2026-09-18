@@ -22,7 +22,7 @@ export default function CommunitySection() {
           </p>
           <Link
             to="/community"
-            className="inline-block bg-lavender hover:bg-lavender-dark text-white text-base font-bold px-7 py-3.5 rounded-sm transition-colors"
+            className="inline-block bg-lavender hover:bg-lavender-dark text-white text-base font-bold px-8 py-4 rounded-sm transition-colors"
           >
             Browse all chapters
           </Link>

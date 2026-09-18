@@ -66,7 +66,7 @@ export default function HeroSection() {
           </div>
 
           {/* Authentic image-led panel */}
-          <div className="lg:col-span-6">
+          <div className="lg:col-span-6 lg:mt-14">
             <figure className="media-frame">
               <div className="aspect-[4/3] sm:aspect-[16/11] bg-section-alt overflow-hidden">
                 <img

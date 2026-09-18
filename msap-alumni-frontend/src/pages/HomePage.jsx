@@ -11,7 +11,7 @@ export default function HomePage() {
 
       {/* Cultural Meitei Mayek divider */}
       <div className="max-w-3xl mx-auto px-5">
-        <div className="meitei-rule text-lavender/50">
+        <div className="meitei-rule text-lavender/50" aria-hidden="true">
           <div className="meitei-rule-diamond" />
         </div>
       </div>

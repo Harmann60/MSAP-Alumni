@@ -42,7 +42,7 @@ export default function StoriesSection() {
         <div>
           <p className="eyebrow mb-4">01 &mdash; Alumni chronicles</p>
           <h2 className="display-lg text-3xl sm:text-4xl md:text-[2.75rem]">Stories from our alumni</h2>
-          <p className="text-stone text-base sm:text-lg mt-3 max-w-xl">
+          <p className="text-stone text-base sm:text-lg mt-4 max-w-xl">
             Journeys of leadership, lifelong friendship, and fifty years of memories — told in the
             voices of the people who lived them.
           </p>

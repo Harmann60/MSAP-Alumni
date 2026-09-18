@@ -7,7 +7,7 @@ const EVENTS = [
     month: 'August',
     year: '2026',
     title: 'Annual MSAP Alumni Meet 2026',
-    location: 'Symbiosis Campus &middot; Pune',
+    location: 'Symbiosis Campus · Pune',
     time: '5:00 PM IST',
     category: 'Flagship reunion',
   },
@@ -27,7 +27,7 @@ const EVENTS = [
     month: 'March',
     year: '2026',
     title: 'Yaoshang Cultural Festival',
-    location: 'Classic Grande &middot; Imphal',
+    location: 'Classic Grande · Imphal',
     time: '4:00 PM IST',
     category: 'Culture & heritage',
   },
@@ -41,7 +41,7 @@ export default function EventsSection() {
           <div>
             <p className="eyebrow mb-4">02 &mdash; Annual calendar</p>
             <h2 className="display-lg text-3xl sm:text-4xl md:text-[2.75rem]">Reunions & upcoming events</h2>
-            <p className="text-stone text-base sm:text-lg mt-3 max-w-xl">
+            <p className="text-stone text-base sm:text-lg mt-4 max-w-xl">
               From the flagship Pune annual meet to chapter mixers and cultural celebrations across
               India and the diaspora.
             </p>
@@ -77,7 +77,7 @@ export default function EventsSection() {
                     {event.title}
                   </h3>
                   <p className="text-[15px] text-stone/85">
-                    <span dangerouslySetInnerHTML={{ __html: `📍 ${event.location}` }} />
+                    <span>{event.location}</span>
                     <span className="mx-2 text-muted">·</span>
                     <span>{event.time}</span>
                     <span className="mx-2 text-muted">·</span>
@@ -86,7 +86,7 @@ export default function EventsSection() {
                 </div>
 
                 {/* Action */}
-                <span className="text-sm font-semibold text-muted hover:text-lavender transition-colors shrink-0">
+                <span className="text-sm font-semibold text-muted hover:text-lavender transition-colors shrink-0 whitespace-nowrap">
                   View details <span aria-hidden="true">→</span>
                 </span>
               </Link>
