@@ -1,0 +1,53 @@
+# ─── Secrets & Environment Files ────────────────────────────────────────────────
+# NEVER commit real secrets. Each package has its own .env.example as reference.
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!.env.*.example
+!**/.env.example
+!**/.env.*.example
+
+# ─── IDE / Editor Directories ────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# ─── OS-Generated Files ───────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+
+# ─── Node.js ──────────────────────────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ─── Build Artifacts ──────────────────────────────────────────────────────────────
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+
+# ─── Test Coverage ────────────────────────────────────────────────────────────────
+coverage/
+*.lcov
+.nyc_output/
+
+# ─── Logs ─────────────────────────────────────────────────────────────────────────
+logs/
+*.log
+
+# ─── Temporary & Misc ────────────────────────────────────────────────────────────
+*.tmp
+*.temp
+*.swp
+*.bak

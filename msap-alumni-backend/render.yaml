@@ -1,0 +1,72 @@
+services:
+  - type: web
+    name: msap-alumni-backend
+    env: node
+    plan: free
+    region: oregon
+    rootDir: msap-alumni-backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/v1/health
+    envVars:
+      # ── Server ────────────────────────────────────────────────────────────
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: CLIENT_URL
+        sync: false  # Set to your Vercel frontend URL e.g. https://msap-alumni.vercel.app
+
+      # ── Supabase ──────────────────────────────────────────────────────────
+      - key: SUPABASE_URL
+        sync: false  # e.g. https://abc123.supabase.co
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false  # From Supabase → Project Settings → API → service_role key
+      - key: SUPABASE_ANON_KEY
+        sync: false  # From Supabase → Project Settings → API → anon/public key
+
+      # ── JWT / Auth ────────────────────────────────────────────────────────
+      - key: JWT_SECRET
+        generateValue: true  # Render auto-generates a cryptographically secure random string
+      - key: JWT_EXPIRES_IN
+        value: 15m
+      - key: REFRESH_TOKEN_EXPIRES_IN
+        value: 7d
+      - key: GOOGLE_CLIENT_ID
+        sync: false  # Optional: Google OAuth Client ID for Sign-In with Google
+
+      # ── Rate Limiting ─────────────────────────────────────────────────────
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: RATE_LIMIT_MAX
+        value: 100
+      - key: REGISTRATION_RATE_LIMIT_MAX
+        value: 5
+
+      # ── Email / SMTP ──────────────────────────────────────────────────────
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: 587
+      - key: SMTP_USER
+        sync: false  # Your Gmail address e.g. alumni.msap1973@gmail.com
+      - key: SMTP_PASS
+        sync: false  # Your Gmail App Password (16 chars, no spaces)
+      - key: SMTP_FROM
+        sync: false  # e.g. MSAP Alumni <alumni.msap1973@gmail.com>
+      - key: NOTIFY_EMAIL
+        value: alumni.msap1973@gmail.com
+      - key: ADMIN_URL
+        sync: false  # e.g. https://msap-alumni.vercel.app/admin
+
+      # ── DKIM Signing (optional but recommended) ───────────────────────────
+      - key: DKIM_PRIVATE_KEY
+        sync: false  # PEM private key with \n as newlines
+      - key: DKIM_DOMAIN
+        sync: false  # e.g. msap.org
+      - key: DKIM_KEY_SELECTOR
+        sync: false  # e.g. mail
+
+      # ── Email Test Mode ───────────────────────────────────────────────────
+      - key: EMAIL_TEST_MODE
+        value: false  # Set to true only when debugging

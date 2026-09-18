@@ -1,27 +1,105 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 @import "tailwindcss";
 
+/* ==========================================================================
+   GLOBAL DESIGN TOKENS — SINGLE SOURCE OF TRUTH
+   Change any value here to update the color across the ENTIRE website!
+   ========================================================================== */
+:root {
+  /* --- Foundations & Backgrounds --- */
+  --bg-page: #EDE8DE;           /* Canvas background (warm darker off-white / parchment) */
+  --bg-section-alt: #E5DFD1;    /* Alternating section background (subtly deeper) */
+  --bg-card: #F9F7F2;           /* Cards, modals, drawers, input fields */
+  --bg-card-hover: #FFFFFF;     /* Card surface on hover */
+  --bg-subtle: #E8E2D5;         /* Pill tags, secondary badges, table footers */
+
+  /* --- Dark Lavender Brand & Structural Highlights --- */
+  --lavender-dark: #3A1B73;       /* Rich dark royal lavender */
+  --lavender-deep: #25104E;       /* Deep midnight lavender for contrast */
+  --lavender-highlight: #5A35A8;  /* Vibrant lavender highlight */
+  --lavender-soft: #EAE3F7;       /* Soft lavender tint for badges & icons */
+  --lavender-border: rgba(58, 27, 115, 0.22);       /* Subtle dark lavender card & section border */
+  --lavender-border-strong: rgba(58, 27, 115, 0.50);/* Emphasized dark lavender highlight */
+
+  /* --- Structural Borders --- */
+  --border-main: rgba(58, 27, 115, 0.18);       /* Dark lavender tinted structural border */
+  --border-subtle: rgba(58, 27, 115, 0.10);     /* Lighter internal dividers */
+  --border-highlight: var(--lavender-border);
+  --border-focus: #4E2D92;                      /* Input focus ring and selected tab highlight */
+
+  /* --- Primary Brand (Royal Purple / Lavender) --- */
+  --primary: #4E2D92;           /* Main buttons, brand highlights, active states */
+  --primary-hover: #3A1B73;     /* Button hover state */
+  --primary-light: #6540B2;     /* Subtle gradients and secondary accents */
+  --primary-soft: #EAE3F7;      /* Soft tint for badges and icon backgrounds */
+  --primary-border: #BAA9DD;    /* Border on primary badges */
+
+  /* --- Heritage Gold Accent --- */
+  --gold: #B8842A;              /* Jubilee accents, gold stars, special badges */
+  --gold-light: #D49C3D;
+  --gold-soft: #F5ECD9;
+  --gold-border: #DBC598;
+
+  /* --- High-Contrast Typography --- */
+  --text-main: #181224;         /* Headings (h1–h6), primary links, high-emphasis text */
+  --text-body: #2A2136;         /* Paragraph copy, table cell content */
+  --text-muted: #564D66;        /* Subtitles, labels, date tags, helper text */
+  --text-inverse: #FAF8F4;      /* White/light text on dark backgrounds and buttons */
+
+  /* --- Status Indicators --- */
+  --status-verified: #15803D;
+  --status-verified-bg: #DCFCE7;
+  --status-rejected: #DC2626;
+  --status-rejected-bg: #FEE2E2;
+}
+
 @theme {
-  --font-display: 'DM Serif Display', Georgia, serif;
-  --font-sans: 'Source Sans 3', system-ui, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 
-  --color-ink: #0B0E1A;
-  --color-ink-light: #1A1F36;
-  --color-ink-lighter: #2D3555;
+  /* Semantic Theme Mappings to :root */
+  --color-page: var(--bg-page);
+  --color-section-alt: var(--bg-section-alt);
+  --color-card: var(--bg-card);
+  --color-card-hover: var(--bg-card-hover);
+  --color-subtle: var(--bg-subtle);
 
-  --color-vermilion: #D64933;
-  --color-vermilion-light: #E8765E;
+  --color-border-main: var(--border-main);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-highlight: var(--lavender-border-strong);
 
-  --color-gold: #C8A85C;
-  --color-gold-light: #DEC88A;
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
+  --color-primary-soft: var(--primary-soft);
 
-  --color-parchment: #F5F0E8;
-  --color-parchment-dark: #E8E2D8;
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-soft: var(--gold-soft);
+  --color-gold-border: var(--gold-border);
 
-  --color-stone: #5C5347;
-  --color-muted: #9B9484;
+  --color-text-main: var(--text-main);
+  --color-text-body: var(--text-body);
+  --color-text-muted: var(--text-muted);
 
-  --color-verified: #2D8A4E;
+  /* Legacy & convenient utility aliases */
+  --color-parchment: var(--bg-page);
+  --color-parchment-subtle: var(--bg-section-alt);
+  --color-parchment-card: var(--bg-card);
+  --color-parchment-dark: var(--border-main);
+
+  --color-lavender: var(--primary);
+  --color-lavender-dark: var(--lavender-dark);
+  --color-lavender-deep: var(--lavender-deep);
+  --color-lavender-light: var(--primary-light);
+  --color-lavender-soft: var(--primary-soft);
+  --color-lavender-subtle: var(--bg-section-alt);
+  --color-lavender-border: var(--lavender-border);
+
+  --color-ink: var(--text-main);
+  --color-stone: var(--text-body);
+  --color-muted: var(--text-muted);
+  --color-verified: var(--status-verified);
 }
 
 @layer base {
@@ -29,14 +107,20 @@
     box-sizing: border-box;
   }
 
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--bg-page);
+  }
+
   body {
     font-family: var(--font-sans);
-    background: var(--color-parchment);
-    color: var(--color-stone);
+    background-color: var(--bg-page);
+    color: var(--text-body);
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.6;
+    overflow-x: hidden;
   }
 
   #root {
@@ -44,22 +128,40 @@
     min-height: 100svh;
     display: flex;
     flex-direction: column;
+    background-color: var(--bg-page);
   }
 
   ::selection {
-    background: var(--color-vermilion);
-    color: white;
+    background-color: var(--primary);
+    color: var(--text-inverse);
   }
 
-  h1, h2, h3, h4 {
+  h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    font-weight: 400;
-    color: var(--color-ink);
-    line-height: 1.15;
+    font-weight: 600;
+    color: var(--text-main);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
   }
 
   a {
     color: inherit;
+  }
+
+  /* Custom scrollbar matching canvas tokens */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--bg-section-alt);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-main);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #A89B84;
   }
 }
 
@@ -72,79 +174,134 @@
     font-family: var(--font-sans);
   }
 
+  /* Semantic UI classes reading directly from :root */
+  .bg-page {
+    background-color: var(--bg-page);
+  }
+  .bg-section-alt {
+    background-color: var(--bg-section-alt);
+  }
+  .bg-card {
+    background-color: var(--bg-card);
+  }
+  .border-main {
+    border-color: var(--border-main);
+  }
+  .border-subtle {
+    border-color: var(--border-subtle);
+  }
+  .border-highlight {
+    border-color: var(--lavender-border);
+  }
+  .border-highlight-strong {
+    border-color: var(--lavender-border-strong);
+  }
+  .text-main {
+    color: var(--text-main);
+  }
+  .text-body {
+    color: var(--text-body);
+  }
+  .text-muted {
+    color: var(--text-muted);
+  }
+  .text-primary {
+    color: var(--primary);
+  }
+  .bg-primary {
+    background-color: var(--primary);
+  }
+
+  /* Section Highlight Accents */
+  .section-highlight-card {
+    position: relative;
+    background-color: var(--bg-card);
+    border: 1.5px solid var(--lavender-border);
+    border-radius: 1.75rem;
+    box-shadow: 0 12px 35px -10px rgba(58, 27, 115, 0.14);
+    overflow: hidden;
+  }
+
+  .badge-highlight {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: 9999px;
+    background-color: var(--bg-card);
+    border: 1.5px solid var(--lavender-border);
+    color: var(--lavender-dark);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 2px 8px rgba(58, 27, 115, 0.08);
+  }
+
+  /* Card and Button micro-interactions */
+  .card-lift {
+    border: 1.5px solid var(--lavender-border);
+    box-shadow: 0 4px 20px -4px rgba(58, 27, 115, 0.08);
+    transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.24s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+  }
+  .card-lift:hover {
+    transform: translateY(-4px);
+    border-color: var(--lavender-border-strong);
+    box-shadow: 0 16px 36px -8px rgba(58, 27, 115, 0.20);
+  }
+
+  .btn-hover {
+    transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-hover:hover {
+    transform: translateY(-1.5px);
+  }
+  .btn-hover:active {
+    transform: translateY(0.5px);
+  }
+
   .animate-heroIn {
-    animation: heroIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: heroIn 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .animate-heroInDelay {
-    animation: heroIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+    animation: heroIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both;
   }
 
   @keyframes heroIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  .gallery-carousel-track {
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s;
-  }
-
-  .gallery-carousel-fade-in {
-    position: absolute;
-    inset: 0;
-    animation: galleryFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
-  }
-
-  @keyframes galleryFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  .gallery-viewer {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    background: rgba(0, 0, 0, 0.92);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: galleryViewerIn 0.2s ease-out;
-  }
-
-  .gallery-viewer-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  @keyframes galleryViewerIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
+  /* Traditional Meitei Mayek Cultural Divider */
   .meitei-rule {
     display: flex;
     align-items: center;
-    gap: 12px;
-    opacity: 0.3;
+    gap: 14px;
+    opacity: 0.65;
+    color: var(--lavender-dark);
   }
 
   .meitei-rule::before,
   .meitei-rule::after {
     content: '';
     flex: 1;
-    height: 1px;
-    background: currentColor;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, currentColor 25%, currentColor 75%, transparent);
   }
 
   .meitei-rule-diamond {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
     background: currentColor;
     transform: rotate(45deg);
     flex-shrink: 0;
+    box-shadow: 0 0 8px rgba(58, 27, 115, 0.3);
   }
 }

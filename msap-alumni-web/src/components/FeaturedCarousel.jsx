@@ -91,7 +91,7 @@ export default function FeaturedCarousel({ albums }) {
             key={i}
             onClick={() => setCurrent(i)}
             className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              i === current ? 'bg-verified w-5' : 'bg-stone/30 hover:bg-stone/50'
+              i === current ? 'bg-primary w-5' : 'bg-stone/30 hover:bg-stone/50'
             }`}
             aria-label={`Go to slide ${i + 1}`}
           />

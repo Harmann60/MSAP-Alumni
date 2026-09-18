@@ -14,7 +14,7 @@ export default function GallerySection({ showHeading = true }) {
           <h2 className="font-display text-ink text-2xl md:text-3xl uppercase tracking-wide">
             Gallery
           </h2>
-          <div className="w-16 h-px bg-verified mx-auto mt-4" />
+          <div className="w-16 h-px bg-primary mx-auto mt-4" />
         </div>
       )}
 

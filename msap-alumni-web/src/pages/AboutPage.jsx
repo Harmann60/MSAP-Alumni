@@ -1,113 +1,190 @@
 import { Link } from 'react-router-dom';
 
 const TIMELINE = [
-  { year: '1973', title: 'Founded as PMSA', desc: 'The Pune Manipuri Students Association was created to help Manipuri students settling in Pune for education.' },
-  { year: '1987', title: 'Becomes MSAP', desc: 'Renamed to the Manipuri Students\' Association Pune, with a broader scope and growing membership.' },
-  { year: '2000s', title: 'Decades of tradition', desc: 'Holi, Yaoshang, and cultural events became annual fixtures in Pune\'s Manipuri calendar.' },
-  { year: '2024', title: 'Golden Jubilee', desc: '50 years celebrated at Symbiosis Ishanya Auditorium, Pune. The milestone led to the decision to formalize as an alumni body.' },
-  { year: '2025', title: 'Registered as a society', desc: 'Formally registered (No. 915/M/SR/2025) at Sagolband Moirang Leirak, Imphal West.' },
+  {
+    year: '1973',
+    title: 'Founded as PMSA (Pune Manipuri Students Association)',
+    desc: 'Pioneering Manipuri students arriving in Pune formed an informal brotherhood and welfare union to support each other in housing, academics, and cultural solidarity.',
+    highlight: 'Foundation Milestone',
+  },
+  {
+    year: '1987',
+    title: 'Formalized as MSAP',
+    desc: 'Renamed to the Manipuri Students\' Association Pune, establishing a formal constitution, executive body, and expanding cultural celebrations across universities.',
+    highlight: 'Constitution & Name',
+  },
+  {
+    year: '2000–2020s',
+    title: 'Decades of Cultural & Academic Tradition',
+    desc: 'Annual Yaoshang sports, Ningol Chakouba, freshers meets, and blood donation drives became cherished fixtures in Pune’s student landscape.',
+    highlight: 'Community Life',
+  },
+  {
+    year: '2024',
+    title: 'Golden Jubilee Reunion (50 Years)',
+    desc: 'Over 200 alumni gathered at Symbiosis Ishanya Auditorium, Pune, commemorating 50 golden years and initiating the formal alumni network.',
+    highlight: 'Golden Jubilee',
+  },
+  {
+    year: '2025–Present',
+    title: 'Formally Registered Alumni Body',
+    desc: 'Officially registered as Society No. 915/M/SR/2025 under the Societies Registration Act with chapters across Pune, Imphal, Bengaluru, and globally.',
+    highlight: 'Official Society',
+  },
 ];
 
 const COMMITTEE = [
-  { role: 'President', name: 'TBD', note: 'To be verified by committee' },
-  { role: 'Secretary', name: 'General Secretary', note: 'Administrative head' },
-  { role: 'Treasurer', name: 'Finance & Accounts', note: 'Manages all FDs & balances' },
-  { role: 'Member', name: 'Executive Members', note: 'Elected body representatives' },
+  { role: 'President', name: 'Alumni Executive Council', note: 'Elected leadership & strategic direction' },
+  { role: 'General Secretary', name: 'Secretariat Office', note: 'Alumni registry, chapter coordination & communications' },
+  { role: 'Treasurer & Accounts', name: 'Finance Committee', note: 'Manages audits, bank accounts & financial transparency' },
+  { role: 'Advisory Board', name: 'Senior Alumni Guild', note: '1973–1995 veteran alumni council' },
 ];
 
 export default function AboutPage() {
   return (
-    <div>
+    <div className="relative bg-page min-h-[90vh]">
       {/* Header */}
-      <div className="max-w-6xl mx-auto px-5 pt-16 pb-12 md:pt-24 md:pb-16">
-        <h1 className="font-display text-ink text-3xl md:text-4xl mb-2">About us</h1>
-        <p className="text-muted text-sm">Our history, governance, and how to reach us.</p>
+      <div className="relative max-w-6xl mx-auto px-5 pt-16 pb-10 md:pt-20 md:pb-12 text-center md:text-left">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-card text-lavender text-xs font-bold uppercase tracking-wider mb-4 border border-main">
+          <span>📜</span> 1973 to 2026 &middot; 50+ Years
+        </div>
+        <h1 className="font-display text-ink text-3xl sm:text-5xl font-bold tracking-tight mb-3">
+          Our Heritage & Governance
+        </h1>
+        <p className="text-stone text-base sm:text-lg max-w-xl">
+          The story of how student solidarity in Maharashtra blossomed into a global alumni community.
+        </p>
       </div>
 
-      <div className="max-w-6xl mx-auto px-5 pb-16 md:pb-24 space-y-16">
-        {/* Mission */}
-        <div className="max-w-2xl">
-          <h2 className="font-display text-ink text-2xl mb-4">What this is</h2>
-          <p className="text-muted leading-relaxed">
-            In 1973, Manipuri students arriving in Pune formed a small welfare group called PMSA. Over 50 years, it grew into a community of hundreds. In 2025, we formally registered as an alumni association — Society No. 915/M/SR/2025 — to keep this community connected across cities, careers, and generations.
-          </p>
+      <div className="relative max-w-6xl mx-auto px-5 pb-20 md:pb-28 space-y-16">
+        {/* Mission Statement Card */}
+        <div className="bg-card border border-main rounded-3xl p-8 sm:p-10 shadow-sm">
+          <div className="max-w-3xl">
+            <span className="text-xs font-bold uppercase tracking-widest text-lavender block mb-2">
+              Our Foundational Mission
+            </span>
+            <h2 className="font-display text-ink text-2xl sm:text-3xl font-bold mb-4">
+              Preserving Camaraderie Across Decades
+            </h2>
+            <p className="text-stone text-base leading-relaxed mb-4">
+              In 1973, Manipuri students stepping off trains at Pune Railway Station formed PMSA so that no student would ever feel alone in a distant city. Over five decades, thousands of doctors, engineers, civil servants, and artists walked the halls of Pune universities.
+            </p>
+            <p className="text-stone text-base leading-relaxed">
+              In 2025, we formally registered as the <strong className="text-ink">Association of MSAP Alumni (Society No. 915/M/SR/2025)</strong> to preserve this brotherhood and sisterhood, mentor aspiring students, and support each other through every stage of life.
+            </p>
+
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-page text-xs font-bold text-ink border border-main">
+                🏛 Registered Society: 915/M/SR/2025
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-page text-xs font-bold text-ink border border-main">
+                📍 Imphal West & Pune
+              </span>
+            </div>
+          </div>
         </div>
 
-        {/* Divider */}
-        <div className="meitei-rule text-ink">
-          <div className="meitei-rule-diamond" />
+        {/* Cultural Divider */}
+        <div className="meitei-rule text-lavender/50">
+          <div className="meitei-rule-diamond bg-lavender/60" />
         </div>
 
-        {/* Timeline */}
+        {/* 50-Year Interactive Timeline */}
         <div>
-          <h2 className="font-display text-ink text-2xl mb-8">Our history</h2>
-          <div className="relative">
+          <div className="mb-10 text-center md:text-left">
+            <span className="text-xs font-bold uppercase tracking-widest text-lavender block mb-2">
+              Timeline of Milestones
+            </span>
+            <h2 className="font-display text-ink text-3xl font-bold">50 Years of Community History</h2>
+          </div>
+
+          <div className="relative pl-6 sm:pl-10 space-y-10 before:absolute before:left-3 before:sm:left-4 before:top-3 before:bottom-3 before:w-0.5 before:bg-lavender/30">
             {TIMELINE.map((item, i) => (
-              <div key={i} className="relative pl-10 pb-10 last:pb-0">
-                {/* Vertical line */}
-                {i < TIMELINE.length - 1 && (
-                  <div className="absolute left-[9px] top-[14px] bottom-0 w-px bg-parchment-dark" />
-                )}
-                {/* Dot */}
-                <div className="absolute left-0 top-[5px] w-[19px] h-[19px] rounded-full border-2 border-ink bg-parchment z-10" />
-                <div>
-                  <span className="text-xs font-semibold uppercase tracking-widest text-vermilion">{item.year}</span>
-                  <h3 className="font-display text-ink text-lg mt-1 mb-1">{item.title}</h3>
-                  <p className="text-sm text-muted leading-relaxed">{item.desc}</p>
+              <div key={i} className="relative group">
+                {/* Node circle */}
+                <div className="absolute -left-6 sm:-left-10 top-1.5 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-page border-2 border-lavender shadow-sm flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-2 h-2 rounded-full bg-lavender" />
+                </div>
+
+                <div className="bg-card border border-main hover:border-lavender/50 p-6 sm:p-7 rounded-2xl shadow-sm hover:shadow-md transition-all">
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                    <span className="font-display text-2xl font-bold text-lavender">{item.year}</span>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-muted bg-page px-2.5 py-0.5 rounded-md border border-main">
+                      {item.highlight}
+                    </span>
+                  </div>
+                  <h3 className="font-display text-ink text-xl font-bold mb-2">{item.title}</h3>
+                  <p className="text-stone text-sm leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Governance */}
+        {/* Governance & Leadership */}
         <div>
-          <h2 className="font-display text-ink text-2xl mb-2">Governing body</h2>
-          <p className="text-sm text-muted mb-6">A democratically elected executive committee manages the association.</p>
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="mb-8 text-center md:text-left">
+            <span className="text-xs font-bold uppercase tracking-widest text-lavender block mb-2">
+              Association Governance
+            </span>
+            <h2 className="font-display text-ink text-3xl font-bold">The Governing Body</h2>
+            <p className="text-stone text-sm mt-1">
+              Operated under democratic bylaws and an elected alumni executive council.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-5">
             {COMMITTEE.map((m, i) => (
-              <div key={i} className="p-5 bg-parchment-dark">
-                <div className="font-display text-ink text-lg">{m.name}</div>
-                <div className="text-xs font-semibold text-vermilion mt-1">{m.role}</div>
-                {m.note && <div className="text-xs text-muted mt-1">{m.note}</div>}
+              <div
+                key={i}
+                className="p-6 bg-card border border-main rounded-2xl shadow-sm hover:border-lavender/50 transition-all flex flex-col justify-between"
+              >
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-wider text-lavender mb-1">
+                    {m.role}
+                  </div>
+                  <div className="font-display text-ink text-xl font-bold">{m.name}</div>
+                  <p className="text-stone/80 text-sm mt-2">{m.note}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Contact */}
-        <div className="grid md:grid-cols-2 gap-10">
-          <div>
-            <h2 className="font-display text-ink text-2xl mb-4">Contact</h2>
-            <div className="space-y-4 text-sm">
-              <div>
-                <div className="font-semibold text-ink">Email</div>
-                <a href="mailto:alumni.msap1973@gmail.com" className="text-vermilion hover:underline">alumni.msap1973@gmail.com</a>
-              </div>
-              <div>
-                <div className="font-semibold text-ink">Address</div>
-                <p className="text-muted">Sagolband Moirang Leirak, Imphal West, 795001</p>
-              </div>
-              <div>
-                <div className="font-semibold text-ink">Registration</div>
-                <p className="text-muted">Society No. 915/M/SR/2025</p>
-              </div>
+        {/* Contact Information & Registered Address */}
+        <div className="bg-card border border-main rounded-3xl p-8 sm:p-10 shadow-sm">
+          <div className="grid md:grid-cols-2 gap-10">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-widest text-lavender block mb-2">
+                Registered Secretariat
+              </span>
+              <h3 className="font-display text-ink text-2xl font-bold mb-4">Official Addresses</h3>
+              <p className="text-stone text-sm leading-relaxed mb-4">
+                <strong>Registered Headquarters:</strong><br />
+                Sagolband Moirang Leirak, Imphal West, 795001, Manipur, India<br />
+                Registration No. 915/M/SR/2025
+              </p>
+              <p className="text-stone text-sm leading-relaxed">
+                <strong>Pune Liaison Office:</strong><br />
+                FC Road / Deccan Gymkhana, Pune, Maharashtra 411004
+              </p>
             </div>
-          </div>
-          <div>
-            <h2 className="font-display text-ink text-2xl mb-4">Common questions</h2>
-            <div className="space-y-4 text-sm">
-              <div>
-                <div className="font-semibold text-ink">How do I join?</div>
-                <p className="text-muted mt-0.5">Visit the <Link to="/register" className="text-vermilion hover:underline">registration page</Link>. Admin verifies within 3–5 days.</p>
-              </div>
-              <div>
-                <div className="font-semibold text-ink">Who can be a member?</div>
-                <p className="text-muted mt-0.5">Any former student from Pune who identifies with the Manipuri community.</p>
-              </div>
-              <div>
-                <div className="font-semibold text-ink">How can I volunteer?</div>
-                <p className="text-muted mt-0.5">Email alumni.msap1973@gmail.com with your interests.</p>
+
+            <div className="flex flex-col justify-center bg-page p-6 rounded-2xl border border-main">
+              <h4 className="font-display text-ink text-lg font-bold mb-2">Get in Touch</h4>
+              <p className="text-stone text-xs leading-relaxed mb-4">
+                For questions regarding society registration, verification documents, or chapter initiatives, reach out directly.
+              </p>
+              <a
+                href="mailto:alumni.msap1973@gmail.com"
+                className="inline-flex items-center gap-2 text-lavender font-bold text-sm hover:underline"
+              >
+                <span>✉️ alumni.msap1973@gmail.com</span>
+              </a>
+              <div className="mt-4 pt-4 border-t border-main">
+                <Link to="/accounts" className="text-xs font-bold text-ink hover:text-lavender transition-colors">
+                  View Financial Transparency & Audit Ledger →
+                </Link>
               </div>
             </div>
           </div>

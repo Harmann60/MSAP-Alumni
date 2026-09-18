@@ -26,7 +26,7 @@ export default function AlbumCard({ album, onView }) {
 
         <button
           onClick={() => onView(album)}
-          className="w-full bg-verified hover:bg-verified/90 text-white font-semibold text-sm py-2.5 rounded-full transition-colors"
+          className="w-full bg-primary hover:bg-primary-hover text-white font-semibold text-sm py-2.5 rounded-full transition-colors"
         >
           View Album
         </button>

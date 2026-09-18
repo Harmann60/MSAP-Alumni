@@ -1,0 +1,48 @@
+{
+  "name": "msap-alumni-backend",
+  "version": "1.0.0",
+  "description": "Production-grade, secure Node.js + Express backend with Supabase PostgreSQL for MSAP Alumni",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "node --test tests/security.test.js tests/email.test.js tests/auth.test.js",
+    "scan": "node -e \"const fs=require('fs'),path=require('path'),patterns=[/SUPABASE_SERVICE_ROLE_KEY=[a-zA-Z0-9_\\-.]{20,}/,/SUPABASE_ANON_KEY=[a-zA-Z0-9_\\-.]{20,}/,/JWT_SECRET=[a-zA-Z0-9_\\-.]{32,}/,/SMTP_PASS=[a-zA-Z0-9_\\-.]{10,}/,/-----BEGIN.*PRIVATE KEY-----/];function scan(dir){fs.readdirSync(dir,{withFileTypes:true}).forEach(e=>{const p=path.join(dir,e.name);if(e.isDirectory()&&e.name!=='node_modules'&&e.name!=='.git')scan(p);else if(e.isFile()){const c=fs.readFileSync(p,'utf8');patterns.forEach(rx=>{if(rx.test(c))console.log('⚠️  Possible secret in:',p)})}})}scan('.');\""
+  },
+
+  "keywords": [
+    "express",
+    "supabase",
+    "security",
+    "xss-protection",
+    "rate-limiting",
+    "msap-alumni"
+  ],
+  "author": "MSAP",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.1",
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "express-slow-down": "^2.0.3",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "nodemailer": "^9.0.5",
+    "validator": "^13.12.0",
+    "winston": "^3.17.0",
+    "xss": "^1.0.15",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

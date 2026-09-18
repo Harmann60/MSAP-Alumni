@@ -9,24 +9,34 @@ import CommunityPage from './pages/CommunityPage'
 import AboutPage from './pages/AboutPage'
 import RegisterPage from './pages/RegisterPage'
 import AccountsPage from './pages/AccountsPage'
+import AdminLoginPage from './pages/AdminLoginPage'
+import AdminDashboardPage from './pages/AdminDashboardPage'
+import AlumniLoginPage from './pages/AlumniLoginPage'
 import GalleryPage from './pages/GalleryPage'
 
 function ScrollToTop() {
-  const { pathname, hash } = useLocation()
-  useEffect(() => {
-    if (hash) {
-      const el = document.getElementById(hash.slice(1))
-      if (el) {
-        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 100)
-        return
-      }
-    }
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [pathname, hash])
+  const { pathname } = useLocation()
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }) }, [pathname])
   return null
 }
 
 export default function App() {
+  const { pathname } = useLocation()
+  const isAdminRoute = pathname.startsWith('/admin')
+
+  if (isAdminRoute) {
+    return (
+      <>
+        <ScrollToTop />
+        <Routes>
+          <Route path="/admin/login" element={<AdminLoginPage />} />
+          <Route path="/admin/*" element={<AdminDashboardPage />} />
+          <Route path="/admin" element={<AdminDashboardPage />} />
+        </Routes>
+      </>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-parchment text-stone font-sans flex flex-col">
       <ScrollToTop />
@@ -39,6 +49,7 @@ export default function App() {
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<AlumniLoginPage />} />
           <Route path="/accounts" element={<AccountsPage />} />
           <Route path="/gallery" element={<GalleryPage />} />
         </Routes>
