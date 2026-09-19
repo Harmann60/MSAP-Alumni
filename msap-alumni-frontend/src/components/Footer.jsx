@@ -85,9 +85,30 @@ export default function Footer() {
               ))}
             </ul>
             <div className="mt-6 flex items-center gap-5 text-[15px] font-semibold text-muted">
-              <span className="cursor-default hover:text-lavender transition-colors">Facebook</span>
-              <span className="cursor-default hover:text-lavender transition-colors">LinkedIn</span>
-              <span className="cursor-default hover:text-lavender transition-colors">Instagram</span>
+              <a
+                href="https://www.facebook.com/msapmanipur/"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-lavender transition-colors"
+              >
+                Facebook
+              </a>
+              <a
+                href="https://www.linkedin.com/company/association-of-msap-alumni-manipur"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-lavender transition-colors"
+              >
+                LinkedIn
+              </a>
+              <a
+                href="https://www.instagram.com/msap_pune/"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-lavender transition-colors"
+              >
+                Instagram
+              </a>
             </div>
           </nav>
 
