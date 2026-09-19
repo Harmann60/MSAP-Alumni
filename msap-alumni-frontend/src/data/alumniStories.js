@@ -1,3 +1,6 @@
+const STORIES_ARCHIVE_ROOT =
+  'https://pqfsbbdexjshvqskmbfu.supabase.co/storage/v1/object/public/MSAP%20Photos/Stories';
+
 const JUBILEE_ARCHIVE =
   'https://pqfsbbdexjshvqskmbfu.supabase.co/storage/v1/object/public/MSAP%20Photos/50th%20Golden%20Jubilee/SaveClip.App_655587142_18090688793142807_5674009504128084954_n.jpg';
 
@@ -27,8 +30,8 @@ export const ALUMNI_STORIES = [
       'Result: 93.17% in graduation — the highest mark among Manipuri students in Pune in 2022',
       'Documented in: reporting on the AMAND annual cultural programme, 2022',
     ],
-    image: null,
-    imageCaption: null,
+    image: `${STORIES_ARCHIVE_ROOT}/Featured.jpg`,
+    imageCaption: 'Photograph taken October 2022 · AMAND annual cultural programme',
     source: 'Documented in reporting on the AMAND annual cultural programme · 2022',
     sourceUrl: null,
     verified: true,
@@ -53,8 +56,8 @@ export const ALUMNI_STORIES = [
       'Year: 2019',
       'Result: highest graduation mark across all streams among the Manipuri community in Pune',
     ],
-    image: null,
-    imageCaption: null,
+    image: `${STORIES_ARCHIVE_ROOT}/Academic.jpg`,
+    imageCaption: 'Photograph taken October 2019',
     source: 'Documented record of the Late N. Albert Memorial Award · 2019',
     sourceUrl: null,
     verified: true,
@@ -83,8 +86,8 @@ export const ALUMNI_STORIES = [
       'Final programme: Koirengei Maibakhun, 26 August 2026',
       'Partners: Central Forest Division, Department of Forest, Government of Manipur; local organisations; community participants',
     ],
-    image: null,
-    imageCaption: null,
+    image: `${STORIES_ARCHIVE_ROOT}/Community.jpg`,
+    imageCaption: 'Photograph taken 26 August 2026 · Koirengei Maibakhun',
     source: 'Documented in MSAP Alumni Association reporting · 2026',
     sourceUrl: null,
     verified: true,
