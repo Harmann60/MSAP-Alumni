@@ -23,12 +23,11 @@ VALUES
 -- 3. Initial Stories
 INSERT INTO stories (title, source, published_date, image_url, excerpt, is_featured)
 VALUES
-('From Pune to Silicon Valley: One Alumni''s 30-Year Journey', 'MSAP Alumni Report', 'June 2026', 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=500&fit=crop', 'How a small group of Manipuri students in Pune went on to lead careers across the globe — and what brought them back.', true),
-('The Golden Jubilee: 200 Alumni, One Auditorium', 'Alumni Magazine', 'September 2025', 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=500&fit=crop', 'Over 200 alumni gathered at Symbiosis Ishanya Auditorium in Pune to mark half a century of community.', false),
-('Keeping Yaoshang Alive 1,200 km from Home', 'Community Spotlight', 'March 2026', 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=500&fit=crop', 'Every March, Manipuris in Pune gather to light the Yaoshang — and prove that culture travels with people.', false),
-('50 New Members in One Month: The Registration Drive', 'MSAP Report', 'April 2026', 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&h=500&fit=crop', 'The registration drive for new alumni members exceeded expectations this spring.', false),
-('The Mentorship Program: Alumni Guiding Graduates', 'Community Spotlight', 'March 2026', 'https://images.unsplash.com/photo-1531538606174-e1ed98e5ef2e?w=800&h=500&fit=crop', 'Experienced alumni are pairing with recent graduates for career guidance and professional development.', false),
-('From Yaoshang to Sangai: Cultural Identity in Pune', 'Alumni Magazine', 'February 2026', 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&h=500&fit=crop', 'How Pune''s Manipuri community preserves cultural identity across generations.', false);
+('93.17%: A Graduation Achievement Remembered', 'AMAND Annual Cultural Programme', '2022', NULL, 'Yuireising Ngalung received the Late Albert Memorial Award for Academic Excellence in 2022 after recording 93.17% in graduation — the highest mark among Manipuri students in Pune that year.', true),
+('Academic Excellence, Recognised in 2019', 'Late N. Albert Memorial Award Record', '2019', NULL, 'Tayenjam Sanathoi Singh received the second Late N. Albert Memorial Award for Academic Excellence in 2019 after achieving the highest graduation marks across streams among the Manipuri community in Pune.', false),
+('From Alumni Network to Community Action', 'MSAP Alumni Association Report', '2026', NULL, 'In 2026, the Association of MSAP Alumni, Manipur completed seven plantation programmes across the state and planted 2,550 saplings under the theme "Now for Climate".', false),
+('1973 → Today: A Student Network That Became a Community', 'MSAP Founding Record', 'Since 1973', NULL, 'Founded in 1973, MSAP began as a platform for Manipuri students in Pune. Over the decades, its activities have grown across academics, sports, culture and community life.', false),
+('Where Sport Became a Way to Stay Connected', 'Annual Sports Records', 'Documented history', NULL, 'MSAP has organised annual sports and cultural programmes for decades, including a documented 2014 sports meet with 22 individual and team events.', false);
 
 -- 4. Initial Community Groups
 INSERT INTO community_groups (title, group_type, members_count, description, display_order)
