@@ -15,10 +15,10 @@ export default function HeroSection() {
           <div className="lg:col-span-6">
             <div className="flex items-baseline justify-between gap-4 border-t border-main pt-4 mb-8">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-lavender">
-                Association of MSAP Alumni
+                Association of MSAP Alumni, Manipur
               </p>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
-                Est. 1973
+                Est. 2024
               </p>
             </div>
 
@@ -30,9 +30,9 @@ export default function HeroSection() {
             </h1>
 
             <p className="text-lg sm:text-xl text-stone leading-relaxed mb-10 max-w-xl">
-              The Association of MSAP Alumni unites generations of Manipuris who lived, learned,
-              and grew in Pune — from the pioneering PMSA days of 1973 to today. Register to
-              reconnect with your batchmates, chapters, and mentors.
+              The Association of MSAP Alumni, Manipur unites generations of Manipuris who lived,
+              learned, and grew in Pune — building on a student community first formed in 1973.
+              Register to reconnect with your batchmates, chapters, and mentors.
             </p>
 
             <div className="flex flex-wrap items-center gap-7">
@@ -71,7 +71,7 @@ export default function HeroSection() {
               <div className="aspect-[4/3] sm:aspect-[16/11] bg-section-alt overflow-hidden">
                 <img
                   src="/hero.png"
-                  alt="MSAP alumni gathered at a reunion in Pune"
+                  alt="Alumni gathered at a reunion in Pune"
                   className="w-full h-full object-cover"
                 />
               </div>

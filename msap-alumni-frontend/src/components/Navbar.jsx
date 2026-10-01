@@ -58,10 +58,10 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-5">
         <div className="flex items-center justify-between gap-4 h-16">
           {/* Brand */}
-          <Link to="/" className="flex items-center gap-3 shrink-0 group" aria-label="MSAP Alumni — Home">
+          <Link to="/" className="flex items-center gap-3 shrink-0 group" aria-label="Association of MSAP Alumni, Manipur — Home">
             <img
               src="/logo.png"
-              alt="Association of MSAP Alumni official logo"
+              alt="Association of MSAP Alumni, Manipur official logo"
               className="w-9 h-9 object-contain"
             />
             <span className="hidden sm:block">
@@ -69,7 +69,7 @@ export default function Navbar() {
                 MSAP Alumni
               </span>
               <span className="block text-muted text-[10.5px] tracking-[0.2em] uppercase font-semibold mt-1">
-                Association &middot; Est. 1973
+                Association &middot; Est. 2024
               </span>
             </span>
           </Link>

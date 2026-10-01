@@ -8,7 +8,7 @@ const DEFAULT_EVENTS = [
     day: '15',
     year: '2026',
     time: '10:00 AM – 6:00 PM IST',
-    title: '51st Annual MSAP Alumni Meet 2026',
+    title: 'Annual MSAP Alumni Meet 2026',
     location: 'Symbiosis Campus · Viman Nagar, Pune',
     category: 'Flagship',
     description:

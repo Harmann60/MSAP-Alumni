@@ -26,10 +26,10 @@ export default function HomePage() {
       <section className="bg-lavender-deep text-[#FAF8F4]">
         <div className="max-w-3xl mx-auto px-5 py-20 md:py-28 text-center">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#CFC4E8] mb-7">
-            Association of MSAP Alumni &middot; Est. 1973
+            Association of MSAP Alumni, Manipur &middot; Est. 2024
           </p>
           <h2 className="display-xl text-[clamp(2.1rem,4.5vw,3.4rem)] text-[#FAF8F4] mb-7">
-            Be part of the next 50 years.
+            Be part of what comes next.
           </h2>
           <p className="text-[#E7E1F3] text-lg leading-relaxed mb-11 max-w-xl mx-auto">
             Reconnect with former classmates. Meet alumni in your city. Mentor current students, and

@@ -99,16 +99,18 @@ export const ALUMNI_STORIES = [
     year: 'Since 1973',
     title: '1973 → Today: A Student Network That Became a Community',
     excerpt:
-      'Founded in 1973, MSAP began as a platform for Manipuri students in Pune. Over the decades, its activities have grown across academics, sports, culture and community life — connecting generations of students who came to Pune to study.',
+      'Founded in 1973, MSAP began as a platform for Manipuri students in Pune. Over the decades, its activities have grown across academics, sports, culture and community life — connecting generations of students who came to Pune to study. The Alumni Association was established in 2024.',
     body: [
       'MSAP was formed in 1973 as a common platform for students from Manipur studying in and around Pune.',
       'Its documented activities have grown across academic support, sports, cultural programmes, community gatherings and student welfare — connecting generations of students who came to Pune to study.',
-      'That platform continues today as an alumni network: in 2026, the Association of MSAP Alumni, Manipur carried the same community spirit into environmental action through its “Now for Climate” plantation drive.',
+      'In 2024, the alumni network took formal shape as the Association of MSAP Alumni, Manipur, carrying that student community’s spirit forward; in 2026, it turned the same spirit into environmental action through its “Now for Climate” plantation drive.',
     ],
-    person: 'MSAP — founded 1973',
-    achievement: 'A functioning student and alumni network in and around Pune since 1973',
+    person: 'MSAP student community — founded 1973',
+    achievement:
+      'A student community in and around Pune since 1973, carried forward by the Association of MSAP Alumni, Manipur (Est. 2024)',
     facts: [
-      'Founded: 1973',
+      'Founded: 1973 (the MSAP student community)',
+      'Alumni Association: established 2024, formally registered as a society in 2025',
       'Purpose: a common platform for students from Manipur studying in and around Pune',
       'Documented activities: academic support, sports, cultural programmes, community gatherings, student welfare',
     ],

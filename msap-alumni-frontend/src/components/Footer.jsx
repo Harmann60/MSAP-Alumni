@@ -9,7 +9,7 @@ const QUICK_LINKS = [
 ];
 
 const ASSOCIATION_LINKS = [
-  { label: 'Our 50-year history', to: '/about' },
+  { label: 'History & heritage', to: '/about' },
   { label: 'Financial transparency', to: '/accounts' },
   { label: 'Register for verification', to: '/register' },
   { label: 'Alumni sign in', to: '/login' },
@@ -27,7 +27,7 @@ export default function Footer() {
             <div className="flex items-center gap-3 mb-4">
               <img
                 src="/logo.png"
-                alt="Association of MSAP Alumni logo"
+                alt="Association of MSAP Alumni, Manipur logo"
                 className="w-11 h-11 object-contain"
               />
               <span>
@@ -35,13 +35,13 @@ export default function Footer() {
                   MSAP Alumni
                 </span>
                 <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-lavender mt-0.5">
-                  Association &middot; Est. 1973
+                  Association &middot; Est. 2024
                 </span>
               </span>
             </div>
             <p className="text-[15px] leading-relaxed text-stone max-w-sm mb-5">
-              The Association of MSAP Alumni connects generations of Manipuri students who lived and
-              learned in Pune — from the pioneering PMSA days of 1973 to today.
+              The Association of MSAP Alumni, Manipur connects generations of Manipuris who lived,
+              learned, and grew in Pune — carrying forward a student community first formed in 1973.
             </p>
             <p className="text-xs font-semibold uppercase tracking-widest text-muted">
               Society Reg. No. 915/M/SR/2025
@@ -101,14 +101,6 @@ export default function Footer() {
               >
                 LinkedIn
               </a>
-              <a
-                href="https://www.instagram.com/msap_pune/"
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-lavender transition-colors"
-              >
-                Instagram
-              </a>
             </div>
           </nav>
 
@@ -145,7 +137,7 @@ export default function Footer() {
 
       <div className="border-t border-main bg-page">
         <div className="max-w-7xl mx-auto px-5 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-muted">
-          <span>&copy; {year} Association of MSAP Alumni. All rights reserved.</span>
+          <span>&copy; {year} Association of MSAP Alumni, Manipur. All rights reserved.</span>
           <span className="flex items-center gap-6">
             <span className="cursor-default hover:text-lavender transition-colors">Privacy</span>
             <span className="cursor-default hover:text-lavender transition-colors">Terms</span>

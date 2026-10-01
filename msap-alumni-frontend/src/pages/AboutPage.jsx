@@ -18,8 +18,8 @@ const TIMELINE = [
   },
   {
     year: '2024',
-    title: 'Golden Jubilee Reunion (50 Years)',
-    desc: 'Over 200 alumni gathered at Symbiosis Ishanya Auditorium, Pune, commemorating 50 golden years and initiating the formal alumni network.',
+    title: 'Golden Jubilee & Alumni Association (Est. 2024)',
+    desc: 'The golden jubilee of the MSAP student community was marked in Pune and the Alumni Association was established — the founding year recorded in the association’s logo. The body formally registered in 2025 as Society No. 915/M/SR/2025.',
   },
   {
     year: '2025–Present',
@@ -61,7 +61,7 @@ export default function AboutPage() {
             </p>
             <p>
               In 2025, we formally registered as the{' '}
-              <strong className="text-ink font-bold">Association of MSAP Alumni (Society No. 915/M/SR/2025)</strong>{' '}
+              <strong className="text-ink font-bold">Association of MSAP Alumni, Manipur (Society No. 915/M/SR/2025)</strong>{' '}
               to preserve this brotherhood and sisterhood, mentor aspiring students, and support each
               other through every stage of life.
             </p>
