@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import HeroSection from '../components/HeroSection';
-import StoriesSection from '../components/StoriesSection';
+import NewsSection from '../components/NewsSection';
 import CommunitySection from '../components/CommunitySection';
 
 export default function HomePage() {
@@ -15,7 +15,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <StoriesSection />
+      <NewsSection />
 
       <CommunitySection />
 

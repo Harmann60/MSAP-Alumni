@@ -1,10 +1,10 @@
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
-import StoriesPage from './pages/StoriesPage'
-import StoryDetailPage from './pages/StoryDetailPage'
+import NewsPage from './pages/NewsPage'
+import NewsDetailPage from './pages/NewsDetailPage'
 import CommunityPage from './pages/CommunityPage'
 import AboutPage from './pages/AboutPage'
 import RegisterPage from './pages/RegisterPage'
@@ -44,8 +44,10 @@ export default function App() {
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/stories" element={<StoriesPage />} />
-          <Route path="/stories/:storyId" element={<StoryDetailPage />} />
+          <Route path="/news" element={<NewsPage />} />
+          <Route path="/news/:slug" element={<NewsDetailPage />} />
+          <Route path="/stories" element={<Navigate to="/news" replace />} />
+          <Route path="/stories/:storyId" element={<Navigate to="/news" replace />} />
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/register" element={<RegisterPage />} />

@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 const NAV_LINKS = [
   { label: 'About', to: '/about' },
-  { label: 'Stories', to: '/stories' },
+  { label: 'News', to: '/news' },
   { label: 'Chapters', to: '/community' },
   { label: 'Gallery', to: '/gallery' },
   { label: 'Transparency', to: '/accounts' },

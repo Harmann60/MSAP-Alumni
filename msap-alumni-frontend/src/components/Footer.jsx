@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 const QUICK_LINKS = [
   { label: 'About us', to: '/about' },
-  { label: 'Alumni stories', to: '/stories' },
+  { label: 'News & events', to: '/news' },
   { label: 'Chapters & networks', to: '/community' },
   { label: 'Photo gallery', to: '/gallery' },
 ];
