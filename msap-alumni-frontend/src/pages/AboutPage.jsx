@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { governingBody } from '../data/governingBody';
 
 const TIMELINE = [
@@ -191,10 +190,6 @@ export default function AboutPage() {
               alumni.msap1973@gmail.com
               <span className="arrow" aria-hidden="true">→</span>
             </a>
-            <Link to="/accounts" className="text-link">
-              View financial transparency &amp; audit ledger
-              <span className="arrow" aria-hidden="true">→</span>
-            </Link>
           </div>
         </section>
       </div>

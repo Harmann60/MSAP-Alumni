@@ -8,7 +8,6 @@ import NewsDetailPage from './pages/NewsDetailPage'
 import CommunityPage from './pages/CommunityPage'
 import AboutPage from './pages/AboutPage'
 import RegisterPage from './pages/RegisterPage'
-import AccountsPage from './pages/AccountsPage'
 import AdminLoginPage from './pages/AdminLoginPage'
 import AdminDashboardPage from './pages/AdminDashboardPage'
 import AlumniLoginPage from './pages/AlumniLoginPage'
@@ -52,7 +51,6 @@ export default function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<AlumniLoginPage />} />
-          <Route path="/accounts" element={<AccountsPage />} />
           <Route path="/gallery" element={<GalleryPage />} />
         </Routes>
       </main>

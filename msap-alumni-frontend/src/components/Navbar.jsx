@@ -6,7 +6,6 @@ const NAV_LINKS = [
   { label: 'News', to: '/news' },
   { label: 'Chapters', to: '/community' },
   { label: 'Gallery', to: '/gallery' },
-  { label: 'Transparency', to: '/accounts' },
 ];
 
 export default function Navbar() {

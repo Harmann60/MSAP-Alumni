@@ -9,7 +9,6 @@ const QUICK_LINKS = [
 
 const ASSOCIATION_LINKS = [
   { label: 'History & heritage', to: '/about' },
-  { label: 'Financial transparency', to: '/accounts' },
   { label: 'Register for verification', to: '/register' },
   { label: 'Alumni sign in', to: '/login' },
 ];
@@ -140,9 +139,6 @@ export default function Footer() {
           <span className="flex items-center gap-6">
             <span className="cursor-default hover:text-lavender transition-colors">Privacy</span>
             <span className="cursor-default hover:text-lavender transition-colors">Terms</span>
-            <Link to="/accounts" className="hover:text-lavender transition-colors">
-              Audit &amp; transparency
-            </Link>
           </span>
         </div>
       </div>
