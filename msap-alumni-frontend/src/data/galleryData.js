@@ -24,6 +24,29 @@ const RAW_ALBUMS = [
     ],
   },
   {
+    title: '1st Annual General Body Meeting',
+    folder: '1st Annual General Body Meeting',
+    eventDate: '07-Jul-2026',
+    updatedOn: '2026',
+    files: [
+      'WhatsApp Image 2026-07-07 at 2.03.58 PM.jpeg',
+      'WhatsApp Image 2026-07-07 at 2.03.58 PM (1).jpeg',
+      'WhatsApp Image 2026-07-07 at 2.03.59 PM.jpeg',
+      'WhatsApp Image 2026-07-07 at 2.03.59 PM (1).jpeg',
+      'WhatsApp Image 2026-07-07 at 2.03.59 PM (2).jpeg',
+      'WhatsApp Image 2026-07-07 at 2.03.59 PM (3).jpeg',
+      'WhatsApp Image 2026-07-07 at 2.03.59 PM (5).jpeg',
+      'WhatsApp Image 2026-07-07 at 2.03.59 PM (7).jpeg',
+      'WhatsApp Image 2026-07-07 at 2.03.59 PM (8).jpeg',
+      'WhatsApp Image 2026-07-07 at 2.03.59 PM (9).jpeg',
+      'WhatsApp Image 2026-07-07 at 2.03.59 PM (10).jpeg',
+      'WhatsApp Image 2026-07-07 at 2.03.59 PM (11).jpeg',
+      'WhatsApp Image 2026-07-07 at 2.03.59 PM (12).jpeg',
+      'WhatsApp Image 2026-07-07 at 2.03.59 PM (13).jpeg',
+      'WhatsApp Image 2026-07-07 at 2.03.59 PM (14).jpeg',
+    ],
+  },
+  {
     title: '1st New Year Get Together',
     folder: '1st New Year Get Together (Sunday, 4th jan, 2026)',
     eventDate: '04-Jan-2026',
@@ -41,6 +64,20 @@ const RAW_ALBUMS = [
     ],
   },
   {
+    title: '1st Re-Union of Association MSAP Alumni, Manipur',
+    folder: '1st Re-Union of Association MSAP Alumni, Manipur at Manipur University Centenary Hall on 11th May, 2025',
+    eventDate: '11-May-2025',
+    updatedOn: '2025',
+    files: ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg'],
+  },
+  {
+    title: 'Alumni Working Group Meeting held at Hotel Castle, Imphal',
+    folder: 'Alumni Working Group meeting held at Hotel Castle, Imphal on 19th July, 2025',
+    eventDate: '19-Jul-2025',
+    updatedOn: '2025',
+    files: ['1.jpg', '2.jpg'],
+  },
+  {
     title: '50th Golden Jubilee',
     folder: '50th golden jubilee',
     eventDate: '2024',
@@ -54,6 +91,13 @@ const RAW_ALBUMS = [
       'SaveClip.App_652681681_17959174805914550_2586455088703413576_n.jpg',
       'SaveClip.App_653101195_17990928932936316_5982040596961041918_n.jpg',
     ],
+  },
+  {
+    title: 'Alumni Working Group Meeting at Joysana Retreat, Oinam',
+    folder: 'Alumni Working Group meeting at Joysana Retreat, Oinam on 20th July, 2024',
+    eventDate: '20-Jul-2024',
+    updatedOn: '2024',
+    files: ['1.jpg', '2.jpg'],
   },
   {
     title: '75th Independence Day',
@@ -80,13 +124,6 @@ const RAW_ALBUMS = [
       'SaveClip.App_542688547_17926168620072885_5433907270516202808_n.jpg',
       'SaveClip.App_542081340_17926168530072885_8154856757139131985_n.jpg',
     ],
-  },
-  {
-    title: '1st General Body Meeting',
-    folder: '1st general body meeting',
-    eventDate: '2026',
-    updatedOn: '2026',
-    files: ['SaveClip.App_654999121_18064744151328835_8582639715463645144_n.jpg'],
   },
 ];
 

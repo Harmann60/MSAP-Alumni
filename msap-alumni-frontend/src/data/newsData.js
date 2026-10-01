@@ -14,16 +14,40 @@ const REUNION_IMAGE = newsImage('1st Reunion Meet — Manipur University, 2025.p
 const NEW_YEAR_IMAGE = newsImage('new year.jpeg');
 const AGBM_IMAGE = newsImage('Annual Body Meeting.jpg');
 
-// Folder name contains parentheses — avoid a literal-glob path (fast-glob treats them as extglob); glob the tree and match by filename instead.
-const newYearPartyImages = import.meta.glob('../assets/Gallary/**/*.{jpeg,jpg}', {
+// Gallery-wide helper. Folder names contain parentheses/newlines in some cases, so avoid literal
+// glob paths (fast-glob treats parens as extglob) and match by filename suffix instead.
+const allGalleryImages = import.meta.glob('../assets/Gallary/**/*.{jpg,jpeg,webp}', {
   eager: true,
   import: 'default',
 });
 
-const newYearPartyImage = (file) => {
-  const match = Object.entries(newYearPartyImages).find(([key]) => key.includes(`/${file}`));
+const galleryImage = (file, folder) => {
+  const target = folder ? `${folder}/${file}` : `/${file}`;
+  const match = Object.entries(allGalleryImages).find(([key]) => key.includes(target));
   return match ? match[1] : null;
 };
+
+const AGM_FOLDER = '1st Annual General Body Meeting';
+const AGM_GALLERY = [
+  'WhatsApp Image 2026-07-07 at 2.03.58 PM.jpeg',
+  'WhatsApp Image 2026-07-07 at 2.03.58 PM (1).jpeg',
+  'WhatsApp Image 2026-07-07 at 2.03.59 PM.jpeg',
+  'WhatsApp Image 2026-07-07 at 2.03.59 PM (1).jpeg',
+  'WhatsApp Image 2026-07-07 at 2.03.59 PM (2).jpeg',
+  'WhatsApp Image 2026-07-07 at 2.03.59 PM (3).jpeg',
+  'WhatsApp Image 2026-07-07 at 2.03.59 PM (5).jpeg',
+  'WhatsApp Image 2026-07-07 at 2.03.59 PM (7).jpeg',
+  'WhatsApp Image 2026-07-07 at 2.03.59 PM (8).jpeg',
+  'WhatsApp Image 2026-07-07 at 2.03.59 PM (9).jpeg',
+  'WhatsApp Image 2026-07-07 at 2.03.59 PM (10).jpeg',
+  'WhatsApp Image 2026-07-07 at 2.03.59 PM (11).jpeg',
+  'WhatsApp Image 2026-07-07 at 2.03.59 PM (12).jpeg',
+  'WhatsApp Image 2026-07-07 at 2.03.59 PM (13).jpeg',
+  'WhatsApp Image 2026-07-07 at 2.03.59 PM (14).jpeg',
+].map((file) => ({
+  src: galleryImage(file, AGM_FOLDER),
+  caption: '1st Annual General Body Meeting · 7 July 2026',
+}));
 
 const TREE_PROGRAMME_1_IMAGE = newsImage('Tree Plantation Drive 1.1 — Taobungkhok.jpg');
 const TREE_PROGRAMME_2_IMAGE = newsImage('Tree Plantation Drive 1.2 — Mekola.jpg');
@@ -271,25 +295,41 @@ export const NEWS_DATA = [
     slug: '1st-reunion-meet',
     title: '1st Reunion Meet',
     category: 'Reunion',
-    cardLabel: 'REUNION · 2025',
-    dateDisplay: '2025',
-    dateExact: false,
-    sortKey: '2025',
+    cardLabel: 'REUNION · 11 MAY 2025',
+    dateDisplay: '11 May 2025',
+    dateExact: true,
+    sortKey: '2025-05-11',
     year: 2025,
-    location: 'Manipur University',
+    location: 'Manipur University, Centenary Hall',
     excerpt:
-      'The first reunion meet of the Association of MSAP Alumni, Manipur, held at Manipur University in 2025.',
+      'The first reunion meet of the Association of MSAP Alumni, Manipur, held at the Manipur University Centenary Hall on 11 May 2025.',
     content: [
-      'The 1st Reunion Meet of the Association of MSAP Alumni, Manipur was held at Manipur University in 2025.',
+      'The 1st Reunion Meet of the Association of MSAP Alumni, Manipur was held on 11 May 2025 at the Centenary Hall, Manipur University.',
       'It was the first reunion gathering of the association at the university campus.',
       'Programme details are as documented on the official MSAP Alumni Facebook page.',
     ],
     coverImage: REUNION_IMAGE,
-    imageCaption: '1st Reunion Meet · Manipur University, 2025',
+    imageCaption: '1st Reunion Meet · Manipur University Centenary Hall, 11 May 2025',
     galleryImages: [
       {
-        src: REUNION_IMAGE,
-        caption: '1st Reunion Meet · Manipur University, 2025',
+        src: galleryImage('1.jpg', '1st Re-Union of Association MSAP Alumni, Manipur at Manipur University Centenary Hall on 11th May, 2025'),
+        caption: '1st Reunion Meet · Manipur University Centenary Hall, 11 May 2025',
+      },
+      {
+        src: galleryImage('2.jpg', '1st Re-Union of Association MSAP Alumni, Manipur at Manipur University Centenary Hall on 11th May, 2025'),
+        caption: '1st Reunion Meet · Manipur University Centenary Hall, 11 May 2025',
+      },
+      {
+        src: galleryImage('3.jpg', '1st Re-Union of Association MSAP Alumni, Manipur at Manipur University Centenary Hall on 11th May, 2025'),
+        caption: '1st Reunion Meet · Manipur University Centenary Hall, 11 May 2025',
+      },
+      {
+        src: galleryImage('4.jpg', '1st Re-Union of Association MSAP Alumni, Manipur at Manipur University Centenary Hall on 11th May, 2025'),
+        caption: '1st Reunion Meet · Manipur University Centenary Hall, 11 May 2025',
+      },
+      {
+        src: galleryImage('5.jpg', '1st Re-Union of Association MSAP Alumni, Manipur at Manipur University Centenary Hall on 11th May, 2025'),
+        caption: '1st Reunion Meet · Manipur University Centenary Hall, 11 May 2025',
       },
     ],
     campaign: null,
@@ -319,35 +359,35 @@ export const NEWS_DATA = [
     imageCaption: 'New Year Get Together · 4 January 2026',
     galleryImages: [
       {
-        src: newYearPartyImage('2026 MSAP Alumni New Year Party group.jpeg'),
+        src: galleryImage('2026 MSAP Alumni New Year Party group.jpeg'),
         caption: 'New Year Get Together · 4 January 2026',
       },
       {
-        src: newYearPartyImage('2026 MSAP Alumni New Year Party group2.jpeg'),
+        src: galleryImage('2026 MSAP Alumni New Year Party group2.jpeg'),
         caption: 'New Year Get Together · 4 January 2026',
       },
       {
-        src: newYearPartyImage('2026 MSAP Alumni New Year Party President.jpeg'),
+        src: galleryImage('2026 MSAP Alumni New Year Party President.jpeg'),
         caption: 'New Year Get Together · 4 January 2026',
       },
       {
-        src: newYearPartyImage('2026 MSAP Alumni New Year Party with Host.jpeg'),
+        src: galleryImage('2026 MSAP Alumni New Year Party with Host.jpeg'),
         caption: 'New Year Get Together · 4 January 2026',
       },
       {
-        src: newYearPartyImage('MSAP Alumni ReUnion 4th Jan 2026 portrait.jpeg'),
+        src: galleryImage('MSAP Alumni ReUnion 4th Jan 2026 portrait.jpeg'),
         caption: 'New Year Get Together · 4 January 2026',
       },
       {
-        src: newYearPartyImage('2026 MSAP Alumni New Year Party Uttam.jpeg'),
+        src: galleryImage('2026 MSAP Alumni New Year Party Uttam.jpeg'),
         caption: 'New Year Get Together · 4 January 2026',
       },
       {
-        src: newYearPartyImage('2026 MSAP Alumni New Year Party Tejkumar.jpeg'),
+        src: galleryImage('2026 MSAP Alumni New Year Party Tejkumar.jpeg'),
         caption: 'New Year Get Together · 4 January 2026',
       },
       {
-        src: newYearPartyImage('2026 MSAP Alumni New Year Party sub group.jpeg'),
+        src: galleryImage('2026 MSAP Alumni New Year Party sub group.jpeg'),
         caption: 'New Year Get Together · 4 January 2026',
       },
     ],
@@ -362,26 +402,21 @@ export const NEWS_DATA = [
     slug: 'annual-general-body-meeting',
     title: 'Annual General Body Meeting',
     category: 'Association',
-    cardLabel: 'ASSOCIATION · 2026',
-    dateDisplay: '2026',
-    dateExact: false,
-    sortKey: '2026',
+    cardLabel: 'ASSOCIATION · 7 JULY 2026',
+    dateDisplay: '7 July 2026',
+    dateExact: true,
+    sortKey: '2026-07-07',
     year: 2026,
     location: null,
     excerpt:
-      'The annual general body meeting of the Association of MSAP Alumni, Manipur, held in 2026.',
+      'The annual general body meeting of the Association of MSAP Alumni, Manipur, held on 7 July 2026.',
     content: [
-      'The Association of MSAP Alumni, Manipur convened its annual general body meeting in 2026.',
+      'The Association of MSAP Alumni, Manipur convened its annual general body meeting on 7 July 2026.',
       'Meeting details and outcomes are as documented on the official MSAP Alumni Facebook page.',
     ],
     coverImage: AGBM_IMAGE,
-    imageCaption: 'Annual General Body Meeting',
-    galleryImages: [
-      {
-        src: AGBM_IMAGE,
-        caption: 'Annual General Body Meeting',
-      },
-    ],
+    imageCaption: '1st Annual General Body Meeting · 7 July 2026',
+    galleryImages: AGM_GALLERY,
     campaign: null,
     sourceType: 'Official Facebook',
     source: 'Official MSAP Alumni Facebook page',
