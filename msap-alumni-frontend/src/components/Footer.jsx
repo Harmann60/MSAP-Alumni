@@ -85,7 +85,7 @@ export default function Footer() {
             </ul>
             <div className="mt-6 flex items-center gap-5 text-[15px] font-semibold text-muted">
               <a
-                href="https://www.facebook.com/msapmanipur/"
+                href="https://www.facebook.com/share/1Jco7CPBqJ/?mibextid=wwXIfr"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-lavender transition-colors"
