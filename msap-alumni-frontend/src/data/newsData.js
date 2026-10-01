@@ -8,6 +8,8 @@ const newsImages = import.meta.glob('../assets/News/*.{jpg,jpeg,png,webp}', {
 const newsImage = (name) => newsImages[`../assets/News/${name}`] || null;
 
 const REUNION_IMAGE = newsImage('1st Reunion Meet — Manipur University, 2025.png');
+const NEW_YEAR_IMAGE = newsImage('new year.jpeg');
+const AGBM_IMAGE = newsImage('Annual Body Meeting.jpg');
 
 const TREE_PROGRAMME_1_IMAGE = newsImage('Tree Plantation Drive 1.1 — Taobungkhok.jpg');
 const TREE_PROGRAMME_2_IMAGE = newsImage('Tree Plantation Drive 1.2 — Mekola.jpg');
@@ -299,9 +301,14 @@ export const NEWS_DATA = [
       'The Association of MSAP Alumni, Manipur held a New Year celebration for its members in January 2026.',
       'Programme details are as documented on the official MSAP Alumni Facebook page.',
     ],
-    coverImage: null,
-    imageCaption: null,
-    galleryImages: [],
+    coverImage: NEW_YEAR_IMAGE,
+    imageCaption: 'New Year Celebration · January 2026',
+    galleryImages: [
+      {
+        src: NEW_YEAR_IMAGE,
+        caption: 'New Year Celebration · January 2026',
+      },
+    ],
     campaign: null,
     sourceType: 'Official Facebook',
     source: 'Official MSAP Alumni Facebook page',
@@ -325,9 +332,14 @@ export const NEWS_DATA = [
       'The Association of MSAP Alumni, Manipur convened its annual general body meeting in 2026.',
       'Meeting details and outcomes are as documented on the official MSAP Alumni Facebook page.',
     ],
-    coverImage: null,
-    imageCaption: null,
-    galleryImages: [],
+    coverImage: AGBM_IMAGE,
+    imageCaption: 'Annual General Body Meeting',
+    galleryImages: [
+      {
+        src: AGBM_IMAGE,
+        caption: 'Annual General Body Meeting',
+      },
+    ],
     campaign: null,
     sourceType: 'Official Facebook',
     source: 'Official MSAP Alumni Facebook page',

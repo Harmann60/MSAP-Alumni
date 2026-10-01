@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import jubileeImage from '../assets/homepage 50 year jubilee.webp';
 
 const STATS = [
   { value: '50+', label: 'Years of legacy' },
@@ -70,8 +71,8 @@ export default function HeroSection() {
             <figure className="media-frame">
               <div className="aspect-[4/3] sm:aspect-[16/11] bg-section-alt overflow-hidden">
                 <img
-                  src="/hero.png"
-                  alt="Alumni gathered at a reunion in Pune"
+                  src={jubileeImage}
+                  alt="Alumni gathered at the 50th Golden Jubilee reunion"
                   className="w-full h-full object-cover"
                 />
               </div>
