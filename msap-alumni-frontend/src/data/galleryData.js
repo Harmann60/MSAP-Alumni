@@ -3,7 +3,11 @@ const images = import.meta.glob('../assets/Gallary/**/*.{jpg,jpeg,png,webp}', {
   import: 'default',
 });
 
-const imageFor = (folder, file) => images[`../assets/Gallary/${folder}/${file}`] || null;
+const imageFor = (folder, file) => {
+  const relative = `${folder}/${file}`;
+  const match = Object.entries(images).find(([key]) => key.includes(relative));
+  return match ? match[1] : null;
+};
 
 const RAW_ALBUMS = [
   {

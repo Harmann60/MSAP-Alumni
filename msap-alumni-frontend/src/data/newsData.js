@@ -5,7 +5,10 @@ const newsImages = import.meta.glob('../assets/News/*.{jpg,jpeg,png,webp}', {
   import: 'default',
 });
 
-const newsImage = (name) => newsImages[`../assets/News/${name}`] || null;
+const newsImage = (name) => {
+  const match = Object.entries(newsImages).find(([key]) => key.includes(`News/${name}`));
+  return match ? match[1] : null;
+};
 
 const REUNION_IMAGE = newsImage('1st Reunion Meet — Manipur University, 2025.png');
 const NEW_YEAR_IMAGE = newsImage('new year.jpeg');
