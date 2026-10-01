@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { governingBody } from '../data/governingBody';
 
 const TIMELINE = [
   {
@@ -26,13 +27,6 @@ const TIMELINE = [
     title: 'Formally registered alumni body',
     desc: 'Officially registered as Society No. 915/M/SR/2025 under the Societies Registration Act with chapters across Pune, Imphal, Bengaluru, and globally.',
   },
-];
-
-const COMMITTEE = [
-  { role: 'President', name: 'Alumni Executive Council', note: 'Elected leadership & strategic direction' },
-  { role: 'General Secretary', name: 'Secretariat Office', note: 'Alumni registry, chapter coordination & communications' },
-  { role: 'Treasurer & Accounts', name: 'Finance Committee', note: 'Manages audits, bank accounts & financial transparency' },
-  { role: 'Advisory Board', name: 'Senior Alumni Guild', note: '1973–1995 veteran alumni council' },
 ];
 
 export default function AboutPage() {
@@ -99,27 +93,73 @@ export default function AboutPage() {
         {/* Governance */}
         <section>
           <p className="eyebrow mb-5">Association governance</p>
-          <h2 className="display-lg text-3xl sm:text-4xl mb-4">The governing body</h2>
+          <h2 className="display-lg text-3xl sm:text-4xl mb-3">The governing body</h2>
+          <p className="font-display text-ink text-lg md:text-xl mb-2">
+            Managing Committee of Association of MSAP Alumni, Manipur
+          </p>
           <p className="text-stone text-base mb-10 max-w-xl">
-            Operated under democratic bylaws and an elected alumni executive council.
+            Office bearers, executive members and the advisory board of the Association of MSAP
+            Alumni, Manipur.
           </p>
 
-          <dl>
-            {COMMITTEE.map((m) => (
-              <div
-                key={m.role}
-                className="border-t border-main py-5 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-8"
-              >
-                <dt className="sm:w-56 shrink-0 text-xs font-bold uppercase tracking-widest text-lavender pt-1">
-                  {m.role}
-                </dt>
-                <dd>
-                  <span className="font-display text-ink text-lg font-bold block">{m.name}</span>
-                  <span className="text-stone/80 text-[15px]">{m.note}</span>
-                </dd>
-              </div>
-            ))}
-          </dl>
+          {/* Office bearers — primary panel */}
+          <div className="border border-main border-t-4 border-t-lavender bg-card">
+            <div className="px-6 py-8 md:px-10 md:py-10">
+              <h3 className="eyebrow mb-7">Office bearers</h3>
+              <dl className="divide-y divide-main/80">
+                {governingBody.officeBearers.map((member) => (
+                  <div
+                    key={member.position}
+                    className="py-4 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-8"
+                  >
+                    <dt className="sm:w-56 shrink-0 text-xs font-bold uppercase tracking-widest text-lavender pt-1">
+                      {member.position}
+                    </dt>
+                    <dd className="font-display text-ink text-lg md:text-xl font-bold">
+                      {member.name}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
+
+          {/* Executive members & advisory board */}
+          <div className="mt-14 md:mt-16 grid md:grid-cols-2 gap-x-16 gap-y-12">
+            <div>
+              <h3 className="eyebrow mb-6">Executive members</h3>
+              <ol className="border-t border-main">
+                {governingBody.executiveMembers.map((name, idx) => (
+                  <li
+                    key={name}
+                    className="py-3.5 border-b border-main flex items-baseline gap-5"
+                  >
+                    <span className="text-xs font-bold tracking-widest text-lavender w-7 shrink-0">
+                      {String(idx + 1).padStart(2, '0')}
+                    </span>
+                    <span className="font-display text-ink text-lg font-bold">{name}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <div>
+              <h3 className="eyebrow mb-6">Advisory board</h3>
+              <ol className="border-t border-main">
+                {governingBody.advisoryBoard.map((name, idx) => (
+                  <li
+                    key={name}
+                    className="py-3.5 border-b border-main flex items-baseline gap-5"
+                  >
+                    <span className="text-xs font-bold tracking-widest text-lavender w-7 shrink-0">
+                      {String(idx + 1).padStart(2, '0')}
+                    </span>
+                    <span className="font-display text-ink text-lg font-bold">{name}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
         </section>
 
         {/* Registered addresses */}
