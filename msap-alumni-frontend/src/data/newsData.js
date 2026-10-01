@@ -14,6 +14,17 @@ const REUNION_IMAGE = newsImage('1st Reunion Meet — Manipur University, 2025.p
 const NEW_YEAR_IMAGE = newsImage('new year.jpeg');
 const AGBM_IMAGE = newsImage('Annual Body Meeting.jpg');
 
+// Folder name contains parentheses — avoid a literal-glob path (fast-glob treats them as extglob); glob the tree and match by filename instead.
+const newYearPartyImages = import.meta.glob('../assets/Gallary/**/*.{jpeg,jpg}', {
+  eager: true,
+  import: 'default',
+});
+
+const newYearPartyImage = (file) => {
+  const match = Object.entries(newYearPartyImages).find(([key]) => key.includes(`/${file}`));
+  return match ? match[1] : null;
+};
+
 const TREE_PROGRAMME_1_IMAGE = newsImage('Tree Plantation Drive 1.1 — Taobungkhok.jpg');
 const TREE_PROGRAMME_2_IMAGE = newsImage('Tree Plantation Drive 1.2 — Mekola.jpg');
 const TREE_PROGRAMME_3_IMAGE = newsImage('Tree Plantation Drive 1.3 — Royal Academy of Science, Kongba.jpg');
@@ -292,24 +303,52 @@ export const NEWS_DATA = [
     slug: 'new-year-celebration',
     title: 'New Year Celebration',
     category: 'Community',
-    cardLabel: 'COMMUNITY · JAN 2026',
-    dateDisplay: 'January 2026',
-    dateExact: false,
-    sortKey: '2026-01',
+    cardLabel: 'COMMUNITY · 4 JAN 2026',
+    dateDisplay: '4 January 2026',
+    dateExact: true,
+    sortKey: '2026-01-04',
     year: 2026,
-    location: null,
+    location: 'Imphal',
     excerpt:
-      'A New Year celebration for members of the Association of MSAP Alumni, Manipur, held in January 2026.',
+      'The 1st New Year Get Together of the Association of MSAP Alumni, Manipur, held on Sunday, 4 January 2026.',
     content: [
-      'The Association of MSAP Alumni, Manipur held a New Year celebration for its members in January 2026.',
+      'The Association of MSAP Alumni, Manipur held its 1st New Year Get Together on Sunday, 4 January 2026.',
       'Programme details are as documented on the official MSAP Alumni Facebook page.',
     ],
     coverImage: NEW_YEAR_IMAGE,
-    imageCaption: 'New Year Celebration · January 2026',
+    imageCaption: 'New Year Get Together · 4 January 2026',
     galleryImages: [
       {
-        src: NEW_YEAR_IMAGE,
-        caption: 'New Year Celebration · January 2026',
+        src: newYearPartyImage('2026 MSAP Alumni New Year Party group.jpeg'),
+        caption: 'New Year Get Together · 4 January 2026',
+      },
+      {
+        src: newYearPartyImage('2026 MSAP Alumni New Year Party group2.jpeg'),
+        caption: 'New Year Get Together · 4 January 2026',
+      },
+      {
+        src: newYearPartyImage('2026 MSAP Alumni New Year Party President.jpeg'),
+        caption: 'New Year Get Together · 4 January 2026',
+      },
+      {
+        src: newYearPartyImage('2026 MSAP Alumni New Year Party with Host.jpeg'),
+        caption: 'New Year Get Together · 4 January 2026',
+      },
+      {
+        src: newYearPartyImage('MSAP Alumni ReUnion 4th Jan 2026 portrait.jpeg'),
+        caption: 'New Year Get Together · 4 January 2026',
+      },
+      {
+        src: newYearPartyImage('2026 MSAP Alumni New Year Party Uttam.jpeg'),
+        caption: 'New Year Get Together · 4 January 2026',
+      },
+      {
+        src: newYearPartyImage('2026 MSAP Alumni New Year Party Tejkumar.jpeg'),
+        caption: 'New Year Get Together · 4 January 2026',
+      },
+      {
+        src: newYearPartyImage('2026 MSAP Alumni New Year Party sub group.jpeg'),
+        caption: 'New Year Get Together · 4 January 2026',
       },
     ],
     campaign: null,

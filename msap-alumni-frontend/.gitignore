@@ -26,5 +26,5 @@ dist-ssr
 *.sln
 *.sw?
 
-# Large source photo archives (curated subsets are kept in /public/images/gallery)
-src/assets/Gallary/
+# Oversized raw photo (18MB) — excluded from the web gallery
+src/assets/Gallary/1st New Year Get Together (Sunday, 4th jan, 2026)/MSAP Alumni New Year 2026- 4 Jan2.png

@@ -1,5 +1,36 @@
 import { governingBody } from '../data/governingBody';
 
+const initials = (name) =>
+  name
+    .replace(/^(Prof\.|Col\.|Dr\.|Shri|Mr|Mrs|Ngongo)\s*\.?\s+/i, '')
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part.charAt(0))
+    .join('')
+    .toUpperCase();
+
+const MemberAvatar = ({ photo, name, size }) => {
+  const sizeClass = size === 'lg' ? 'w-12 h-12 text-lg' : 'w-9 h-9 text-sm';
+  if (photo) {
+    return (
+      <img
+        src={photo}
+        alt={`${name} — member of the Managing Committee`}
+        loading="lazy"
+        className={`${sizeClass} rounded-full object-cover border-2 border-lavender/40 shrink-0`}
+      />
+    );
+  }
+  return (
+    <span
+      aria-hidden="true"
+      className={`${sizeClass} rounded-full bg-lavender/15 text-lavender flex items-center justify-center font-display font-bold shrink-0`}
+    >
+      {initials(name)}
+    </span>
+  );
+};
+
 const TIMELINE = [
   {
     year: '1973',
@@ -109,13 +140,16 @@ export default function AboutPage() {
                 {governingBody.officeBearers.map((member) => (
                   <div
                     key={member.position}
-                    className="py-4 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-8"
+                    className="py-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-8"
                   >
-                    <dt className="sm:w-56 shrink-0 text-xs font-bold uppercase tracking-widest text-lavender pt-1">
+                    <dt className="sm:w-56 shrink-0 text-xs font-bold uppercase tracking-widest text-lavender">
                       {member.position}
                     </dt>
-                    <dd className="font-display text-ink text-lg md:text-xl font-bold">
-                      {member.name}
+                    <dd className="flex items-center gap-4">
+                      <MemberAvatar photo={member.photo} name={member.name} size="lg" />
+                      <span className="font-display text-ink text-lg md:text-xl font-bold">
+                        {member.name}
+                      </span>
                     </dd>
                   </div>
                 ))}
@@ -128,15 +162,16 @@ export default function AboutPage() {
             <div>
               <h3 className="eyebrow mb-6">Executive members</h3>
               <ol className="border-t border-main">
-                {governingBody.executiveMembers.map((name, idx) => (
+                {governingBody.executiveMembers.map((member, idx) => (
                   <li
-                    key={name}
-                    className="py-3.5 border-b border-main flex items-baseline gap-5"
+                    key={member.name}
+                    className="py-3.5 border-b border-main flex items-center gap-4"
                   >
                     <span className="text-xs font-bold tracking-widest text-lavender w-7 shrink-0">
                       {String(idx + 1).padStart(2, '0')}
                     </span>
-                    <span className="font-display text-ink text-lg font-bold">{name}</span>
+                    <MemberAvatar photo={member.photo} name={member.name} size="sm" />
+                    <span className="font-display text-ink text-lg font-bold">{member.name}</span>
                   </li>
                 ))}
               </ol>
@@ -145,15 +180,16 @@ export default function AboutPage() {
             <div>
               <h3 className="eyebrow mb-6">Advisory board</h3>
               <ol className="border-t border-main">
-                {governingBody.advisoryBoard.map((name, idx) => (
+                {governingBody.advisoryBoard.map((member, idx) => (
                   <li
-                    key={name}
-                    className="py-3.5 border-b border-main flex items-baseline gap-5"
+                    key={member.name}
+                    className="py-3.5 border-b border-main flex items-center gap-4"
                   >
                     <span className="text-xs font-bold tracking-widest text-lavender w-7 shrink-0">
                       {String(idx + 1).padStart(2, '0')}
                     </span>
-                    <span className="font-display text-ink text-lg font-bold">{name}</span>
+                    <MemberAvatar photo={member.photo} name={member.name} size="sm" />
+                    <span className="font-display text-ink text-lg font-bold">{member.name}</span>
                   </li>
                 ))}
               </ol>

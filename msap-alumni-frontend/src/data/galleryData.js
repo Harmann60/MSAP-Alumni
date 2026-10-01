@@ -1,4 +1,6 @@
-const images = import.meta.glob('../assets/Gallary/**/*.{jpg,jpeg,png,webp}', {
+// '.png' is deliberately excluded — an 18MB raw photo in the New Year album is served from the
+// gallery file list instead, and globbing it would bundle it into the site.
+const images = import.meta.glob('../assets/Gallary/**/*.{jpg,jpeg,webp}', {
   eager: true,
   import: 'default',
 });
@@ -22,6 +24,23 @@ const RAW_ALBUMS = [
     ],
   },
   {
+    title: '1st New Year Get Together',
+    folder: '1st New Year Get Together (Sunday, 4th jan, 2026)',
+    eventDate: '04-Jan-2026',
+    updatedOn: '2026',
+    files: [
+      '2026 MSAP Alumni New Year Party group.jpeg',
+      '2026 MSAP Alumni New Year Party group2.jpeg',
+      '2026 MSAP Alumni New Year Party group3 .jpeg',
+      '2026 MSAP Alumni New Year Party President.jpeg',
+      '2026 MSAP Alumni New Year Party sub group.jpeg',
+      '2026 MSAP Alumni New Year Party Tejkumar.jpeg',
+      '2026 MSAP Alumni New Year Party Uttam.jpeg',
+      '2026 MSAP Alumni New Year Party with Host.jpeg',
+      'MSAP Alumni ReUnion 4th Jan 2026 portrait.jpeg',
+    ],
+  },
+  {
     title: '50th Golden Jubilee',
     folder: '50th golden jubilee',
     eventDate: '2024',
@@ -34,16 +53,6 @@ const RAW_ALBUMS = [
       'SaveClip.App_656026570_18080244215081494_794976611162626733_n.jpg',
       'SaveClip.App_652681681_17959174805914550_2586455088703413576_n.jpg',
       'SaveClip.App_653101195_17990928932936316_5982040596961041918_n.jpg',
-    ],
-  },
-  {
-    title: 'Yaoshang Thabal 2026',
-    folder: 'Yaoshang Thabal 2026',
-    eventDate: '2026',
-    updatedOn: '2026',
-    files: [
-      'SaveClip.App_649242209_18309006463280704_5308189492314904084_n.jpg',
-      'SaveClip.App_649232710_18309006454280704_1648478933012477746_n.jpg',
     ],
   },
   {
@@ -78,36 +87,6 @@ const RAW_ALBUMS = [
     eventDate: '2026',
     updatedOn: '2026',
     files: ['SaveClip.App_654999121_18064744151328835_8582639715463645144_n.jpg'],
-  },
-  {
-    title: 'Exhibition Football Match',
-    folder: 'exhibition football match',
-    eventDate: '—',
-    updatedOn: '—',
-    files: [
-      'SaveClip.App_658387800_18161452207425201_5655032854482152389_n.jpg',
-      'SaveClip.App_655225392_18031661516604224_4651380414571975640_n.jpg',
-      'SaveClip.App_670946889_18384262783092052_5375768065592297109_n.jpg',
-      'SaveClip.App_655008661_18126526930559861_6771118030534233072_n.jpg',
-    ],
-  },
-  {
-    title: 'Seasonal Sports Meet 2024',
-    folder: 'seasonal sports meet 2024',
-    eventDate: '2024',
-    updatedOn: '2024',
-    files: ['SaveClip.App_624082157_18011345444668354_6669835014232952593_n.jpg'],
-  },
-  {
-    title: 'Jananeta Hijam',
-    folder: 'Jananeta hijam',
-    eventDate: '—',
-    updatedOn: '—',
-    files: [
-      'SaveClip.App_655569347_18084032288365529_1516832685276458567_n.jpg',
-      'SaveClip.App_650923498_18042102248753997_8182796091168864797_n.jpg',
-      'SaveClip.App_655248329_18156853681445477_1637668967091673004_n.jpg',
-    ],
   },
 ];
 
