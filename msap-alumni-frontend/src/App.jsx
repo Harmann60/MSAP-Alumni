@@ -3,7 +3,6 @@ import { useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
-import EventsPage from './pages/EventsPage'
 import StoriesPage from './pages/StoriesPage'
 import StoryDetailPage from './pages/StoryDetailPage'
 import CommunityPage from './pages/CommunityPage'
@@ -45,7 +44,6 @@ export default function App() {
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/events" element={<EventsPage />} />
           <Route path="/stories" element={<StoriesPage />} />
           <Route path="/stories/:storyId" element={<StoryDetailPage />} />
           <Route path="/community" element={<CommunityPage />} />

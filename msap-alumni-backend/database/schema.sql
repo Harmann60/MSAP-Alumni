@@ -10,7 +10,6 @@ DROP TABLE IF EXISTS audit_logs CASCADE;
 DROP TABLE IF EXISTS community_groups CASCADE;
 DROP TABLE IF EXISTS financial_accounts CASCADE;
 DROP TABLE IF EXISTS stories CASCADE;
-DROP TABLE IF EXISTS events CASCADE;
 DROP TABLE IF EXISTS alumni_registrations CASCADE;
 DROP TABLE IF EXISTS admins CASCADE;
 
@@ -49,26 +48,7 @@ CREATE TABLE alumni_registrations (
 CREATE INDEX idx_alumni_reg_status ON alumni_registrations(status);
 CREATE INDEX idx_alumni_reg_email ON alumni_registrations(email);
 
--- 5. Events Table
-CREATE TABLE events (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    title VARCHAR(200) NOT NULL,
-    category VARCHAR(50) NOT NULL, -- 'Community', 'Career', 'Cultural', 'Onboarding'
-    date_display VARCHAR(50) NOT NULL, -- e.g. "Aug 15, 2026"
-    time_display VARCHAR(50) NOT NULL, -- e.g. "10 AM – 6 PM"
-    event_timestamp TIMESTAMPTZ,
-    location VARCHAR(200) NOT NULL,
-    description TEXT NOT NULL,
-    is_featured BOOLEAN DEFAULT FALSE,
-    registration_link VARCHAR(500),
-    created_by UUID REFERENCES admins(id) ON DELETE SET NULL,
-    created_at TIMESTAMPTZ DEFAULT NOW(),
-    updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-CREATE INDEX idx_events_category ON events(category);
-CREATE INDEX idx_events_featured ON events(is_featured);
-
--- 6. Stories Table
+-- 5. Stories Table
 CREATE TABLE stories (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     title VARCHAR(255) NOT NULL,
@@ -127,14 +107,12 @@ CREATE TABLE audit_logs (
 -- ====================================================================
 ALTER TABLE admins ENABLE ROW LEVEL SECURITY;
 ALTER TABLE alumni_registrations ENABLE ROW LEVEL SECURITY;
-ALTER TABLE events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE stories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE financial_accounts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE community_groups ENABLE ROW LEVEL SECURITY;
 ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
 
--- Public can read published events, stories, accounts, groups
-CREATE POLICY "Public Read Events" ON events FOR SELECT USING (true);
+-- Public can read published stories, accounts, groups
 CREATE POLICY "Public Read Stories" ON stories FOR SELECT USING (true);
 CREATE POLICY "Public Read Accounts" ON financial_accounts FOR SELECT USING (true);
 CREATE POLICY "Public Read Community Groups" ON community_groups FOR SELECT USING (is_active = true);

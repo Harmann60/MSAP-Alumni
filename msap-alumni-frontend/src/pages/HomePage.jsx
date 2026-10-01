@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import HeroSection from '../components/HeroSection';
 import StoriesSection from '../components/StoriesSection';
-import EventsSection from '../components/EventsSection';
 import CommunitySection from '../components/CommunitySection';
 
 export default function HomePage() {
@@ -17,8 +16,6 @@ export default function HomePage() {
       </div>
 
       <StoriesSection />
-
-      <EventsSection />
 
       <CommunitySection />
 
