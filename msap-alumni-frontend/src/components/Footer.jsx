@@ -30,11 +30,11 @@ export default function Footer() {
                 className="w-11 h-11 object-contain"
               />
               <span>
-                <span className="block font-display text-ink text-xl font-bold leading-tight">
-                  MSAP Alumni
+                <span className="block font-display text-ink text-xl font-bold leading-snug">
+                  Association of MSAP Alumni, Manipur
                 </span>
                 <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-lavender mt-0.5">
-                  Association &middot; Est. 2024
+                  Est. 2024
                 </span>
               </span>
             </div>

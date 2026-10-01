@@ -82,8 +82,8 @@ export default function CommunityPage() {
         <p className="eyebrow mb-5">Chapters & professional networks</p>
         <h1 className="display-lg text-4xl md:text-5xl mb-3">Our global community</h1>
         <p className="text-stone text-base sm:text-lg max-w-xl">
-          Connect with MSAP alumni across regional chapters, professional circles, and shared-interest
-          networks worldwide.
+          Connect with alumni across the regional chapters, professional circles, and shared-interest
+          networks of the Association of MSAP Alumni, Manipur.
         </p>
       </div>
 

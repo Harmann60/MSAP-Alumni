@@ -64,11 +64,11 @@ export default function Navbar() {
               className="w-9 h-9 object-contain"
             />
             <span className="hidden sm:block">
-              <span className="block font-display text-ink text-lg font-bold leading-none group-hover:text-lavender transition-colors">
-                MSAP Alumni
+              <span className="block font-display text-ink text-[15px] md:text-base lg:text-[17px] font-bold leading-snug group-hover:text-lavender transition-colors">
+                Association of MSAP Alumni, Manipur
               </span>
               <span className="block text-muted text-[10.5px] tracking-[0.2em] uppercase font-semibold mt-1">
-                Association &middot; Est. 2024
+                Est. 2024
               </span>
             </span>
           </Link>

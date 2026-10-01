@@ -88,7 +88,7 @@ export default function RegisterPage() {
             Submission received
           </p>
           <h2 className="font-display text-ink text-3xl sm:text-4xl font-bold mb-4">
-            Welcome to the MSAP community
+            Welcome to the Association of MSAP Alumni, Manipur
           </h2>
           <p className="text-stone text-base leading-relaxed mb-8">
             Thank you, <strong className="text-ink">{formData.fullName}</strong>. Your registration
@@ -147,13 +147,13 @@ export default function RegisterPage() {
       {/* Header */}
       <div className="relative max-w-4xl mx-auto px-5 text-center mb-10">
         <div className="w-16 h-16 mx-auto mb-4">
-          <img src="/logo.png" alt="MSAP Alumni" className="w-full h-full object-contain" />
+          <img src="/logo.png" alt="Association of MSAP Alumni, Manipur" className="w-full h-full object-contain" />
         </div>
         <p className="text-xs font-bold uppercase tracking-[0.2em] text-lavender mb-4">
           Official alumni verification
         </p>
         <h1 className="font-display text-ink text-3xl sm:text-5xl font-bold tracking-tight mb-4">
-          Join the MSAP Alumni Network
+          Join the Association of MSAP Alumni, Manipur
         </h1>
         <p className="text-stone text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
           Verify your credentials as a former Manipuri student in Pune to access the alumni
@@ -170,7 +170,7 @@ export default function RegisterPage() {
                 Alumni Registration Form
               </h2>
               <p className="text-sm text-muted mt-1">
-                Submissions are reviewed by the MSAP executive committee for verified credentials.
+                Submissions are reviewed by the Association of MSAP Alumni, Manipur executive committee for verified credentials.
               </p>
             </div>
             <p className="text-sm text-muted shrink-0">Verified before account activation</p>

@@ -88,7 +88,7 @@ export const ALUMNI_STORIES = [
     ],
     image: `${STORIES_ARCHIVE_ROOT}/Community.jpg`,
     imageCaption: 'Photograph taken 26 August 2026 · Koirengei Maibakhun',
-    source: 'Documented in MSAP Alumni Association reporting · 2026',
+    source: 'Documented in Association of MSAP Alumni, Manipur reporting · 2026',
     sourceUrl: null,
     verified: true,
   },

@@ -16,8 +16,8 @@ export default function StoriesSection() {
           <p className="eyebrow mb-4">01 &mdash; Alumni chronicles</p>
           <h2 className="display-lg text-3xl sm:text-4xl md:text-[2.75rem]">Stories from our alumni</h2>
           <p className="text-stone text-base sm:text-lg mt-4 max-w-xl">
-            Documented stories of achievement, community and the generations connected through
-            MSAP.
+            Documented stories of achievement, community and the generations connected through the
+            Association of MSAP Alumni, Manipur.
           </p>
         </div>
         <Link to="/stories" className="text-link link-underline shrink-0 mb-1">

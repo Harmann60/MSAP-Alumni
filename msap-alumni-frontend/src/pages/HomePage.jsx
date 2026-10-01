@@ -30,7 +30,7 @@ export default function HomePage() {
           </h2>
           <p className="text-[#E7E1F3] text-lg leading-relaxed mb-11 max-w-xl mx-auto">
             Reconnect with former classmates. Meet alumni in your city. Mentor current students, and
-            help strengthen the MSAP community for generations to come.
+            help strengthen the alumni community for generations to come.
           </p>
           <Link
             to="/register"
@@ -44,7 +44,7 @@ export default function HomePage() {
             <span className="mx-3 opacity-50">|</span>
             <span>Privacy protected</span>
             <span className="mx-3 opacity-50">|</span>
-            <span>Official MSAP network</span>
+            <span>Official alumni network</span>
           </p>
         </div>
       </section>

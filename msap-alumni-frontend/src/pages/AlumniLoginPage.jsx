@@ -139,10 +139,10 @@ export default function AlumniLoginPage() {
       {/* Header */}
       <div className="text-center mb-8 max-w-md animate-heroIn">
         <div className="w-16 h-16 mx-auto mb-3">
-          <img src="/logo.png" alt="MSAP Alumni" className="w-full h-full object-contain drop-shadow-sm" />
+          <img src="/logo.png" alt="Association of MSAP Alumni, Manipur" className="w-full h-full object-contain drop-shadow-sm" />
         </div>
         <p className="text-xs font-bold uppercase tracking-[0.2em] text-lavender mb-3">
-          MSAP Alumni Gateway
+          Association of MSAP Alumni, Manipur
         </p>
         <h1 className="font-display text-ink text-3xl sm:text-4xl font-bold tracking-tight">
           {mode === 'login' ? 'Alumni Sign In' : 'Activate Account Password'}

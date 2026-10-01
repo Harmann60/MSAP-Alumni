@@ -32,10 +32,10 @@ function Sidebar({ user, activeFilter, onFilterChange, counts, onLogout }) {
     <aside style={{ background: '#1A1429', minHeight: '100vh', width: 230, flexShrink: 0, display: 'flex', flexDirection: 'column', padding: '0' }}>
       {/* Brand */}
       <div style={{ padding: '24px 20px 20px', borderBottom: '1px solid rgba(250,249,252,0.08)', display: 'flex', alignItems: 'center', gap: 12 }}>
-        <img src="/logo.png" alt="MSAP Alumni" style={{ width: 38, height: 38, objectFit: 'contain', flexShrink: 0 }} />
+        <img src="/logo.png" alt="Association of MSAP Alumni, Manipur" style={{ width: 38, height: 38, objectFit: 'contain', flexShrink: 0 }} />
         <div>
-          <p style={{ margin: '0 0 2px', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.14em', color: '#9E92B5' }}>
-            MSAP Alumni
+          <p style={{ margin: '0 0 2px', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.14em', color: '#9E92B5', lineHeight: 1.3 }}>
+            Association of MSAP Alumni, Manipur
           </p>
           <p style={{ margin: 0, fontFamily: 'Playfair Display, Georgia, serif', fontSize: 18, color: '#FAF9FC', lineHeight: 1.2 }}>
             Admin Portal

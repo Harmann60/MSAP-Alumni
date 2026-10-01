@@ -48,17 +48,14 @@ export default function AdminLoginPage() {
       {/* Brand */}
       <div className="text-center mb-10 animate-heroIn">
         <div className="w-16 h-16 mx-auto mb-4">
-          <img src="/logo.png" alt="MSAP Alumni" className="w-full h-full object-contain drop-shadow-md" />
+          <img src="/logo.png" alt="Association of MSAP Alumni, Manipur" className="w-full h-full object-contain drop-shadow-md" />
         </div>
         <p className="text-xs font-semibold uppercase tracking-widest text-muted mb-2">
-          Manipur Students' Association Pune
+          Association of MSAP Alumni, Manipur
         </p>
         <h1 className="font-display text-parchment text-3xl md:text-4xl">
-          MSAP Alumni
-        </h1>
-        <p className="text-muted text-sm mt-2 uppercase tracking-wider text-xs">
           Admin Portal
-        </p>
+        </h1>
       </div>
 
       {/* Login card */}

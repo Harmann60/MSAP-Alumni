@@ -29,7 +29,7 @@ export default function StoriesPage() {
           </p>
         </div>
         <p className="text-stone text-base sm:text-lg max-w-2xl">
-          Documented stories of achievement, community and the generations connected through MSAP.
+          Documented stories of achievement, community and the generations connected through the Association of MSAP Alumni, Manipur.
         </p>
 
         {/* Filter tabs */}
