@@ -5,7 +5,6 @@ import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
 import NewsPage from './pages/NewsPage'
 import NewsDetailPage from './pages/NewsDetailPage'
-import CommunityPage from './pages/CommunityPage'
 import AboutPage from './pages/AboutPage'
 import RegisterPage from './pages/RegisterPage'
 import AdminLoginPage from './pages/AdminLoginPage'
@@ -47,7 +46,6 @@ export default function App() {
           <Route path="/news/:slug" element={<NewsDetailPage />} />
           <Route path="/stories" element={<Navigate to="/news" replace />} />
           <Route path="/stories/:storyId" element={<Navigate to="/news" replace />} />
-          <Route path="/community" element={<CommunityPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<AlumniLoginPage />} />

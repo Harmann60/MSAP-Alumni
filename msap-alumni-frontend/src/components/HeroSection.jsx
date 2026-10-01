@@ -33,7 +33,7 @@ export default function HeroSection() {
             <p className="text-lg sm:text-xl text-stone leading-relaxed mb-10 max-w-xl">
               The Association of MSAP Alumni, Manipur unites generations of Manipuris who lived,
               learned, and grew in Pune — building on a student community first formed in 1973.
-              Register to reconnect with your batchmates, chapters, and mentors.
+              Register to reconnect with your batchmates and mentors.
             </p>
 
             <div className="flex flex-wrap items-center gap-7">

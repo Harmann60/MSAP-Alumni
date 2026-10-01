@@ -4,7 +4,6 @@ import { Link, useLocation } from 'react-router-dom';
 const NAV_LINKS = [
   { label: 'About', to: '/about' },
   { label: 'News', to: '/news' },
-  { label: 'Chapters', to: '/community' },
   { label: 'Gallery', to: '/gallery' },
 ];
 
@@ -97,9 +96,9 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-5">
             {currentUser ? (
               <div className="flex items-center gap-4">
-                <Link to="/community" className="text-[13px] font-semibold text-stone hover:text-lavender transition-colors">
+                <span className="text-[13px] font-semibold text-stone">
                   {currentUser.fullName?.split(' ')[0] || 'Alumnus'}
-                </Link>
+                </span>
                 <button
                   onClick={handleSignOut}
                   className="text-[13px] font-semibold text-stone hover:text-lavender transition-colors cursor-pointer"

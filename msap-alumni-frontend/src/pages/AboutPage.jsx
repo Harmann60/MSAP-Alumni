@@ -24,7 +24,7 @@ const TIMELINE = [
   {
     year: '2025–Present',
     title: 'Formally registered alumni body',
-    desc: 'Officially registered as Society No. 915/M/SR/2025 under the Societies Registration Act with chapters across Pune, Imphal, Bengaluru, and globally.',
+    desc: 'Officially registered as Society No. 915/M/SR/2025 under the Societies Registration Act.',
   },
 ];
 

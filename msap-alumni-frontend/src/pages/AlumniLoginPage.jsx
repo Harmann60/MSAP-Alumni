@@ -60,7 +60,7 @@ export default function AlumniLoginPage() {
       sessionStorage.setItem('msap_alumni_token', data.token);
       sessionStorage.setItem('msap_alumni_user', JSON.stringify(data.user));
       window.dispatchEvent(new Event('msap_auth_change'));
-      navigate('/community');
+      navigate('/');
     }
   };
 
