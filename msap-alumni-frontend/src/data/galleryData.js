@@ -1,13 +1,14 @@
-const BUCKET_ROOT =
-  'https://pqfsbbdexjshvqskmbfu.supabase.co/storage/v1/object/public/MSAP%20Photos';
+const images = import.meta.glob('../assets/Gallary/**/*.{jpg,jpeg,png,webp}', {
+  eager: true,
+  import: 'default',
+});
 
-const asset = (folder, file) =>
-  `${BUCKET_ROOT}/${[folder, file].map(encodeURIComponent).join('/')}`;
+const imageFor = (folder, file) => images[`../assets/Gallary/${folder}/${file}`] || null;
 
 const RAW_ALBUMS = [
   {
     title: '134th Patriots Day',
-    folder: '134th Patriots Day',
+    folder: '134th patriots day',
     eventDate: '15-Aug-2026',
     updatedOn: '16-Aug-2026',
     files: [
@@ -18,7 +19,7 @@ const RAW_ALBUMS = [
   },
   {
     title: '50th Golden Jubilee',
-    folder: '50th Golden Jubilee',
+    folder: '50th golden jubilee',
     eventDate: '2024',
     updatedOn: '2024',
     files: [
@@ -43,7 +44,7 @@ const RAW_ALBUMS = [
   },
   {
     title: '75th Independence Day',
-    folder: '75th Independance Day',
+    folder: '75th independence day',
     eventDate: '15-Aug-2021',
     updatedOn: '2021',
     files: [
@@ -57,7 +58,7 @@ const RAW_ALBUMS = [
   },
   {
     title: 'Freshers Meetup 2025',
-    folder: 'Freshers Meetup 2025',
+    folder: 'freshers meetup 2025',
     eventDate: '2025',
     updatedOn: '2025',
     files: [
@@ -69,17 +70,14 @@ const RAW_ALBUMS = [
   },
   {
     title: '1st General Body Meeting',
-    folder: '1st General Body Meeting',
+    folder: '1st general body meeting',
     eventDate: '2026',
     updatedOn: '2026',
-    files: [
-      'SaveClip.App_649242209_18309006463280704_5308189492314904084_n.jpg',
-      'SaveClip.App_649232710_18309006454280704_1648478933012477746_n.jpg',
-    ],
+    files: ['SaveClip.App_654999121_18064744151328835_8582639715463645144_n.jpg'],
   },
   {
     title: 'Exhibition Football Match',
-    folder: 'Exhibition Football Match',
+    folder: 'exhibition football match',
     eventDate: '—',
     updatedOn: '—',
     files: [
@@ -94,9 +92,7 @@ const RAW_ALBUMS = [
     folder: 'seasonal sports meet 2024',
     eventDate: '2024',
     updatedOn: '2024',
-    files: [
-      'SaveClip.App_624082157_18011345444668354_6669835014232952593_n.jpg',
-    ],
+    files: ['SaveClip.App_624082157_18011345444668354_6669835014232952593_n.jpg'],
   },
   {
     title: 'Jananeta Hijam',
@@ -111,13 +107,18 @@ const RAW_ALBUMS = [
   },
 ];
 
-const ALBUMS = RAW_ALBUMS.map((album, i) => ({
-  id: i + 1,
-  title: album.title,
-  eventDate: album.eventDate,
-  updatedOn: album.updatedOn,
-  photos: album.files.map((file) => asset(album.folder, file)),
-  coverImage: asset(album.folder, album.files[0]),
-}));
+const ALBUMS = RAW_ALBUMS.map((album, i) => {
+  const photos = album.files
+    .map((file) => imageFor(album.folder, file))
+    .filter(Boolean);
+  return {
+    id: i + 1,
+    title: album.title,
+    eventDate: album.eventDate,
+    updatedOn: album.updatedOn,
+    photos,
+    coverImage: photos[0] || null,
+  };
+});
 
 export default ALBUMS;

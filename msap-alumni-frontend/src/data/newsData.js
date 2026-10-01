@@ -1,9 +1,21 @@
 const FACEBOOK_URL = 'https://www.facebook.com/share/1Jco7CPBqJ/?mibextid=wwXIfr';
 
-const NEWS_ARCHIVE_ROOT =
-  'https://pqfsbbdexjshvqskmbfu.supabase.co/storage/v1/object/public/MSAP%20Photos/Stories';
+const newsImages = import.meta.glob('../assets/News/*.{jpg,jpeg,png,webp}', {
+  eager: true,
+  import: 'default',
+});
 
-const TREE_PROGRAMME_7_IMAGE = `${NEWS_ARCHIVE_ROOT}/Community.jpg`;
+const newsImage = (name) => newsImages[`../assets/News/${name}`] || null;
+
+const REUNION_IMAGE = newsImage('1st Reunion Meet — Manipur University, 2025.png');
+
+const TREE_PROGRAMME_1_IMAGE = newsImage('Tree Plantation Drive 1.1 — Taobungkhok.jpg');
+const TREE_PROGRAMME_2_IMAGE = newsImage('Tree Plantation Drive 1.2 — Mekola.jpg');
+const TREE_PROGRAMME_3_IMAGE = newsImage('Tree Plantation Drive 1.3 — Royal Academy of Science, Kongba.jpg');
+const TREE_PROGRAMME_4_IMAGE = newsImage('Tree Plantation Drive 1.4 — Golapati Hatta.jpg');
+const TREE_PROGRAMME_5_IMAGE = newsImage('Tree Plantation Drive 1.5 — Porompat.jpg');
+const TREE_PROGRAMME_6_IMAGE = newsImage('Tree Plantation Drive 1.6 — Loushangkhong.jpg');
+const TREE_PROGRAMME_7_IMAGE = newsImage('Tree Plantation Drive 1.7 — Koirengei Maibakhun.jpg');
 
 export const NEWS_CAMPAIGNS = {
   'tree-plantation-2026': {
@@ -29,17 +41,22 @@ export const NEWS_DATA = [
     dateExact: true,
     sortKey: '2026-05-31',
     year: 2026,
-    location: null,
+    location: 'Taobungkhok',
     excerpt:
-      'The first programme of the Tree Plantation Drive 2026 by the Association of MSAP Alumni, Manipur, held on 31 May 2026.',
+      'The first programme of the Tree Plantation Drive 2026 by the Association of MSAP Alumni, Manipur, held at Taobungkhok on 31 May 2026.',
     content: [
-      'The 1st Programme of the Tree Plantation Drive 2026, organised by the Association of MSAP Alumni, Manipur, was held on 31 May 2026.',
+      'The 1st Programme of the Tree Plantation Drive 2026, organised by the Association of MSAP Alumni, Manipur, was held at Taobungkhok on 31 May 2026.',
       'It was the opening programme of the association’s seven-location plantation campaign across Manipur.',
-      'Venue and participant details are as documented on the official MSAP Alumni Facebook page.',
+      'Participant details are as documented on the official MSAP Alumni Facebook page.',
     ],
-    coverImage: null,
-    imageCaption: null,
-    galleryImages: [],
+    coverImage: TREE_PROGRAMME_1_IMAGE,
+    imageCaption: 'Tree Plantation Drive · 1st Programme',
+    galleryImages: [
+      {
+        src: TREE_PROGRAMME_1_IMAGE,
+        caption: '1st Programme · Taobungkhok',
+      },
+    ],
     campaign: 'tree-plantation-2026',
     sourceType: 'Official Facebook',
     source: 'Official MSAP Alumni Facebook page',
@@ -56,16 +73,21 @@ export const NEWS_DATA = [
     dateExact: false,
     sortKey: '2026-06',
     year: 2026,
-    location: null,
+    location: 'Mekola',
     excerpt:
-      'The second programme of the Tree Plantation Drive 2026 by the Association of MSAP Alumni, Manipur, held in June 2026.',
+      'The second programme of the Tree Plantation Drive 2026 by the Association of MSAP Alumni, Manipur, held at Mekola in June 2026.',
     content: [
-      'The 2nd Programme of the Tree Plantation Drive 2026, organised by the Association of MSAP Alumni, Manipur, was held in June 2026.',
-      'The exact date, venue and participants are as documented on the official MSAP Alumni Facebook page.',
+      'The 2nd Programme of the Tree Plantation Drive 2026, organised by the Association of MSAP Alumni, Manipur, was held at Mekola in June 2026.',
+      'The exact date and participant details are as documented on the official MSAP Alumni Facebook page.',
     ],
-    coverImage: null,
-    imageCaption: null,
-    galleryImages: [],
+    coverImage: TREE_PROGRAMME_2_IMAGE,
+    imageCaption: 'Tree Plantation Drive · 2nd Programme',
+    galleryImages: [
+      {
+        src: TREE_PROGRAMME_2_IMAGE,
+        caption: '2nd Programme · Mekola',
+      },
+    ],
     campaign: 'tree-plantation-2026',
     sourceType: 'Official Facebook',
     source: 'Official MSAP Alumni Facebook page',
@@ -89,9 +111,14 @@ export const NEWS_DATA = [
       'The 3rd Programme of the Tree Plantation Drive 2026, organised by the Association of MSAP Alumni, Manipur, was held at the Royal Academy of Science, Kongba on 5 July 2026.',
       'Further details are as documented on the official MSAP Alumni Facebook page.',
     ],
-    coverImage: null,
-    imageCaption: null,
-    galleryImages: [],
+    coverImage: TREE_PROGRAMME_3_IMAGE,
+    imageCaption: 'Tree Plantation Drive · 3rd Programme',
+    galleryImages: [
+      {
+        src: TREE_PROGRAMME_3_IMAGE,
+        caption: '3rd Programme · Royal Academy of Science, Kongba',
+      },
+    ],
     campaign: 'tree-plantation-2026',
     sourceType: 'Official Facebook',
     source: 'Official MSAP Alumni Facebook page',
@@ -115,9 +142,14 @@ export const NEWS_DATA = [
       'The 4th Programme of the Tree Plantation Drive 2026, organised by the Association of MSAP Alumni, Manipur, was held at Golapati Hatta Linear Ningol Van on 19 July 2026.',
       'Further details are as documented on the official MSAP Alumni Facebook page.',
     ],
-    coverImage: null,
-    imageCaption: null,
-    galleryImages: [],
+    coverImage: TREE_PROGRAMME_4_IMAGE,
+    imageCaption: 'Tree Plantation Drive · 4th Programme',
+    galleryImages: [
+      {
+        src: TREE_PROGRAMME_4_IMAGE,
+        caption: '4th Programme · Golapati Hatta Linear Ningol Van',
+      },
+    ],
     campaign: 'tree-plantation-2026',
     sourceType: 'Official Facebook',
     source: 'Official MSAP Alumni Facebook page',
@@ -141,9 +173,14 @@ export const NEWS_DATA = [
       'The 5th Programme of the Tree Plantation Drive 2026, organised by the Association of MSAP Alumni, Manipur, was held at Porompat Ningol Van on 9 August 2026.',
       'Further details are as documented on the official MSAP Alumni Facebook page.',
     ],
-    coverImage: null,
-    imageCaption: null,
-    galleryImages: [],
+    coverImage: TREE_PROGRAMME_5_IMAGE,
+    imageCaption: 'Tree Plantation Drive · 5th Programme',
+    galleryImages: [
+      {
+        src: TREE_PROGRAMME_5_IMAGE,
+        caption: '5th Programme · Porompat Ningol Van',
+      },
+    ],
     campaign: 'tree-plantation-2026',
     sourceType: 'Official Facebook',
     source: 'Official MSAP Alumni Facebook page',
@@ -167,9 +204,14 @@ export const NEWS_DATA = [
       'The 6th Programme of the Tree Plantation Drive 2026, organised by the Association of MSAP Alumni, Manipur, was held at Loushangkhong Ningol Van on 23 August 2026.',
       'Further details are as documented on the official MSAP Alumni Facebook page.',
     ],
-    coverImage: null,
-    imageCaption: null,
-    galleryImages: [],
+    coverImage: TREE_PROGRAMME_6_IMAGE,
+    imageCaption: 'Tree Plantation Drive · 6th Programme',
+    galleryImages: [
+      {
+        src: TREE_PROGRAMME_6_IMAGE,
+        caption: '6th Programme · Loushangkhong Ningol Van',
+      },
+    ],
     campaign: 'tree-plantation-2026',
     sourceType: 'Official Facebook',
     source: 'Official MSAP Alumni Facebook page',
@@ -195,11 +237,11 @@ export const NEWS_DATA = [
       'Across the seven programmes, 2,550 saplings were planted.',
     ],
     coverImage: TREE_PROGRAMME_7_IMAGE,
-    imageCaption: 'Photograph taken 26 August 2026 · Koirengei Maibakhun',
+    imageCaption: 'Photograph · Koirengei Maibakhun, 26 August 2026',
     galleryImages: [
       {
         src: TREE_PROGRAMME_7_IMAGE,
-        caption: 'Photograph taken 26 August 2026 · Koirengei Maibakhun',
+        caption: 'Photograph · Koirengei Maibakhun, 26 August 2026',
       },
     ],
     campaign: 'tree-plantation-2026',
@@ -226,9 +268,14 @@ export const NEWS_DATA = [
       'It was the first reunion gathering of the association at the university campus.',
       'Programme details are as documented on the official MSAP Alumni Facebook page.',
     ],
-    coverImage: null,
-    imageCaption: null,
-    galleryImages: [],
+    coverImage: REUNION_IMAGE,
+    imageCaption: '1st Reunion Meet · Manipur University, 2025',
+    galleryImages: [
+      {
+        src: REUNION_IMAGE,
+        caption: '1st Reunion Meet · Manipur University, 2025',
+      },
+    ],
     campaign: null,
     sourceType: 'Official Facebook',
     source: 'Official MSAP Alumni Facebook page',
