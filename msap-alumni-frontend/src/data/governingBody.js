@@ -41,7 +41,7 @@ export const governingBody = {
   executiveMembers: [
     { name: 'Mrs Th. Angoubi (Aruna)', image: memberPhoto('Mrs Th. Angoubi @Aruna Devi.png') },
     { name: 'Dr. A. Bijeshkumar', image: memberPhoto('Dr A Bijeshkumar.jpeg') },
-    { name: 'Sarangthem Suresh Singh, Adv', image: null },
+    { name: 'Sarangthem Suresh Singh, Adv', image: memberPhoto('Adv S Suresh Singh.jpeg') },
     { name: 'Mr Jiten Irom', image: memberPhoto('Irom Jiten.jpeg') },
     { name: 'Mr H. Shantikumar', image: null },
     { name: 'Mr E. Tomba', image: null },
