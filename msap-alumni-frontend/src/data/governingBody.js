@@ -14,7 +14,7 @@ export const governingBody = {
   officeBearers: [
     {
       position: 'President',
-      name: 'Prof. Thokchom Asha Sinha',
+      name: 'Prof (Dr) Th. Asha Sinha',
       image: null,
     },
     {

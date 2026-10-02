@@ -2,12 +2,16 @@ import { governingBody } from '../data/governingBody';
 
 const initials = (name) =>
   name
-    .replace(/^(Prof\.|Col\.|Dr\.|Shri|Mr|Mrs|Ngongo)\s*\.?\s+/i, '')
     .split(/\s+/)
+    .map((word) => word.replace(/[().,"']/g, ''))
+    .filter(
+      (word) =>
+        word.length > 0 &&
+        !/^(Prof|Dr|Col|Shri|Mr|Mrs|Ms|Sr|Jl|Adv|Hon|MLA|Retd)$/i.test(word),
+    )
     .slice(0, 2)
-    .map((part) => part.charAt(0))
-    .join('')
-    .toUpperCase();
+    .map((word) => word.charAt(0).toUpperCase())
+    .join('');
 
 const PortraitPlaceholder = ({ name }) => (
   <div className="h-full w-full flex flex-col items-center justify-center gap-4 bg-lavender/10 px-6 py-12 text-center">
