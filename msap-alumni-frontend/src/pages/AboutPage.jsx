@@ -9,27 +9,52 @@ const initials = (name) =>
     .join('')
     .toUpperCase();
 
-const MemberAvatar = ({ photo, name, size }) => {
-  const sizeClass = size === 'lg' ? 'w-12 h-12 text-lg' : 'w-9 h-9 text-sm';
-  if (photo) {
-    return (
-      <img
-        src={photo}
-        alt={`${name} — member of the Managing Committee`}
-        loading="lazy"
-        className={`${sizeClass} rounded-full object-cover border-2 border-lavender/40 shrink-0`}
-      />
-    );
-  }
-  return (
+const PortraitPlaceholder = ({ name }) => (
+  <div className="h-full w-full flex flex-col items-center justify-center gap-4 bg-lavender/10 px-6 py-12 text-center">
     <span
       aria-hidden="true"
-      className={`${sizeClass} rounded-full bg-lavender/15 text-lavender flex items-center justify-center font-display font-bold shrink-0`}
+      className="font-display font-bold text-lavender text-5xl md:text-6xl leading-none"
     >
       {initials(name)}
     </span>
-  );
-};
+    <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-lavender/70">
+      Photo coming soon
+    </span>
+  </div>
+);
+
+const PortraitCard = ({ member, role, featured }) => (
+  <figure
+    className={`group border border-main bg-card ${
+      featured ? 'border-t-4 border-t-lavender' : ''
+    }`}
+  >
+    <div className="aspect-[4/5] overflow-hidden border-b border-main bg-main/30">
+      {member.image ? (
+        <img
+          src={member.image}
+          alt={`${member.name} — ${role}`}
+          loading="lazy"
+          className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]"
+        />
+      ) : (
+        <PortraitPlaceholder name={member.name} />
+      )}
+    </div>
+    <figcaption className="px-5 py-4">
+      <span className="block text-xs font-bold uppercase tracking-[0.18em] text-lavender">
+        {role}
+      </span>
+      <span
+        className={`mt-1.5 block font-display text-ink font-bold leading-snug ${
+          featured ? 'text-lg md:text-xl' : 'text-base md:text-lg'
+        }`}
+      >
+        {member.name}
+      </span>
+    </figcaption>
+  </figure>
+);
 
 const TIMELINE = [
   {
@@ -132,68 +157,31 @@ export default function AboutPage() {
             Alumni, Manipur.
           </p>
 
-          {/* Office bearers — primary panel */}
-          <div className="border border-main border-t-4 border-t-lavender bg-card">
-            <div className="px-6 py-8 md:px-10 md:py-10">
-              <h3 className="eyebrow mb-7">Office bearers</h3>
-              <dl className="divide-y divide-main/80">
-                {governingBody.officeBearers.map((member) => (
-                  <div
-                    key={member.position}
-                    className="py-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-8"
-                  >
-                    <dt className="sm:w-56 shrink-0 text-xs font-bold uppercase tracking-widest text-lavender">
-                      {member.position}
-                    </dt>
-                    <dd className="flex items-center gap-4">
-                      <MemberAvatar photo={member.photo} name={member.name} size="lg" />
-                      <span className="font-display text-ink text-lg md:text-xl font-bold">
-                        {member.name}
-                      </span>
-                    </dd>
-                  </div>
-                ))}
-              </dl>
+          {/* Office bearers — large portrait cards */}
+          <h3 className="eyebrow mb-8">Office bearers</h3>
+          <div className="lg:grid lg:grid-cols-[1.1fr_1.05fr] lg:gap-x-10 items-start">
+            <PortraitCard member={governingBody.officeBearers[0]} role="President" featured />
+            <div className="grid sm:grid-cols-2 gap-x-10 gap-y-10 mt-10 lg:mt-0">
+              {governingBody.officeBearers.slice(1).map((member) => (
+                <PortraitCard key={member.position} member={member} role={member.position} />
+              ))}
             </div>
           </div>
 
-          {/* Executive members & advisory board */}
-          <div className="mt-14 md:mt-16 grid md:grid-cols-2 gap-x-16 gap-y-12">
-            <div>
-              <h3 className="eyebrow mb-6">Executive members</h3>
-              <ol className="border-t border-main">
-                {governingBody.executiveMembers.map((member, idx) => (
-                  <li
-                    key={member.name}
-                    className="py-3.5 border-b border-main flex items-center gap-4"
-                  >
-                    <span className="text-xs font-bold tracking-widest text-lavender w-7 shrink-0">
-                      {String(idx + 1).padStart(2, '0')}
-                    </span>
-                    <MemberAvatar photo={member.photo} name={member.name} size="sm" />
-                    <span className="font-display text-ink text-lg font-bold">{member.name}</span>
-                  </li>
-                ))}
-              </ol>
-            </div>
+          {/* Executive members — 3-column profile grid */}
+          <h3 className="eyebrow mt-16 mb-8">Executive members</h3>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-10">
+            {governingBody.executiveMembers.map((member) => (
+              <PortraitCard key={member.name} member={member} role="Executive member" />
+            ))}
+          </div>
 
-            <div>
-              <h3 className="eyebrow mb-6">Advisory board</h3>
-              <ol className="border-t border-main">
-                {governingBody.advisoryBoard.map((member, idx) => (
-                  <li
-                    key={member.name}
-                    className="py-3.5 border-b border-main flex items-center gap-4"
-                  >
-                    <span className="text-xs font-bold tracking-widest text-lavender w-7 shrink-0">
-                      {String(idx + 1).padStart(2, '0')}
-                    </span>
-                    <MemberAvatar photo={member.photo} name={member.name} size="sm" />
-                    <span className="font-display text-ink text-lg font-bold">{member.name}</span>
-                  </li>
-                ))}
-              </ol>
-            </div>
+          {/* Advisory board — 4-column profile grid */}
+          <h3 className="eyebrow mt-16 mb-8">Advisory board</h3>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-10">
+            {governingBody.advisoryBoard.map((member) => (
+              <PortraitCard key={member.name} member={member} role="Advisory board member" />
+            ))}
           </div>
         </section>
 
