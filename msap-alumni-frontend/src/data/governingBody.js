@@ -30,7 +30,7 @@ export const governingBody = {
     {
       position: 'Joint Secretary',
       name: 'Ngangom Jotindra Luwang, Adv.',
-      photo: null,
+      photo: memberPhoto('Ngangom Jotindra Luwang.jpeg'),
     },
     {
       position: 'Treasurer',
@@ -49,7 +49,7 @@ export const governingBody = {
   advisoryBoard: [
     { name: 'Shri Th. Arunkumar, Hon’bl MLA', photo: null },
     { name: 'Dr. H. Narendra', photo: memberPhoto('Dr H Narendra.jpeg') },
-    { name: 'Ngongo Chongtham, Sr Adv', photo: null },
+    { name: 'Ngongo Chongtham, Sr Adv', photo: memberPhoto('Sr Adv Ch. Ngongo.jpeg') },
     { name: 'Mr. Rajkumar Rakesh', photo: null },
   ],
 };
