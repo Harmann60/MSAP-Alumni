@@ -13,17 +13,6 @@ const imageFor = (folder, file) => {
 
 const RAW_ALBUMS = [
   {
-    title: '134th Patriots Day',
-    folder: '134th patriots day',
-    eventDate: '15-Aug-2026',
-    updatedOn: '16-Aug-2026',
-    files: [
-      'SaveClip.App_658239410_18095604002095106_2881931004734362982_n.jpg',
-      'SaveClip.App_655139802_18098098589072891_296286572430441289_n.jpg',
-      'SaveClip.App_651824569_17927949846075370_2886549829477998910_n.jpg',
-    ],
-  },
-  {
     title: '1st Annual General Body Meeting',
     folder: '1st Annual General Body Meeting',
     eventDate: '07-Jul-2026',
@@ -98,32 +87,6 @@ const RAW_ALBUMS = [
     eventDate: '20-Jul-2024',
     updatedOn: '2024',
     files: ['1.jpg', '2.jpg'],
-  },
-  {
-    title: '75th Independence Day',
-    folder: '75th independence day',
-    eventDate: '15-Aug-2021',
-    updatedOn: '2021',
-    files: [
-      'SaveClip.App_623169936_17940065763072885_3399842098326386966_n.jpg',
-      'SaveClip.App_623127062_17940065754072885_8837386010981173375_n.jpg',
-      'SaveClip.App_623293819_17940065781072885_5331419282334103799_n.jpg',
-      'SaveClip.App_623264929_17940065799072885_3470421741983866506_n.jpg',
-      'SaveClip.App_623177190_17940065790072885_2146515300879377637_n.jpg',
-      'SaveClip.App_623260803_17940065808072885_7749835159516524958_n.jpg',
-    ],
-  },
-  {
-    title: 'Freshers Meetup 2025',
-    folder: 'freshers meetup 2025',
-    eventDate: '2025',
-    updatedOn: '2025',
-    files: [
-      'SaveClip.App_544036378_17926168566072885_3526992923005652048_n.jpg',
-      'SaveClip.App_543807325_17926168584072885_7100078052632117039_n.jpg',
-      'SaveClip.App_542688547_17926168620072885_5433907270516202808_n.jpg',
-      'SaveClip.App_542081340_17926168530072885_8154856757139131985_n.jpg',
-    ],
   },
 ];
 

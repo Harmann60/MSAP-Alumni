@@ -12,7 +12,7 @@ const newsImage = (name) => {
 
 const REUNION_IMAGE = newsImage('1st Reunion Meet — Manipur University, 2025.png');
 const NEW_YEAR_IMAGE = newsImage('new year.jpeg');
-const AGBM_IMAGE = newsImage('Annual Body Meeting.jpg');
+const AGBM_IMAGE = newsImage('Annual Body Meeting.jpeg');
 
 // Gallery-wide helper. Folder names contain parentheses/newlines in some cases, so avoid literal
 // glob paths (fast-glob treats parens as extglob) and match by filename suffix instead.
