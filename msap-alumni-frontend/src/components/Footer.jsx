@@ -125,7 +125,7 @@ export default function Footer() {
               <li className="leading-relaxed">
                 Pune liaison office:
                 <br />
-                FC Road / Deccan Gymkhana, Pune 411004
+                Orange County II, Baner Pashan Link Road, Pune 411 021
               </li>
             </ul>
           </div>

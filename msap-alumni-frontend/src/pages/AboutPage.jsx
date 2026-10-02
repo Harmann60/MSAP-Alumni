@@ -213,7 +213,7 @@ export default function AboutPage() {
             <div className="border-t border-main pt-5">
               <h3 className="text-ink font-bold text-lg mb-2">Pune liaison office</h3>
               <p className="text-stone text-base leading-relaxed">
-                FC Road / Deccan Gymkhana, Pune, Maharashtra 411004
+                Orange County II, Baner Pashan Link Road, Pune 411 021
               </p>
             </div>
           </div>
