@@ -53,20 +53,20 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-sm border-b border-main">
       <div className="max-w-7xl mx-auto px-5">
-        <div className="flex items-center justify-between gap-4 h-16">
+        <div className="flex items-center justify-between gap-4 h-[70px] md:h-20 lg:h-24">
           {/* Brand */}
-          <Link to="/" className="flex items-center gap-3 shrink-0 group" aria-label="Association of MSAP Alumni, Manipur — Home">
+          <Link to="/" className="flex items-center gap-3 md:gap-4 shrink-0 min-w-0 group" aria-label="Association of MSAP Alumni, Manipur — Home">
             <img
               src="/logo.png"
               alt="Association of MSAP Alumni, Manipur official logo"
-              className="w-9 h-9 object-contain"
+              className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 lg:w-[52px] lg:h-[52px] object-contain shrink-0"
             />
-            <span className="hidden sm:block">
-              <span className="block font-display text-ink text-[15px] md:text-base lg:text-[17px] font-bold leading-snug group-hover:text-lavender transition-colors">
+            <span className="min-w-0">
+              <span className="block font-display text-ink font-semibold leading-tight group-hover:text-lavender transition-colors text-[18px] sm:text-[21px] md:text-[25px] lg:text-[28px]">
                 Association of MSAP Alumni, Manipur
               </span>
-              <span className="block text-muted text-[10.5px] tracking-[0.2em] uppercase font-semibold mt-1">
-                Est. 2024
+              <span className="block text-muted font-semibold uppercase tracking-[0.32em] mt-1 text-[9.5px] sm:text-[10.5px] md:text-[11px]">
+                EST. 2024
               </span>
             </span>
           </Link>

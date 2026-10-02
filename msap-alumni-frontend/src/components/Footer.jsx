@@ -25,14 +25,14 @@ export default function Footer() {
               <img
                 src="/logo.png"
                 alt="Association of MSAP Alumni, Manipur logo"
-                className="w-11 h-11 object-contain"
+                className="w-12 h-12 object-contain"
               />
               <span>
-                <span className="block font-display text-ink text-xl font-bold leading-snug">
+                <span className="block font-display text-ink text-[21px] font-semibold leading-snug">
                   Association of MSAP Alumni, Manipur
                 </span>
-                <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-lavender mt-0.5">
-                  Est. 2024
+                <span className="block text-xs font-semibold uppercase tracking-[0.26em] text-lavender mt-1">
+                  EST. 2024
                 </span>
               </span>
             </div>
