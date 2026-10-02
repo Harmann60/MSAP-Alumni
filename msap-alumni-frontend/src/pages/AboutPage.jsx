@@ -88,19 +88,19 @@ export default function AboutPage() {
   return (
     <div className="bg-page min-h-[90vh]">
       {/* Page header */}
-      <div className="max-w-7xl mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
+      <div className="max-w-[90rem] mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
         <p className="eyebrow mb-5">1973 to 2026 &middot; 50+ years</p>
-        <h1 className="display-lg text-4xl md:text-5xl mb-3">Our heritage & governance</h1>
+        <h1 className="display-lg text-4xl md:text-5xl xl:text-6xl mb-3">Our heritage & governance</h1>
         <p className="text-stone text-base sm:text-lg max-w-xl">
           The story of how student solidarity in Maharashtra blossomed into a global alumni community.
         </p>
       </div>
 
-      <div className="max-w-7xl mx-auto px-5 pb-20 md:pb-28 space-y-20">
+      <div className="max-w-[90rem] mx-auto px-5 pb-20 md:pb-28 space-y-20">
         {/* Mission — editorial prose */}
         <section className="max-w-3xl">
           <p className="eyebrow mb-5">Our foundational mission</p>
-          <h2 className="display-lg text-3xl sm:text-4xl mb-6">Preserving camaraderie across decades</h2>
+          <h2 className="display-lg text-3xl sm:text-4xl lg:text-5xl mb-6">Preserving camaraderie across decades</h2>
           <div className="space-y-5 text-stone text-base sm:text-[17px] leading-relaxed">
             <p>
               In 1973, Manipuri students stepping off trains at Pune Railway Station formed PMSA so
@@ -128,7 +128,7 @@ export default function AboutPage() {
         {/* Timeline — ruled, not carded */}
         <section>
           <p className="eyebrow mb-5">Timeline of milestones</p>
-          <h2 className="display-lg text-3xl sm:text-4xl mb-12">50 years of community history</h2>
+          <h2 className="display-lg text-3xl sm:text-4xl lg:text-5xl mb-12">50 years of community history</h2>
 
           <ol className="border-l border-main space-y-0">
             {TIMELINE.map((item) => (
@@ -148,7 +148,7 @@ export default function AboutPage() {
         {/* Governance */}
         <section>
           <p className="eyebrow mb-5">Association governance</p>
-          <h2 className="display-lg text-3xl sm:text-4xl mb-3">The governing body</h2>
+          <h2 className="display-lg text-3xl sm:text-4xl lg:text-5xl mb-3">The governing body</h2>
           <p className="font-display text-ink text-lg md:text-xl mb-2">
             Managing Committee of Association of MSAP Alumni, Manipur
           </p>
@@ -159,7 +159,7 @@ export default function AboutPage() {
 
           {/* Office bearers — large portrait cards */}
           <h3 className="eyebrow mb-8">Office bearers</h3>
-          <div className="lg:grid lg:grid-cols-[1.1fr_1.05fr] lg:gap-x-10 items-start">
+          <div className="lg:grid lg:grid-cols-[1.2fr_1fr] lg:gap-x-10 items-start">
             <PortraitCard member={governingBody.officeBearers[0]} role="President" featured />
             <div className="grid sm:grid-cols-2 gap-x-10 gap-y-10 mt-10 lg:mt-0">
               {governingBody.officeBearers.slice(1).map((member) => (
@@ -188,7 +188,7 @@ export default function AboutPage() {
         {/* Registered addresses */}
         <section>
           <p className="eyebrow mb-5">Registered secretariat</p>
-          <h2 className="display-lg text-3xl sm:text-4xl mb-10">Official addresses</h2>
+          <h2 className="display-lg text-3xl sm:text-4xl lg:text-5xl mb-10">Official addresses</h2>
           <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
             <div className="border-t border-main pt-5">
               <h3 className="text-ink font-bold text-lg mb-2">Registered headquarters</h3>

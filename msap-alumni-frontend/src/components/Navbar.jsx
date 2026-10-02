@@ -52,7 +52,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-sm border-b border-main">
-      <div className="max-w-7xl mx-auto px-5">
+      <div className="max-w-[90rem] mx-auto px-5">
         <div className="flex items-center justify-between gap-4 h-[70px] md:h-20 lg:h-24">
           {/* Brand */}
           <Link to="/" className="flex items-center gap-3 md:gap-4 shrink-0 min-w-0 group" aria-label="Association of MSAP Alumni, Manipur — Home">
@@ -144,7 +144,7 @@ export default function Navbar() {
       {/* Mobile menu */}
       {mobileOpen && (
         <nav aria-label="Mobile" className="lg:hidden border-t border-main bg-card">
-          <div className="max-w-7xl mx-auto px-5 py-4 space-y-1">
+          <div className="max-w-[90rem] mx-auto px-5 py-4 space-y-1">
             {NAV_LINKS.map((link) => {
               const active = location.pathname === link.to;
               return (

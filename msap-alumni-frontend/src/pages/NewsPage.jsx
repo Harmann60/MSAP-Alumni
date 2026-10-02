@@ -30,7 +30,7 @@ export default function NewsPage() {
   return (
     <div className="bg-page min-h-[90vh]">
       {/* Page header */}
-      <div className="max-w-7xl mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
+      <div className="max-w-[90rem] mx-auto px-5 pt-14 pb-10 md:pt-20 md:pb-12">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mb-4">
           <div>
             <p className="eyebrow mb-4">News &amp; events</p>
@@ -86,7 +86,7 @@ export default function NewsPage() {
         </nav>
       </div>
 
-      <div className="max-w-7xl mx-auto px-5 pb-20 md:pb-28">
+      <div className="max-w-[90rem] mx-auto px-5 pb-20 md:pb-28">
         {filtered.length === 0 ? (
           <p className="text-stone text-base py-16">No documented activities match this filter.</p>
         ) : (

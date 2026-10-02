@@ -14,7 +14,7 @@ export default function NewsDetailPage() {
 
   return (
     <div className="bg-page min-h-[90vh]">
-      <div className="max-w-7xl mx-auto px-5 pt-14 pb-20 md:pt-20 md:pb-28">
+      <div className="max-w-[90rem] mx-auto px-5 pt-14 pb-20 md:pt-20 md:pb-28">
         <Link
           to="/news"
           className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-muted hover:text-lavender transition-colors mb-10"

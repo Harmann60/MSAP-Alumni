@@ -6,7 +6,7 @@ export default function NewsSection() {
   const latest = getAllNews().slice(0, 4);
 
   return (
-    <section className="max-w-7xl mx-auto px-5 py-16 md:py-24">
+    <section className="max-w-[90rem] mx-auto px-5 py-16 md:py-24">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
         <div>
           <p className="eyebrow mb-4">01 &mdash; News &amp; events</p>
