@@ -43,13 +43,13 @@ export const governingBody = {
     { name: 'Dr. A. Bijeshkumar', image: memberPhoto('Dr A Bijeshkumar.jpeg') },
     { name: 'Sarangthem Suresh Singh, Adv', image: memberPhoto('Adv S Suresh Singh.jpeg') },
     { name: 'Mr Jiten Irom', image: memberPhoto('Irom Jiten.jpeg') },
-    { name: 'Mr H. Shantikumar', image: null },
-    { name: 'Mr E. Tomba', image: null },
+    { name: 'Mr H. Shantikumar', image: memberPhoto('Hijam Shantikumar.jpeg') },
+    { name: 'Mr E. Tomba', image: memberPhoto('E Tomba.jpeg') },
   ],
   advisoryBoard: [
     { name: 'Shri Th. Arunkumar, Hon’bl MLA', image: null },
     { name: 'Dr. H. Narendra', image: memberPhoto('Dr H Narendra.jpeg') },
     { name: 'Ngongo Chongtham, Sr Adv', image: memberPhoto('Sr Adv Ch. Ngongo.jpeg') },
-    { name: 'Mr. Rajkumar Rakesh', image: null },
+    { name: 'Mr. Rajkumar Rakesh', image: memberPhoto('Rk Rakesh.jpeg') },
   ],
 };
