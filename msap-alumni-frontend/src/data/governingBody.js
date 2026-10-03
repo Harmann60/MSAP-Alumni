@@ -15,12 +15,12 @@ export const governingBody = {
     {
       position: 'President',
       name: 'Prof (Dr) Th. Asha Sinha',
-      image: null,
+      image: memberPhoto('Prof (Dr) Th. Asha Devi.jpeg'),
     },
     {
       position: 'Vice President',
       name: 'Col. Shantikumar Sapam, Retd.',
-      image: null,
+      image: memberPhoto('Col Sapam Shantikumar, Retd, VP.jpeg'),
     },
     {
       position: 'Secretary',
