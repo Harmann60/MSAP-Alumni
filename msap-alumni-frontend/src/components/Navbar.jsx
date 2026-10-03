@@ -53,9 +53,9 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-sm border-b border-main">
       <div className="max-w-[90rem] mx-auto px-5">
-        <div className="flex items-center justify-between gap-4 h-[70px] md:h-20 lg:h-24">
+        <div className="flex items-center justify-between gap-3 lg:gap-4 min-h-[70px] md:h-20 lg:h-24 py-2 md:py-0">
           {/* Brand */}
-          <Link to="/" className="flex items-center gap-3 md:gap-4 shrink-0 min-w-0 group" aria-label="Association of MSAP Alumni, Manipur — Home">
+          <Link to="/" className="flex items-center gap-3 md:gap-4 min-w-0 group lg:shrink-0" aria-label="Association of MSAP Alumni, Manipur — Home">
             <img
               src="/logo.png"
               alt="Association of MSAP Alumni, Manipur official logo"
@@ -123,17 +123,17 @@ export default function Navbar() {
 
           {/* Mobile toggle */}
           <button
-            className="lg:hidden text-ink hover:text-lavender p-2 -mr-2 transition-colors"
+            className="lg:hidden w-11 h-11 shrink-0 flex items-center justify-center text-ink hover:text-lavender rounded-sm border border-main/80 bg-card/60 transition-colors"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'}
             aria-expanded={mobileOpen}
           >
             {mobileOpen ? (
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-[22px] h-[22px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             ) : (
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-[22px] h-[22px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
               </svg>
             )}
