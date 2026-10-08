@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
@@ -7,6 +8,9 @@ import {
   updateAlumniProfile,
   adminLogout,
 } from '../services/adminService';
+import ArticlesAdminView from '../components/admin/ArticlesAdminView';
+import GalleryAdminView from '../components/admin/GalleryAdminView';
+import EventsAdminView from '../components/admin/EventsAdminView';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -27,15 +31,15 @@ function formatDate(iso) {
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-function Sidebar({ user, activeFilter, onFilterChange, counts, onLogout }) {
+function Sidebar({ user, activeFilter, onFilterChange, activeTab, onTabChange, counts, onLogout }) {
   return (
     <aside style={{ background: '#1A1429', minHeight: '100vh', width: 230, flexShrink: 0, display: 'flex', flexDirection: 'column', padding: '0' }}>
       {/* Brand */}
       <div style={{ padding: '24px 20px 20px', borderBottom: '1px solid rgba(250,249,252,0.08)', display: 'flex', alignItems: 'center', gap: 12 }}>
-        <img src="/logo.png" alt="Association of MSAP Alumni, Manipur" style={{ width: 38, height: 38, objectFit: 'contain', flexShrink: 0 }} />
+        <img src="/logo.png" alt="MSAP Alumni" style={{ width: 38, height: 38, objectFit: 'contain', flexShrink: 0 }} />
         <div>
-          <p style={{ margin: '0 0 2px', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.14em', color: '#9E92B5', lineHeight: 1.3 }}>
-            Association of MSAP Alumni, Manipur
+          <p style={{ margin: '0 0 2px', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.14em', color: '#9E92B5' }}>
+            MSAP Alumni
           </p>
           <p style={{ margin: 0, fontFamily: 'Playfair Display, Georgia, serif', fontSize: 18, color: '#FAF9FC', lineHeight: 1.2 }}>
             Admin Portal
@@ -45,17 +49,21 @@ function Sidebar({ user, activeFilter, onFilterChange, counts, onLogout }) {
 
       {/* Navigation */}
       <nav style={{ padding: '20px 0', flex: 1 }}>
+        {/* Main Section */}
         <p style={{ margin: '0 0 8px', padding: '0 24px', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#6B5E82' }}>
           Registrations
         </p>
         {STATUS_FILTERS.map((f) => {
-          const active = activeFilter === f;
+          const active = activeTab === 'REGISTRATIONS' && activeFilter === f;
           const count = f === 'ALL' ? counts.all : f === 'PENDING' ? counts.pending : f === 'VERIFIED' ? counts.verified : counts.rejected;
           return (
             <button
               key={f}
               id={`filter-${f.toLowerCase()}`}
-              onClick={() => onFilterChange(f)}
+              onClick={() => {
+                onTabChange('REGISTRATIONS');
+                onFilterChange(f);
+              }}
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 width: '100%', padding: '10px 24px', background: active ? 'rgba(88,59,156,0.18)' : 'transparent',
@@ -78,6 +86,56 @@ function Sidebar({ user, activeFilter, onFilterChange, counts, onLogout }) {
             </button>
           );
         })}
+
+        {/* Content Management Section */}
+        <p style={{ margin: '24px 0 8px', padding: '0 24px', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#6B5E82' }}>
+          Content Management
+        </p>
+        <button
+          onClick={() => onTabChange('ARTICLES')}
+          style={{
+            display: 'flex', alignItems: 'center', gap: 10,
+            width: '100%', padding: '10px 24px',
+            background: activeTab === 'ARTICLES' ? 'rgba(88,59,156,0.18)' : 'transparent',
+            border: 'none', borderLeft: activeTab === 'ARTICLES' ? '3px solid #583B9C' : '3px solid transparent',
+            cursor: 'pointer', color: activeTab === 'ARTICLES' ? '#FAF9FC' : '#9E92B5',
+            fontSize: 13, fontWeight: activeTab === 'ARTICLES' ? 600 : 400, textAlign: 'left',
+            transition: 'all 0.15s',
+          }}
+        >
+          <span>📰</span>
+          <span>Articles & Stories</span>
+        </button>
+        <button
+          onClick={() => onTabChange('EVENTS')}
+          style={{
+            display: 'flex', alignItems: 'center', gap: 10,
+            width: '100%', padding: '10px 24px',
+            background: activeTab === 'EVENTS' ? 'rgba(88,59,156,0.18)' : 'transparent',
+            border: 'none', borderLeft: activeTab === 'EVENTS' ? '3px solid #583B9C' : '3px solid transparent',
+            cursor: 'pointer', color: activeTab === 'EVENTS' ? '#FAF9FC' : '#9E92B5',
+            fontSize: 13, fontWeight: activeTab === 'EVENTS' ? 600 : 400, textAlign: 'left',
+            transition: 'all 0.15s',
+          }}
+        >
+          <span>🗓️</span>
+          <span>Events & Calendar</span>
+        </button>
+        <button
+          onClick={() => onTabChange('GALLERY')}
+          style={{
+            display: 'flex', alignItems: 'center', gap: 10,
+            width: '100%', padding: '10px 24px',
+            background: activeTab === 'GALLERY' ? 'rgba(88,59,156,0.18)' : 'transparent',
+            border: 'none', borderLeft: activeTab === 'GALLERY' ? '3px solid #583B9C' : '3px solid transparent',
+            cursor: 'pointer', color: activeTab === 'GALLERY' ? '#FAF9FC' : '#9E92B5',
+            fontSize: 13, fontWeight: activeTab === 'GALLERY' ? 600 : 400, textAlign: 'left',
+            transition: 'all 0.15s',
+          }}
+        >
+          <span>🖼️</span>
+          <span>Photo Gallery</span>
+        </button>
 
         <div style={{ marginTop: 24, padding: '0 24px' }}>
           <Link
@@ -122,24 +180,30 @@ function Sidebar({ user, activeFilter, onFilterChange, counts, onLogout }) {
   );
 }
 
-function StatsBanner({ counts }) {
+function StatsBanner({ counts, darkMode = false }) {
+  const cardBg = darkMode ? '#1A152B' : '#fff';
+  const cardBorder = darkMode ? 'rgba(168, 143, 240, 0.15)' : '#EAE5F2';
+  const valColor = darkMode ? '#FAF9FC' : '#1A1429';
+  const lblColor = darkMode ? '#A89EC4' : '#7E7394';
+
   return (
     <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
       {[
-        { label: 'Total', value: counts.all ?? '—', color: '#1A1429' },
+        { label: 'Total', value: counts.all ?? '—', color: darkMode ? '#9E92B5' : '#1A1429' },
         { label: 'Pending Review', value: counts.pending ?? '—', color: '#7C5CFC' },
         { label: 'Verified', value: counts.verified ?? '—', color: '#16A34A' },
         { label: 'Rejected', value: counts.rejected ?? '—', color: '#DC2626' },
       ].map((s) => (
         <div key={s.label} style={{
-          flex: 1, padding: '18px 20px', background: '#fff',
-          border: '1px solid #EAE5F2', borderLeft: `4px solid ${s.color}`,
-          borderRadius: 2,
+          flex: 1, padding: '18px 20px', background: cardBg,
+          border: `1px solid ${cardBorder}`, borderLeft: `4px solid ${s.color}`,
+          borderRadius: 8,
+          boxShadow: darkMode ? '0 4px 12px rgba(0,0,0,0.25)' : '0 2px 6px rgba(0,0,0,0.02)',
         }}>
-          <div style={{ fontFamily: 'Playfair Display, Georgia, serif', fontSize: 30, color: '#1A1429', lineHeight: 1 }}>
+          <div style={{ fontFamily: 'Playfair Display, Georgia, serif', fontSize: 30, color: valColor, lineHeight: 1 }}>
             {s.value}
           </div>
-          <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#7E7394', marginTop: 6 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: lblColor, marginTop: 6 }}>
             {s.label}
           </div>
         </div>
@@ -148,11 +212,15 @@ function StatsBanner({ counts }) {
   );
 }
 
-function RegistrationRow({ reg, isExpanded, onToggle, onApprove, onReject, onDelete, onUpdateProfile, actionLoading }) {
-  const [notes, setNotes] = useState('');
+function RegistrationRow({ reg, isExpanded, onToggle, onSetStatus, onApprove, onReject, onDelete, onUpdateProfile, actionLoading, darkMode = false }) {
+  const [decisionNotes, setDecisionNotes] = useState(reg.admin_notes || '');
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+
+  useEffect(() => {
+    setDecisionNotes(reg.admin_notes || '');
+  }, [reg.admin_notes]);
   const [formData, setFormData] = useState({
     fullName: reg.full_name || '',
     email: reg.email || '',
@@ -165,7 +233,6 @@ function RegistrationRow({ reg, isExpanded, onToggle, onApprove, onReject, onDel
     adminNotes: reg.admin_notes || '',
   });
 
-  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     setFormData({
       fullName: reg.full_name || '',
@@ -179,7 +246,6 @@ function RegistrationRow({ reg, isExpanded, onToggle, onApprove, onReject, onDel
       adminNotes: reg.admin_notes || '',
     });
   }, [reg]);
-  /* eslint-enable react-hooks/set-state-in-effect */
 
   const st = statusStyle(reg.status);
 
@@ -214,33 +280,52 @@ function RegistrationRow({ reg, isExpanded, onToggle, onApprove, onReject, onDel
         id={`row-${reg.id}`}
         onClick={onToggle}
         style={{
-          cursor: 'pointer', borderBottom: '1px solid #E8E2D8',
-          background: isExpanded ? '#faf9f5' : '#fff',
+          cursor: 'pointer',
+          borderBottom: darkMode ? '1px solid rgba(168, 143, 240, 0.12)' : '1px solid #E8E2D8',
+          background: isExpanded ? (darkMode ? '#231B3B' : '#faf9f5') : (darkMode ? '#1A152B' : '#fff'),
           transition: 'background 0.15s',
         }}
-        onMouseOver={(e) => { if (!isExpanded) e.currentTarget.style.background = '#fdfcf9'; }}
-        onMouseOut={(e) => { if (!isExpanded) e.currentTarget.style.background = '#fff'; }}
+        onMouseOver={(e) => { if (!isExpanded) e.currentTarget.style.background = darkMode ? '#221B38' : '#fdfcf9'; }}
+        onMouseOut={(e) => { if (!isExpanded) e.currentTarget.style.background = darkMode ? '#1A152B' : '#fff'; }}
       >
-        <td style={{ padding: '14px 20px', fontFamily: 'DM Serif Display, Georgia, serif', fontSize: 15, color: '#0B0E1A', fontWeight: 400 }}>
+        <td style={{ padding: '14px 20px', fontFamily: 'DM Serif Display, Georgia, serif', fontSize: 15, color: darkMode ? '#FAF9FC' : '#0B0E1A', fontWeight: 400 }}>
           {reg.full_name}
         </td>
-        <td style={{ padding: '14px 20px', fontSize: 13, color: '#5C5347' }}>
+        <td style={{ padding: '14px 20px', fontSize: 13, color: darkMode ? '#C5BDDB' : '#5C5347' }}>
           {reg.email}
         </td>
-        <td style={{ padding: '14px 20px', fontSize: 13, color: '#9B9484' }}>
+        <td style={{ padding: '14px 20px', fontSize: 13, color: darkMode ? '#A89EC4' : '#9B9484' }}>
           {reg.pune_college || '—'}
         </td>
-        <td style={{ padding: '14px 20px', fontSize: 13, color: '#9B9484' }}>
+        <td style={{ padding: '14px 20px', fontSize: 13, color: darkMode ? '#A89EC4' : '#9B9484' }}>
           {reg.batch_year || '—'}
         </td>
         <td style={{ padding: '14px 20px' }}>
-          <span style={{
-            display: 'inline-block', padding: '3px 10px',
-            fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em',
-            background: st.bg, color: st.color, borderRadius: 2,
-          }}>
-            {st.label}
-          </span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-start' }}>
+            <span style={{
+              display: 'inline-block', padding: '3px 10px',
+              fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em',
+              background: st.bg, color: st.color, borderRadius: 2,
+            }}>
+              {st.label}
+            </span>
+            {reg.admin_notes && (
+              <span
+                title={`Admin note: ${reg.admin_notes}`}
+                style={{
+                  fontSize: 10,
+                  color: darkMode ? '#C5BDDB' : '#7E7394',
+                  maxWidth: 130,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  cursor: 'help',
+                }}
+              >
+                📝 {reg.admin_notes}
+              </span>
+            )}
+          </div>
         </td>
         <td style={{ padding: '14px 20px', fontSize: 12, color: '#9B9484' }}>
           {formatDate(reg.created_at)}
@@ -524,163 +609,340 @@ function RegistrationRow({ reg, isExpanded, onToggle, onApprove, onReject, onDel
 
                   {/* Right: Actions */}
                   <div>
-                    {reg.status === 'VERIFIED' ? (
-                      <div style={{ padding: '18px', border: '1px solid #bbf7d0', background: '#f0fdf4' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-                          <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: '#16A34A', letterSpacing: '0.08em' }}>
-                            ✓ Active Verified Alumnus
-                          </span>
-                          <span style={{ fontSize: 11, color: '#15803D' }}>Can log in & browse network</span>
-                        </div>
-                        {reg.admin_notes && (
-                          <p style={{ margin: '8px 0 14px', fontSize: 12, color: '#166534', fontStyle: 'italic' }}>
-                            "{reg.admin_notes}"
-                          </p>
-                        )}
-                        <div style={{ display: 'flex', gap: 8, marginTop: 12, paddingTop: 12, borderTop: '1px solid #dcfce7', flexWrap: 'wrap' }}>
-                          <button
-                            type="button"
-                            onClick={() => onReject(reg.id, 'Verification revoked by admin.')}
-                            disabled={actionLoading === reg.id}
-                            style={{
-                              padding: '6px 12px', background: 'transparent', color: '#DC2626',
-                              border: '1px solid #fca5a5', fontSize: 11, fontWeight: 600,
-                              cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
-                            }}
-                          >
-                            Revoke / Mark Rejected
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => onDelete(reg.id, reg.full_name)}
-                            disabled={actionLoading === reg.id}
-                            style={{
-                              padding: '6px 12px', background: '#dc2626', color: '#fff',
-                              border: 'none', fontSize: 11, fontWeight: 700,
-                              cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
-                            }}
-                          >
-                            🗑 Remove User from Database
-                          </button>
-                        </div>
+                    <div style={{
+                      padding: '20px',
+                      borderRadius: 8,
+                      border: darkMode ? '1px solid rgba(168, 143, 240, 0.2)' : '1px solid #EAE5F2',
+                      background: darkMode ? '#1A1429' : '#FFFFFF',
+                      boxShadow: darkMode ? '0 4px 16px rgba(0,0,0,0.3)' : '0 2px 8px rgba(0,0,0,0.03)',
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                        <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: st.color }}>
+                          Status: {st.label}
+                        </span>
+                        <span style={{ fontSize: 11, color: darkMode ? '#A89EC4' : '#9B9484' }}>
+                          ID: {reg.id.slice(0, 8)}…
+                        </span>
                       </div>
-                    ) : reg.status === 'REJECTED' ? (
-                      <div style={{ padding: '18px', border: '1px solid #fecaca', background: '#fef2f2' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-                          <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: '#DC2626', letterSpacing: '0.08em' }}>
-                            ✕ Registration Rejected
-                          </span>
-                        </div>
-                        {reg.admin_notes && (
-                          <p style={{ margin: '8px 0 14px', fontSize: 12, color: '#991b1b', fontStyle: 'italic' }}>
-                            "{reg.admin_notes}"
-                          </p>
-                        )}
-                        <div style={{ display: 'flex', gap: 8, marginTop: 12, paddingTop: 12, borderTop: '1px solid #fee2e2' }}>
-                          <button
-                            type="button"
-                            onClick={() => onApprove(reg.id, 'Re-verified by admin.')}
-                            disabled={actionLoading === reg.id}
-                            style={{
-                              padding: '6px 12px', background: '#16A34A', color: '#fff',
-                              border: 'none', fontSize: 11, fontWeight: 700,
-                              cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
-                            }}
-                          >
-                            ✓ Re-Approve (Verify)
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => onDelete(reg.id, reg.full_name)}
-                            disabled={actionLoading === reg.id}
-                            style={{
-                              padding: '6px 12px', background: 'transparent', color: '#DC2626',
-                              border: '1px solid #fca5a5', fontSize: 11, fontWeight: 600,
-                              cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
-                            }}
-                          >
-                            🗑 Delete Permanently
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      /* PENDING Review Action Panel */
-                      <div>
-                        <label style={{ display: 'block', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: '#9B9484', marginBottom: 6 }}>
-                          Decision Notes (optional — included in email to applicant)
+
+                      {/* Decision Notes & Reason Input */}
+                      <div style={{ marginBottom: 14 }}>
+                        <label style={{
+                          display: 'block',
+                          fontSize: 11,
+                          fontWeight: 700,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.06em',
+                          color: darkMode ? '#C5BDDB' : '#5C5347',
+                          marginBottom: 6,
+                        }}>
+                          Admin Note / Rejection Reason (Included in email & shown in applicant portal)
                         </label>
                         <textarea
-                          value={notes}
-                          onChange={(e) => setNotes(e.target.value)}
-                          placeholder="Optional explanation or reason sent to applicant (e.g., please provide your roll number)…"
+                          value={decisionNotes}
+                          onChange={(e) => setDecisionNotes(e.target.value)}
+                          placeholder="e.g. Please submit a valid college student ID or degree certificate for verification..."
                           rows={3}
                           style={{
-                            width: '100%', border: '1px solid #E8E2D8', background: '#fff',
-                            padding: '10px 12px', fontSize: 13, color: '#0B0E1A',
-                            resize: 'vertical', fontFamily: 'Source Sans 3, system-ui, sans-serif',
-                            outline: 'none', boxSizing: 'border-box', marginBottom: 12,
+                            width: '100%',
+                            border: darkMode ? '1px solid rgba(168, 143, 240, 0.3)' : '1px solid #D1C9DE',
+                            background: darkMode ? '#241B3B' : '#FAF9FC',
+                            color: darkMode ? '#FAF9FC' : '#1A1429',
+                            padding: '10px 12px',
+                            fontSize: 13,
+                            borderRadius: 6,
+                            resize: 'vertical',
+                            boxSizing: 'border-box',
+                            outline: 'none',
                           }}
                         />
-                        <div style={{ display: 'flex', gap: 8 }}>
-                          <button
-                            id={`approve-${reg.id}`}
-                            type="button"
-                            onClick={() => onApprove(reg.id, notes)}
-                            disabled={actionLoading === reg.id}
-                            style={{
-                              flex: 1, padding: '10px 0', background: '#2D8A4E', color: '#fff',
-                              border: 'none', fontSize: 12, fontWeight: 700,
-                              textTransform: 'uppercase', letterSpacing: '0.08em',
-                              cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
-                              opacity: actionLoading === reg.id ? 0.6 : 1, transition: 'opacity 0.15s',
-                            }}
-                          >
-                            {actionLoading === reg.id ? 'Saving…' : '✓ Approve'}
-                          </button>
-                          <button
-                            id={`reject-${reg.id}`}
-                            type="button"
-                            onClick={() => onReject(reg.id, notes)}
-                            disabled={actionLoading === reg.id}
-                            style={{
-                              flex: 1, padding: '10px 0', background: 'transparent', color: '#D64933',
-                              border: '1px solid #D64933', fontSize: 12, fontWeight: 700,
-                              textTransform: 'uppercase', letterSpacing: '0.08em',
-                              cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
-                              opacity: actionLoading === reg.id ? 0.6 : 1, transition: 'all 0.15s',
-                            }}
-                          >
-                            ✕ Reject
-                          </button>
-                          <button
-                            id={`delete-${reg.id}`}
-                            type="button"
-                            onClick={() => onDelete(reg.id, reg.full_name)}
-                            disabled={actionLoading === reg.id}
-                            style={{
-                              padding: '10px 14px', background: 'transparent', color: '#888',
-                              border: '1px solid #ddd', fontSize: 12, fontWeight: 600,
-                              cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
-                              opacity: actionLoading === reg.id ? 0.6 : 1, transition: 'all 0.15s',
-                              display: 'flex', alignItems: 'center', gap: 4,
-                            }}
-                            onMouseOver={(e) => {
-                              e.currentTarget.style.color = '#dc2626';
-                              e.currentTarget.style.borderColor = '#dc2626';
-                              e.currentTarget.style.background = '#fef2f2';
-                            }}
-                            onMouseOut={(e) => {
-                              e.currentTarget.style.color = '#888';
-                              e.currentTarget.style.borderColor = '#ddd';
-                              e.currentTarget.style.background = 'transparent';
-                            }}
-                            title="Permanently remove from database"
-                          >
-                            🗑 Delete
-                          </button>
+
+                        {/* Quick Presets */}
+                        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8 }}>
+                          <span style={{ fontSize: 10, color: darkMode ? '#8B7FA8' : '#9B9484', alignSelf: 'center' }}>Presets:</span>
+                          {[
+                            'Student / Degree ID needed',
+                            'Batch year mismatch',
+                            'Details could not be verified',
+                            'Welcome to the MSAP Alumni Network!'
+                          ].map((preset) => (
+                            <button
+                              key={preset}
+                              type="button"
+                              onClick={() => setDecisionNotes(preset)}
+                              style={{
+                                fontSize: 10,
+                                padding: '3px 8px',
+                                borderRadius: 12,
+                                border: darkMode ? '1px solid rgba(168, 143, 240, 0.25)' : '1px solid #EAE5F2',
+                                background: darkMode ? '#292042' : '#F5F0E8',
+                                color: darkMode ? '#D5CEE8' : '#5C5347',
+                                cursor: 'pointer',
+                              }}
+                            >
+                              + {preset}
+                            </button>
+                          ))}
                         </div>
                       </div>
-                    )}
+
+                      {/* Action Buttons based on status */}
+                      {reg.status === 'VERIFIED' ? (
+                        <div>
+                          <p style={{ margin: '0 0 12px', fontSize: 12, color: '#16A34A', fontWeight: 600 }}>
+                            ✓ Active Member — This user can currently log in and browse the directory.
+                          </p>
+                          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                            <button
+                              type="button"
+                              onClick={() => (onSetStatus || onReject)(reg.id, 'PENDING', decisionNotes || 'Verification revoked for re-review.')}
+                              disabled={actionLoading === reg.id}
+                              style={{
+                                padding: '8px 14px',
+                                background: '#D97706',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: 4,
+                                fontSize: 11,
+                                fontWeight: 700,
+                                cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: 4,
+                              }}
+                            >
+                              ⚠️ Revoke to Pending
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => (onSetStatus || onReject)(reg.id, 'REJECTED', decisionNotes || 'Verification rejected by administrator.')}
+                              disabled={actionLoading === reg.id}
+                              style={{
+                                padding: '8px 14px',
+                                background: 'transparent',
+                                color: '#DC2626',
+                                border: '1px solid #DC2626',
+                                borderRadius: 4,
+                                fontSize: 11,
+                                fontWeight: 700,
+                                cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
+                              }}
+                            >
+                              ✕ Reject Application
+                            </button>
+                            {decisionNotes !== (reg.admin_notes || '') && (
+                              <button
+                                type="button"
+                                onClick={() => (onSetStatus || onApprove)(reg.id, 'VERIFIED', decisionNotes)}
+                                disabled={actionLoading === reg.id}
+                                style={{
+                                  padding: '8px 14px',
+                                  background: '#7C5CFC',
+                                  color: '#fff',
+                                  border: 'none',
+                                  borderRadius: 4,
+                                  fontSize: 11,
+                                  fontWeight: 700,
+                                  cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
+                                }}
+                              >
+                                💾 Update Note
+                              </button>
+                            )}
+                            <button
+                              type="button"
+                              onClick={async () => {
+                                await (onSetStatus || onApprove)(reg.id, 'VERIFIED', decisionNotes || reg.admin_notes || 'Welcome to the MSAP Alumni Society!');
+                                alert(`🎉 Welcome & congratulatory email dispatched to ${reg.email}!`);
+                              }}
+                              disabled={actionLoading === reg.id}
+                              style={{
+                                padding: '8px 14px',
+                                background: '#15803D',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: 4,
+                                fontSize: 11,
+                                fontWeight: 700,
+                                cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: 4,
+                              }}
+                              title="Send or resend the welcome & congratulations email to this verified alumnus"
+                            >
+                              ✉️ Resend Welcome Email
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => onDelete(reg.id, reg.full_name)}
+                              disabled={actionLoading === reg.id}
+                              style={{
+                                padding: '8px 14px',
+                                background: '#dc2626',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: 4,
+                                fontSize: 11,
+                                fontWeight: 700,
+                                marginLeft: 'auto',
+                                cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
+                              }}
+                            >
+                              🗑 Delete User
+                            </button>
+                          </div>
+                        </div>
+                      ) : reg.status === 'REJECTED' ? (
+                        <div>
+                          <p style={{ margin: '0 0 12px', fontSize: 12, color: '#DC2626', fontWeight: 600 }}>
+                            ✕ Rejected — User cannot sign in to the alumni directory.
+                          </p>
+                          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                            <button
+                              type="button"
+                              onClick={() => (onSetStatus || onApprove)(reg.id, 'VERIFIED', decisionNotes || 'Re-approved after review.')}
+                              disabled={actionLoading === reg.id}
+                              style={{
+                                padding: '8px 14px',
+                                background: '#16A34A',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: 4,
+                                fontSize: 11,
+                                fontWeight: 700,
+                                cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
+                              }}
+                            >
+                              ✓ Re-Approve & Verify
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => (onSetStatus || onApprove)(reg.id, 'PENDING', decisionNotes || 'Moved back to review queue.')}
+                              disabled={actionLoading === reg.id}
+                              style={{
+                                padding: '8px 14px',
+                                background: '#D97706',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: 4,
+                                fontSize: 11,
+                                fontWeight: 700,
+                                cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
+                              }}
+                            >
+                              Move to Pending
+                            </button>
+                            {decisionNotes !== (reg.admin_notes || '') && (
+                              <button
+                                type="button"
+                                onClick={() => (onSetStatus || onReject)(reg.id, 'REJECTED', decisionNotes)}
+                                disabled={actionLoading === reg.id}
+                                style={{
+                                  padding: '8px 14px',
+                                  background: '#7C5CFC',
+                                  color: '#fff',
+                                  border: 'none',
+                                  borderRadius: 4,
+                                  fontSize: 11,
+                                  fontWeight: 700,
+                                  cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
+                                }}
+                              >
+                                💾 Save New Note
+                              </button>
+                            )}
+                            <button
+                              type="button"
+                              onClick={() => onDelete(reg.id, reg.full_name)}
+                              disabled={actionLoading === reg.id}
+                              style={{
+                                padding: '8px 14px',
+                                background: 'transparent',
+                                color: '#DC2626',
+                                border: '1px solid #fca5a5',
+                                borderRadius: 4,
+                                fontSize: 11,
+                                fontWeight: 700,
+                                marginLeft: 'auto',
+                                cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
+                              }}
+                            >
+                              🗑 Delete Permanently
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        /* PENDING */
+                        <div>
+                          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                            <button
+                              id={`approve-${reg.id}`}
+                              type="button"
+                              onClick={() => (onSetStatus || onApprove)(reg.id, 'VERIFIED', decisionNotes)}
+                              disabled={actionLoading === reg.id}
+                              style={{
+                                flex: 1,
+                                minWidth: 140,
+                                padding: '10px 16px',
+                                background: '#16A34A',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: 4,
+                                fontSize: 12,
+                                fontWeight: 700,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.06em',
+                                cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
+                              }}
+                            >
+                              {actionLoading === reg.id ? 'Updating…' : '✓ Approve & Verify'}
+                            </button>
+                            <button
+                              id={`reject-${reg.id}`}
+                              type="button"
+                              onClick={() => (onSetStatus || onReject)(reg.id, 'REJECTED', decisionNotes || 'Application details could not be verified.')}
+                              disabled={actionLoading === reg.id}
+                              style={{
+                                flex: 1,
+                                minWidth: 140,
+                                padding: '10px 16px',
+                                background: 'transparent',
+                                color: '#DC2626',
+                                border: '1px solid #DC2626',
+                                borderRadius: 4,
+                                fontSize: 12,
+                                fontWeight: 700,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.06em',
+                                cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
+                              }}
+                            >
+                              ✕ Reject Application
+                            </button>
+                            <button
+                              id={`delete-${reg.id}`}
+                              type="button"
+                              onClick={() => onDelete(reg.id, reg.full_name)}
+                              disabled={actionLoading === reg.id}
+                              style={{
+                                padding: '10px 14px',
+                                background: '#dc2626',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: 4,
+                                fontSize: 12,
+                                fontWeight: 700,
+                                cursor: actionLoading === reg.id ? 'not-allowed' : 'pointer',
+                              }}
+                              title="Permanently remove from database"
+                            >
+                              🗑 Delete
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}
@@ -698,10 +960,20 @@ export default function AdminDashboardPage() {
   const navigate = useNavigate();
 
   // Retrieve session
-  const token = sessionStorage.getItem('msap_admin_token');
   const user = (() => { try { return JSON.parse(sessionStorage.getItem('msap_admin_user')); } catch { return null; } })();
+  const isAdmin = Boolean(user && ['ADMIN', 'SUPER_ADMIN'].includes(user.role));
 
+  const [activeTab, setActiveTab] = useState('REGISTRATIONS'); // 'REGISTRATIONS' | 'ARTICLES' | 'GALLERY'
   const [activeFilter, setActiveFilter] = useState('ALL');
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem('msap_admin_dark_mode') === 'true');
+
+  const toggleDarkMode = () => {
+    setDarkMode((prev) => {
+      const next = !prev;
+      localStorage.setItem('msap_admin_dark_mode', String(next));
+      return next;
+    });
+  };
   const [registrations, setRegistrations] = useState([]);
   const [counts, setCounts] = useState({ all: 0, pending: 0, verified: 0, rejected: 0 });
   const [loading, setLoading] = useState(true);
@@ -712,10 +984,10 @@ export default function AdminDashboardPage() {
   const [total, setTotal] = useState(0);
   const LIMIT = 25;
 
-  // Redirect if not authenticated
+  // RBAC guard: redirect if not authenticated or not an admin
   useEffect(() => {
-    if (!token) navigate('/admin/login', { replace: true });
-  }, [token, navigate]);
+    if (!isAdmin) navigate('/admin/login', { replace: true });
+  }, [isAdmin, navigate]);
 
   const loadRegistrations = useCallback(async () => {
     setLoading(true);
@@ -740,7 +1012,7 @@ export default function AdminDashboardPage() {
         rejected: rejected?.total ?? 0,
       });
     } catch (err) {
-      if (err.status === 401) {
+      if (err.status === 401 || err.status === 403) {
         sessionStorage.clear();
         navigate('/admin/login', { replace: true });
       } else {
@@ -751,7 +1023,6 @@ export default function AdminDashboardPage() {
     }
   }, [activeFilter, page, navigate]);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { loadRegistrations(); }, [loadRegistrations]);
 
   const handleFilterChange = (f) => {
@@ -842,7 +1113,11 @@ export default function AdminDashboardPage() {
   };
 
   const handleLogout = async () => {
-    await adminLogout().catch(() => {});
+    try {
+      await adminLogout();
+    } catch {
+      // Ignore network errors during logout
+    }
     sessionStorage.clear();
     navigate('/admin/login', { replace: true });
   };
@@ -850,30 +1125,109 @@ export default function AdminDashboardPage() {
   const totalPages = Math.ceil(total / LIMIT);
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#FAF9FC', fontFamily: 'Plus Jakarta Sans, system-ui, sans-serif' }}>
+    <div style={{
+      display: 'flex',
+      minHeight: '100vh',
+      background: darkMode ? '#0C0917' : '#FAF9FC',
+      fontFamily: 'Plus Jakarta Sans, system-ui, sans-serif',
+      color: darkMode ? '#FAF9FC' : '#1A1429',
+      transition: 'background 0.2s',
+    }}>
       <Sidebar
         user={user}
         activeFilter={activeFilter}
         onFilterChange={handleFilterChange}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
         counts={counts}
         onLogout={handleLogout}
       />
 
       {/* Main content */}
-      <main style={{ flex: 1, padding: '32px 36px', overflowY: 'auto', minWidth: 0 }}>
+      <main style={{
+        flex: 1,
+        padding: '24px 36px 40px',
+        overflowY: 'auto',
+        minWidth: 0,
+        background: darkMode ? '#0F0B1E' : '#FAF9FC',
+        color: darkMode ? '#FAF9FC' : '#1A1429',
+      }}>
+        {/* Top bar with quick breadcrumb & Dark Mode toggle */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 24,
+          paddingBottom: 14,
+          borderBottom: darkMode ? '1px solid rgba(168, 143, 240, 0.12)' : '1px solid #EAE5F2',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 12, fontWeight: 700, color: '#7C5CFC', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              MSAP Admin
+            </span>
+            <span style={{ fontSize: 12, color: darkMode ? '#6B5E82' : '#B8B0C8' }}>/</span>
+            <span style={{ fontSize: 12, fontWeight: 600, color: darkMode ? '#A89EC4' : '#7E7394' }}>
+              {activeTab === 'ARTICLES' ? 'Articles & Stories' : activeTab === 'GALLERY' ? 'Photo Gallery' : 'Alumni Registrations'}
+            </span>
+          </div>
 
-        {/* Header */}
-        <div style={{ marginBottom: 24, borderBottom: '1px solid #EAE5F2', paddingBottom: 20 }}>
-          <h1 style={{ margin: '0 0 6px', fontFamily: 'Playfair Display, Georgia, serif', fontSize: 28, fontWeight: 600, color: '#1A1429' }}>
-            {activeFilter === 'ALL' ? 'All Registrations' : `${activeFilter.charAt(0) + activeFilter.slice(1).toLowerCase()} Registrations`}
-          </h1>
-          <p style={{ margin: 0, fontSize: 13, color: '#7E7394' }}>
-            Review alumni submissions, edit member details, and manage verification status.
-          </p>
+          <button
+            onClick={toggleDarkMode}
+            type="button"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              padding: '6px 14px',
+              borderRadius: 20,
+              background: darkMode ? '#1D1730' : '#FFFFFF',
+              border: darkMode ? '1px solid #4D3D75' : '1px solid #D1C9DE',
+              color: darkMode ? '#FAF9FC' : '#1A1429',
+              fontSize: 12,
+              fontWeight: 600,
+              cursor: 'pointer',
+              boxShadow: darkMode ? '0 2px 8px rgba(0,0,0,0.3)' : '0 2px 6px rgba(0,0,0,0.04)',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            <span>{darkMode ? '🌙 Dark Mode' : '☀️ Light Mode'}</span>
+            <span style={{
+              display: 'inline-block',
+              width: 16,
+              height: 16,
+              borderRadius: '50%',
+              background: darkMode ? '#7C5CFC' : '#EAE3F7',
+              textAlign: 'center',
+              lineHeight: '16px',
+              fontSize: 9,
+              color: darkMode ? '#fff' : '#583B9C',
+              fontWeight: 700,
+            }}>
+              {darkMode ? '✓' : '●'}
+            </span>
+          </button>
         </div>
 
+        {activeTab === 'ARTICLES' ? (
+          <ArticlesAdminView darkMode={darkMode} />
+        ) : activeTab === 'EVENTS' ? (
+          <EventsAdminView darkMode={darkMode} />
+        ) : activeTab === 'GALLERY' ? (
+          <GalleryAdminView darkMode={darkMode} />
+        ) : (
+          <>
+            {/* Header */}
+            <div style={{ marginBottom: 24, borderBottom: darkMode ? '1px solid rgba(168, 143, 240, 0.12)' : '1px solid #EAE5F2', paddingBottom: 20 }}>
+              <h1 style={{ margin: '0 0 6px', fontFamily: 'Playfair Display, Georgia, serif', fontSize: 28, fontWeight: 600, color: darkMode ? '#FAF9FC' : '#1A1429' }}>
+                {activeFilter === 'ALL' ? 'All Registrations' : `${activeFilter.charAt(0) + activeFilter.slice(1).toLowerCase()} Registrations`}
+              </h1>
+              <p style={{ margin: 0, fontSize: 13, color: darkMode ? '#A89EC4' : '#7E7394' }}>
+                Review alumni submissions, edit member details, and manage verification status.
+              </p>
+            </div>
+
         {/* Stats */}
-        <StatsBanner counts={counts} />
+        <StatsBanner counts={counts} darkMode={darkMode} />
 
         {/* Status Filter Pills Bar */}
         <div style={{ display: 'flex', gap: 10, marginBottom: 20, flexWrap: 'wrap' }}>
@@ -892,9 +1246,9 @@ export default function AdminDashboardPage() {
                 onClick={() => handleFilterChange(tab.id)}
                 style={{
                   padding: '9px 18px',
-                  background: active ? '#1A1429' : '#fff',
-                  color: active ? '#FAF9FC' : '#5C5347',
-                  border: active ? '1px solid #1A1429' : '1px solid #EAE5F2',
+                  background: active ? '#7C5CFC' : (darkMode ? '#1A152B' : '#fff'),
+                  color: active ? '#FAF9FC' : (darkMode ? '#FAF9FC' : '#5C5347'),
+                  border: active ? '1px solid #7C5CFC' : (darkMode ? '1px solid rgba(168, 143, 240, 0.15)' : '1px solid #EAE5F2'),
                   borderRadius: 20,
                   fontSize: 13,
                   fontWeight: active ? 700 : 500,
@@ -902,7 +1256,7 @@ export default function AdminDashboardPage() {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: 8,
-                  boxShadow: active ? '0 2px 6px rgba(26,20,41,0.15)' : 'none',
+                  boxShadow: active ? '0 2px 8px rgba(124, 92, 252, 0.3)' : 'none',
                   transition: 'all 0.15s',
                 }}
               >
@@ -915,8 +1269,8 @@ export default function AdminDashboardPage() {
                   fontWeight: 700,
                   padding: '1px 8px',
                   borderRadius: 10,
-                  background: active ? '#583B9C' : '#F0ECE4',
-                  color: active ? '#FAF9FC' : '#7E7394',
+                  background: active ? '#583B9C' : (darkMode ? '#292140' : '#F0ECE4'),
+                  color: active ? '#FAF9FC' : (darkMode ? '#A89EC4' : '#7E7394'),
                 }}>
                   {tab.count}
                 </span>
@@ -927,36 +1281,36 @@ export default function AdminDashboardPage() {
 
         {/* Error */}
         {errorMsg && (
-          <div style={{ padding: '12px 16px', background: '#fef1ee', border: '1px solid #D64933', color: '#D64933', marginBottom: 16, fontSize: 13 }}>
+          <div style={{ padding: '12px 16px', background: darkMode ? 'rgba(239, 68, 68, 0.15)' : '#fef1ee', border: '1px solid #D64933', color: darkMode ? '#FCA5A5' : '#D64933', borderRadius: 6, marginBottom: 16, fontSize: 13 }}>
             {errorMsg}
-            <button onClick={loadRegistrations} style={{ marginLeft: 12, fontSize: 12, fontWeight: 700, background: 'none', border: 'none', color: '#D64933', cursor: 'pointer', textDecoration: 'underline' }}>
+            <button onClick={loadRegistrations} style={{ marginLeft: 12, fontSize: 12, fontWeight: 700, background: 'none', border: 'none', color: darkMode ? '#FCA5A5' : '#D64933', cursor: 'pointer', textDecoration: 'underline' }}>
               Retry
             </button>
           </div>
         )}
 
         {/* Table */}
-        <div style={{ background: '#fff', border: '1px solid #E8E2D8' }}>
+        <div style={{ background: darkMode ? '#1A152B' : '#fff', border: darkMode ? '1px solid rgba(168, 143, 240, 0.15)' : '1px solid #E8E2D8', borderRadius: 8, overflow: 'hidden' }}>
           {/* Table header */}
-          <div style={{ padding: '12px 20px', borderBottom: '1px solid #E8E2D8', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <h3 style={{ margin: 0, fontFamily: 'DM Serif Display, Georgia, serif', fontSize: 16, fontWeight: 400, color: '#0B0E1A' }}>
-              {activeFilter === 'VERIFIED' ? 'Accepted & Verified Alumni Directory' : activeFilter === 'PENDING' ? 'Pending Review Queue' : 'Registration queue'}
+          <div style={{ padding: '14px 20px', borderBottom: darkMode ? '1px solid rgba(168, 143, 240, 0.12)' : '1px solid #E8E2D8', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: darkMode ? '#161126' : '#fff' }}>
+            <h3 style={{ margin: 0, fontFamily: 'Playfair Display, Georgia, serif', fontSize: 17, fontWeight: 600, color: darkMode ? '#FAF9FC' : '#0B0E1A' }}>
+              {activeFilter === 'VERIFIED' ? 'Accepted & Verified Alumni Directory' : activeFilter === 'PENDING' ? 'Pending Review Queue' : 'Registration Queue'}
             </h3>
-            <span style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#9B9484' }}>
+            <span style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: darkMode ? '#A89EC4' : '#9B9484' }}>
               {total} total
             </span>
           </div>
 
           {loading ? (
-            <div style={{ padding: '60px 20px', textAlign: 'center', color: '#9B9484', fontSize: 13 }}>
+            <div style={{ padding: '60px 20px', textAlign: 'center', color: darkMode ? '#A89EC4' : '#9B9484', fontSize: 13 }}>
               Loading registrations…
             </div>
           ) : registrations.length === 0 ? (
             <div style={{ padding: '60px 20px', textAlign: 'center' }}>
-              <p style={{ fontFamily: 'DM Serif Display, Georgia, serif', fontSize: 20, color: '#0B0E1A', margin: '0 0 8px' }}>
+              <p style={{ fontFamily: 'Playfair Display, Georgia, serif', fontSize: 20, color: darkMode ? '#FAF9FC' : '#0B0E1A', margin: '0 0 8px' }}>
                 No registrations found
               </p>
-              <p style={{ fontSize: 13, color: '#9B9484', margin: 0 }}>
+              <p style={{ fontSize: 13, color: darkMode ? '#A89EC4' : '#9B9484', margin: 0 }}>
                 {activeFilter !== 'ALL' ? `No ${activeFilter.toLowerCase()} submissions yet.` : 'No one has registered yet.'}
               </p>
             </div>
@@ -964,12 +1318,12 @@ export default function AdminDashboardPage() {
             <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
               <table style={{ width: '100%', minWidth: 700, borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ background: '#F5F0E8' }}>
+                  <tr style={{ background: darkMode ? '#221B38' : '#F5F0E8' }}>
                     {['Name', 'Email', 'College', 'Batch', 'Status', 'Submitted', ''].map((col) => (
                       <th key={col} style={{
-                        padding: '10px 20px', textAlign: 'left', fontSize: 10,
-                        fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em',
-                        color: '#9B9484', borderBottom: '1px solid #E8E2D8', whiteSpace: 'nowrap',
+                        padding: '12px 20px', textAlign: 'left', fontSize: 11,
+                        fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em',
+                        color: darkMode ? '#A89EC4' : '#9B9484', borderBottom: darkMode ? '1px solid rgba(168, 143, 240, 0.12)' : '1px solid #E8E2D8', whiteSpace: 'nowrap',
                       }}>
                         {col}
                       </th>
@@ -983,11 +1337,13 @@ export default function AdminDashboardPage() {
                       reg={reg}
                       isExpanded={expandedId === reg.id}
                       onToggle={() => setExpandedId(expandedId === reg.id ? null : reg.id)}
+                      onSetStatus={(id, status, notes) => handleAction(id, status, notes)}
                       onApprove={(id, notes) => handleAction(id, 'VERIFIED', notes)}
                       onReject={(id, notes) => handleAction(id, 'REJECTED', notes)}
                       onDelete={handleDelete}
                       onUpdateProfile={handleUpdateProfile}
                       actionLoading={actionLoading}
+                      darkMode={darkMode}
                     />
                   ))}
                 </tbody>
@@ -996,35 +1352,37 @@ export default function AdminDashboardPage() {
           )}
         </div>
 
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 20 }}>
-            <button
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
-              disabled={page === 1}
-              style={{
-                padding: '7px 16px', background: 'transparent', border: '1px solid #E8E2D8',
-                fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em',
-                color: page === 1 ? '#C8C0B0' : '#0B0E1A', cursor: page === 1 ? 'not-allowed' : 'pointer',
-              }}
-            >
-              ← Previous
-            </button>
-            <span style={{ fontSize: 12, color: '#9B9484' }}>
-              Page {page} of {totalPages}
-            </span>
-            <button
-              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              disabled={page === totalPages}
-              style={{
-                padding: '7px 16px', background: 'transparent', border: '1px solid #E8E2D8',
-                fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em',
-                color: page === totalPages ? '#C8C0B0' : '#0B0E1A', cursor: page === totalPages ? 'not-allowed' : 'pointer',
-              }}
-            >
-              Next →
-            </button>
-          </div>
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 20 }}>
+                <button
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={page === 1}
+                  style={{
+                    padding: '7px 16px', background: 'transparent', border: '1px solid #E8E2D8',
+                    fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em',
+                    color: page === 1 ? '#C8C0B0' : '#0B0E1A', cursor: page === 1 ? 'not-allowed' : 'pointer',
+                  }}
+                >
+                  ← Previous
+                </button>
+                <span style={{ fontSize: 12, color: '#9B9484' }}>
+                  Page {page} of {totalPages}
+                </span>
+                <button
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={page === totalPages}
+                  style={{
+                    padding: '7px 16px', background: 'transparent', border: '1px solid #E8E2D8',
+                    fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em',
+                    color: page === totalPages ? '#C8C0B0' : '#0B0E1A', cursor: page === totalPages ? 'not-allowed' : 'pointer',
+                  }}
+                >
+                  Next →
+                </button>
+              </div>
+            )}
+          </>
         )}
       </main>
     </div>

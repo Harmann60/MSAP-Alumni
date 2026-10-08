@@ -10,9 +10,13 @@ export default function AdminLoginPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const token = sessionStorage.getItem('msap_admin_token');
-    if (token) {
-      navigate('/admin', { replace: true });
+    try {
+      const user = JSON.parse(sessionStorage.getItem('msap_admin_user'));
+      if (user && ['ADMIN', 'SUPER_ADMIN'].includes(user.role)) {
+        navigate('/admin', { replace: true });
+      }
+    } catch {
+      // Ignore parse errors
     }
   }, [navigate]);
 
@@ -25,6 +29,8 @@ export default function AdminLoginPage() {
       const data = await adminLogin(email.trim(), password.trim());
       if (data?.token) {
         sessionStorage.setItem('msap_admin_token', data.token);
+      }
+      if (data?.user) {
         sessionStorage.setItem('msap_admin_user', JSON.stringify(data.user));
       }
       navigate('/admin');

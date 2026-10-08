@@ -14,10 +14,10 @@ export async function alumniLogin(email, password) {
   });
 }
 
-export async function googleLogin({ credential, email }) {
+export async function googleLogin({ credential, email, fullName, picture }) {
   return request('/auth/google', {
     method: 'POST',
-    body: JSON.stringify({ credential, email }),
+    body: JSON.stringify({ credential, email, fullName, picture }),
   });
 }
 
@@ -36,3 +36,18 @@ export async function alumniLogout() {
   }
   return request('/auth/logout', { method: 'POST' });
 }
+
+export async function requestPasswordReset(email) {
+  return request('/auth/forgot-password', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  });
+}
+
+export async function resetPassword(token, password) {
+  return request('/auth/reset-password', {
+    method: 'POST',
+    body: JSON.stringify({ token, password }),
+  });
+}
+

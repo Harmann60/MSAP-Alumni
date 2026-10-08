@@ -10,14 +10,15 @@
  */
 
 import { AuthService } from '../services/authService.js';
-
+import { AuditService, AUDIT_ACTIONS } from '../services/auditService.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 
 export class AuthController {
   static async login(req, res, next) {
     try {
       const { email, password } = req.body;
-      const { token, user } = await AuthService.login({ email, password });
+      // Pass req.ip so authService can write an audit log entry with the hashed IP
+      const { token, user } = await AuthService.login({ email, password, ip: req.ip });
 
       // Set secure HttpOnly cookie
       res.cookie('access_token', token, AuthService.getCookieOptions());
@@ -35,7 +36,7 @@ export class AuthController {
   static async alumniLogin(req, res, next) {
     try {
       const { email, password } = req.body;
-      const { token, user } = await AuthService.alumniLogin({ email, password });
+      const { token, user } = await AuthService.alumniLogin({ email, password, ip: req.ip });
 
       // Set secure HttpOnly cookie
       res.cookie('access_token', token, AuthService.getCookieOptions());
@@ -52,8 +53,8 @@ export class AuthController {
 
   static async googleLogin(req, res, next) {
     try {
-      const { credential, email } = req.body;
-      const { token, user } = await AuthService.googleLogin({ credential, email });
+      const { credential, email, fullName, picture } = req.body;
+      const { token, user } = await AuthService.googleLogin({ credential, email, fullName, picture, ip: req.ip });
 
       res.cookie('access_token', token, AuthService.getCookieOptions());
 
@@ -70,7 +71,7 @@ export class AuthController {
   static async setAlumniPassword(req, res, next) {
     try {
       const { email, password } = req.body;
-      const { token, user } = await AuthService.setAlumniPassword({ email, password });
+      const { token, user } = await AuthService.setAlumniPassword({ email, password, ip: req.ip });
 
       res.cookie('access_token', token, AuthService.getCookieOptions());
 
@@ -84,10 +85,19 @@ export class AuthController {
     }
   }
 
-  static async logout(_req, res, next) {
+  static async logout(req, _res, next) {
     try {
-      res.clearCookie('access_token', AuthService.getCookieOptions());
-      return ApiResponse.success(res, null, 'Logged out successfully');
+      // Audit the logout event before clearing the cookie
+      await AuditService.log({
+        action:     AUDIT_ACTIONS.LOGOUT,
+        entityName: 'admins',
+        adminId:    req.user?.id,
+        ip:         req.ip,
+        details:    { email: req.user?.email },
+      });
+
+      _res.clearCookie('access_token', AuthService.getCookieOptions());
+      return ApiResponse.success(_res, null, 'Logged out successfully');
     } catch (error) {
       next(error);
     }
@@ -100,4 +110,38 @@ export class AuthController {
       next(error);
     }
   }
+
+  static async getCsrfToken(req, res, next) {
+    try {
+      const csrfToken = req.cookies?.csrf_token;
+      return ApiResponse.success(res, { csrfToken }, 'CSRF token retrieved');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async forgotPassword(req, res, next) {
+    try {
+      const { email } = req.body;
+      const result = await AuthService.requestPasswordReset(email, req.ip);
+      return ApiResponse.success(res, result, result.message);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async resetPassword(req, res, next) {
+    try {
+      const { token, password } = req.body;
+      const result = await AuthService.resetPassword({
+        token,
+        newPassword: password,
+        ip: req.ip,
+      });
+      return ApiResponse.success(res, result, result.message);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
+

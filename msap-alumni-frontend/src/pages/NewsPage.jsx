@@ -1,17 +1,46 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getAllNews, NEWS_CAMPAIGNS } from '../data/newsData';
+import { fetchStories } from '../services/dataService';
 import NewsCard from '../components/NewsCard';
 
-const CATEGORIES = ['All', 'Reunion', 'Community', 'Association', 'Environment'];
+const CATEGORIES = ['All', 'Reunion', 'Community', 'Association', 'Environment', 'Spotlight'];
 const YEARS = ['All years', 2026, 2025];
 
 export default function NewsPage() {
+  const [allNews, setAllNews] = useState(() => getAllNews());
   const [activeCategory, setActiveCategory] = useState('All');
   const [activeYear, setActiveYear] = useState('All years');
 
-  const all = getAllNews();
+  useEffect(() => {
+    fetchStories()
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          const mapped = data.map((story) => ({
+            id: story.id,
+            slug: story.id,
+            title: story.title,
+            category: story.category || 'Spotlight',
+            dateDisplay: story.published_date || 'Recent',
+            cardLabel: `${story.published_date || 'Recent'} · ${story.category || 'Association'}`,
+            coverImage: story.image_url,
+            excerpt: story.excerpt,
+            content: typeof story.content === 'string' ? story.content.split('\n\n') : story.content || [],
+            isFeatured: Boolean(story.is_featured),
+            source: story.source,
+            year: story.published_date?.includes('2025') ? 2025 : 2026,
+          }));
 
-  const filtered = all.filter((item) => {
+          const dbTitles = new Set(mapped.map((m) => m.title.trim().toLowerCase()));
+          const staticRemain = getAllNews().filter(
+            (item) => !dbTitles.has(item.title.trim().toLowerCase())
+          );
+          setAllNews([...mapped, ...staticRemain]);
+        }
+      })
+      .catch((err) => console.warn('Using offline news archive:', err.message));
+  }, []);
+
+  const filtered = allNews.filter((item) => {
     const categoryMatch = activeCategory === 'All' || item.category === activeCategory;
     const yearMatch = activeYear === 'All years' || item.year === activeYear;
     return categoryMatch && yearMatch;

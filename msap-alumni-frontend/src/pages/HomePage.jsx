@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import HeroSection from '../components/HeroSection';
 import NewsSection from '../components/NewsSection';
+import EventsSection from '../components/EventsSection';
 
 export default function HomePage() {
   return (
@@ -15,6 +16,8 @@ export default function HomePage() {
       </div>
 
       <NewsSection />
+
+      <EventsSection />
 
       {/* Institutional CTA band */}
       <section className="bg-lavender-deep text-[#FAF8F4]">

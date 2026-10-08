@@ -9,7 +9,7 @@
  */
 
 import { AlumniService } from '../services/alumniService.js';
-
+import { AuditService, AUDIT_ACTIONS } from '../services/auditService.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 import { BadRequestError } from '../utils/apiError.js';
 
@@ -26,8 +26,17 @@ export class AlumniController {
         );
       }
 
-      const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+      const clientIp = req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress;
       const result = await AlumniService.register(req.body, clientIp);
+
+      // Audit the new registration
+      await AuditService.log({
+        action:     AUDIT_ACTIONS.ALUMNI_REGISTERED,
+        entityName: 'alumni_registrations',
+        entityId:   result.id,
+        ip:         req.ip,
+        details:    { email: result.email, fullName: result.full_name },
+      });
 
       return ApiResponse.created(
         res,
@@ -70,6 +79,16 @@ export class AlumniController {
         adminId,
       });
 
+      // Audit the status change
+      await AuditService.log({
+        action:     AUDIT_ACTIONS.ALUMNI_STATUS_UPDATED,
+        entityName: 'alumni_registrations',
+        entityId:   id,
+        adminId,
+        ip:         req.ip,
+        details:    { newStatus: status, adminNotes: adminNotes || null },
+      });
+
       return ApiResponse.success(res, updated, `Alumni status updated to ${status}`);
     } catch (error) {
       next(error);
@@ -80,6 +99,16 @@ export class AlumniController {
     try {
       const { id } = req.params;
       const result = await AlumniService.delete(id);
+
+      // Audit the deletion
+      await AuditService.log({
+        action:     AUDIT_ACTIONS.ALUMNI_DELETED,
+        entityName: 'alumni_registrations',
+        entityId:   id,
+        adminId:    req.user?.id,
+        ip:         req.ip,
+      });
+
       return ApiResponse.success(res, result, 'Alumni registration deleted successfully');
     } catch (error) {
       next(error);
@@ -90,9 +119,21 @@ export class AlumniController {
     try {
       const { id } = req.params;
       const result = await AlumniService.updateProfile(id, req.body);
+
+      // Audit the profile update
+      await AuditService.log({
+        action:     AUDIT_ACTIONS.ALUMNI_PROFILE_UPDATED,
+        entityName: 'alumni_registrations',
+        entityId:   id,
+        adminId:    req.user?.id,
+        ip:         req.ip,
+        details:    { fields: Object.keys(req.body) },
+      });
+
       return ApiResponse.success(res, result, 'Alumni profile updated successfully');
     } catch (error) {
       next(error);
     }
   }
 }
+

@@ -11,6 +11,7 @@ import AdminLoginPage from './pages/AdminLoginPage'
 import AdminDashboardPage from './pages/AdminDashboardPage'
 import AlumniLoginPage from './pages/AlumniLoginPage'
 import GalleryPage from './pages/GalleryPage'
+import SessionInactivityManager from './components/SessionInactivityManager'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -26,6 +27,7 @@ export default function App() {
     return (
       <>
         <ScrollToTop />
+        <SessionInactivityManager />
         <Routes>
           <Route path="/admin/login" element={<AdminLoginPage />} />
           <Route path="/admin/*" element={<AdminDashboardPage />} />
@@ -38,6 +40,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-parchment text-stone font-sans flex flex-col">
       <ScrollToTop />
+      <SessionInactivityManager />
       <Navbar />
       <main className="flex-1">
         <Routes>

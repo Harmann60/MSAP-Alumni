@@ -112,3 +112,40 @@ export const authSlowDown = slowDown({
    */
   delayMs: (hits) => (hits - 2) * 500,
 });
+
+// ─── Password reset limiter ──────────────────────────────────────────────────
+
+/**
+ * Dedicated rate limiter for forgot-password requests to prevent email bombing.
+ *
+ * @type {import('express-rate-limit').RateLimitRequestHandler}
+ */
+export const passwordResetLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15-minute window
+  max: env.NODE_ENV === 'production' ? 5 : 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Too many password reset requests. Please try again after 15 minutes.',
+  },
+});
+
+// ─── Upload limiter ──────────────────────────────────────────────────────────
+
+/**
+ * Rate limiter for file uploads to prevent storage abuse.
+ *
+ * @type {import('express-rate-limit').RateLimitRequestHandler}
+ */
+export const uploadLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15-minute window
+  max: env.NODE_ENV === 'production' ? 30 : 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Upload rate limit reached. Please wait a few moments before uploading more files.',
+  },
+});
+

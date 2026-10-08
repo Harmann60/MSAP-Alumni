@@ -1,17 +1,23 @@
 import { Router } from 'express';
 import { AuthController } from '../controllers/authController.js';
 import { validateRequest } from '../middlewares/validate.js';
-import { loginSchema, googleLoginSchema, setAlumniPasswordSchema } from '../validators/authValidator.js';
-import { authLimiter, authSlowDown } from '../middlewares/rateLimiter.js';
+import {
+  loginSchema,
+  googleLoginSchema,
+  setAlumniPasswordSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+} from '../validators/authValidator.js';
+import { authLimiter, authSlowDown, passwordResetLimiter } from '../middlewares/rateLimiter.js';
 import { authenticate } from '../middlewares/auth.js';
 
 const router = Router();
 
-// Public: Admin login (Strict rate limiting & brute-force delay)
+// Public: Admin login (Brute-force delay & strict rate limiting)
 router.post(
   '/login',
-  authLimiter,
   authSlowDown,
+  authLimiter,
   validateRequest({ body: loginSchema }),
   AuthController.login
 );
@@ -19,8 +25,8 @@ router.post(
 // Public: Verified Alumni login (Checks admin verification & credentials)
 router.post(
   '/alumni/login',
-  authLimiter,
   authSlowDown,
+  authLimiter,
   validateRequest({ body: loginSchema }),
   AuthController.alumniLogin
 );
@@ -28,8 +34,8 @@ router.post(
 // Public: Sign In through Google ("Continue with Google")
 router.post(
   '/google',
-  authLimiter,
   authSlowDown,
+  authLimiter,
   validateRequest({ body: googleLoginSchema }),
   AuthController.googleLogin
 );
@@ -37,11 +43,32 @@ router.post(
 // Public: Set/Link Account Password (for approved alumni whose status is VERIFIED)
 router.post(
   '/alumni/set-password',
-  authLimiter,
   authSlowDown,
+  authLimiter,
   validateRequest({ body: setAlumniPasswordSchema }),
   AuthController.setAlumniPassword
 );
+
+// Public: Self-Service Forgot Password (request email reset link)
+router.post(
+  '/forgot-password',
+  authSlowDown,
+  passwordResetLimiter,
+  validateRequest({ body: forgotPasswordSchema }),
+  AuthController.forgotPassword
+);
+
+// Public: Reset Password (submit new password using token)
+router.post(
+  '/reset-password',
+  authSlowDown,
+  authLimiter,
+  validateRequest({ body: resetPasswordSchema }),
+  AuthController.resetPassword
+);
+
+// Public: Retrieve CSRF token
+router.get('/csrf-token', AuthController.getCsrfToken);
 
 // Authenticated: Logout (clears HttpOnly cookie)
 router.post('/logout', authenticate, AuthController.logout);

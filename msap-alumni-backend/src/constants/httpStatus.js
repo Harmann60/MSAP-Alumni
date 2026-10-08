@@ -11,3 +11,6 @@ export const HTTP_STATUS = {
   TOO_MANY_REQUESTS: 429,
   INTERNAL_SERVER_ERROR: 500,
 };
+
+export const HttpStatus = HTTP_STATUS;
+

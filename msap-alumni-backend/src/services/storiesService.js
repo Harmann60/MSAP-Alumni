@@ -1,7 +1,7 @@
 /**
  * @fileoverview Stories service for the MSAP Alumni backend.
  *
- * Manages alumni community stories/articles (listing and creation).
+ * Manages alumni community stories/articles (listing, creation, updating, deletion).
  * Falls back to an in-memory seed dataset when Supabase is not configured.
  *
  * @module services/storiesService
@@ -11,64 +11,14 @@ import crypto from 'crypto';
 
 import { supabase, isConfigured } from '../config/supabase.js';
 import { logger } from '../config/logger.js';
+import { ApiError } from '../utils/apiError.js';
+import { HTTP_STATUS } from '../constants/httpStatus.js';
 
-const initialStories = [
-  {
-    id: '1',
-    title: '93.17%: A Graduation Achievement Remembered',
-    category: 'Academic',
-    source: 'AMAND Annual Cultural Programme',
-    published_date: '2022',
-    image_url: null,
-    excerpt: 'Yuireising Ngalung received the Late Albert Memorial Award for Academic Excellence in 2022 after recording 93.17% in graduation — the highest mark among Manipuri students in Pune that year.',
-    is_featured: true,
-  },
-  {
-    id: '2',
-    title: 'Academic Excellence, Recognised in 2019',
-    category: 'Academic',
-    source: 'Late N. Albert Memorial Award Record',
-    published_date: '2019',
-    image_url: null,
-    excerpt: 'Tayenjam Sanathoi Singh received the second Late N. Albert Memorial Award for Academic Excellence in 2019 after achieving the highest graduation marks across streams among the Manipuri community in Pune.',
-    is_featured: false,
-  },
-  {
-    id: '3',
-    title: 'From Alumni Network to Community Action',
-    category: 'Community',
-    source: 'MSAP Alumni Association Report',
-    published_date: '2026',
-    image_url: null,
-    excerpt: 'In 2026, the Association of MSAP Alumni, Manipur completed seven plantation programmes across the state and planted 2,550 saplings under the theme "Now for Climate".',
-    is_featured: false,
-  },
-  {
-    id: '4',
-    title: '1973 → Today: A Student Network That Became a Community',
-    category: 'Legacy',
-    source: 'MSAP Founding Record',
-    published_date: 'Since 1973',
-    image_url: null,
-    excerpt: 'Founded in 1973, MSAP began as a platform for Manipuri students in Pune. Over the decades, its activities have grown across academics, sports, culture and community life.',
-    is_featured: false,
-  },
-  {
-    id: '5',
-    title: 'Where Sport Became a Way to Stay Connected',
-    category: 'Culture',
-    source: 'Annual Sports Records',
-    published_date: 'Documented history',
-    image_url: null,
-    excerpt: 'MSAP has organised annual sports and cultural programmes for decades, including a documented 2014 sports meet with 22 individual and team events.',
-    is_featured: false,
-  },
-];
-
-let mockStories = [...initialStories];
+const initialStories = [];
+let mockStories = [];
 
 export class StoriesService {
-  static async list({ isFeatured }) {
+  static async list({ isFeatured } = {}) {
     if (isConfigured && supabase) {
       let query = supabase.from('stories').select('*');
       if (typeof isFeatured === 'boolean') {
@@ -76,40 +26,79 @@ export class StoriesService {
       }
       const { data, error } = await query.order('created_at', { ascending: false });
       if (error) {
-        logger.warn('Supabase stories query failed (table may not exist), falling back to mock stories', { error: error.message });
+        logger.warn('Supabase stories query failed, falling back to mock stories', { error: error.message });
         let res = [...mockStories];
         if (typeof isFeatured === 'boolean') {
           res = res.filter((s) => s.is_featured === isFeatured);
         }
         return res;
       }
+      // Merge Supabase data with mock seed data to keep legacy items visible
+      let merged = Array.isArray(data) ? [...data] : [];
+      const existingIds = new Set(merged.map((s) => s.id));
+      mockStories.forEach((s) => {
+        if (!existingIds.has(s.id)) merged.push(s);
+      });
+      if (typeof isFeatured === 'boolean') {
+        merged = merged.filter((s) => s.is_featured === isFeatured);
+      }
+      merged.sort((a, b) => {
+        const aDate = new Date(a.updated_at || a.created_at || a.published_date || 0);
+        const bDate = new Date(b.updated_at || b.created_at || b.published_date || 0);
+        return bDate - aDate;
+      });
+      return merged;
+    }
+
+    if (!isConfigured || !supabase) {
+        return [];
+      }
+      return [];
+  }
+
+
+  static async getById(id) {
+    if (isConfigured && supabase) {
+      const { data, error } = await supabase.from('stories').select('*').eq('id', id).single();
+      if (error) {
+        throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Story not found');
+      }
       return data;
     }
 
-    let res = [...mockStories];
-    if (typeof isFeatured === 'boolean') {
-      res = res.filter((s) => s.is_featured === isFeatured);
-    }
-    return res;
+    const story = mockStories.find((s) => s.id === id);
+    if (!story) throw new ApiError(HttpStatus.NOT_FOUND, 'Story not found');
+    return story;
   }
 
   static async create(storyData, adminId) {
     const payload = {
       title: storyData.title,
-      source: storyData.source,
-      published_date: storyData.publishedDate,
-      image_url: storyData.imageUrl,
-      excerpt: storyData.excerpt,
+      source: storyData.source || 'MSAP News',
+      category: storyData.category || 'Spotlight',
+      published_date: storyData.publishedDate || new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+      image_url: storyData.imageUrl || '',
+      excerpt: storyData.excerpt || '',
       content: storyData.content || null,
       is_featured: Boolean(storyData.isFeatured),
       created_by: adminId || null,
     };
 
     if (isConfigured && supabase) {
-      const { data, error } = await supabase.from('stories').insert([payload]).select().single();
+      let { data, error } = await supabase.from('stories').insert([payload]).select().single();
+      // If foreign key constraint on created_by fails (e.g. mock admin ID), retry with created_by: null
+      if (error && error.code === '23503' && payload.created_by) {
+        payload.created_by = null;
+        const retry = await supabase.from('stories').insert([payload]).select().single();
+        data = retry.data;
+        error = retry.error;
+      }
       if (error) {
         logger.error('Supabase create story error:', error);
-        throw new Error('Failed to create story');
+        throw new ApiError(
+          HTTP_STATUS.INTERNAL_SERVER_ERROR,
+          `Database error: ${error.message || 'Failed to create story'}`
+        );
       }
       return data;
     }
@@ -118,8 +107,57 @@ export class StoriesService {
       id: crypto.randomUUID(),
       ...payload,
       created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     };
     mockStories.unshift(newStory);
     return newStory;
+  }
+
+  static async update(id, storyData) {
+    const payload = {};
+    if (storyData.title !== undefined) payload.title = storyData.title;
+    if (storyData.source !== undefined) payload.source = storyData.source;
+    if (storyData.category !== undefined) payload.category = storyData.category;
+    if (storyData.publishedDate !== undefined) payload.published_date = storyData.publishedDate;
+    if (storyData.imageUrl !== undefined) payload.image_url = storyData.imageUrl;
+    if (storyData.excerpt !== undefined) payload.excerpt = storyData.excerpt;
+    if (storyData.content !== undefined) payload.content = storyData.content;
+    if (storyData.isFeatured !== undefined) payload.is_featured = Boolean(storyData.isFeatured);
+    payload.updated_at = new Date().toISOString();
+
+    if (isConfigured && supabase) {
+      const { data, error } = await supabase
+        .from('stories')
+        .update(payload)
+        .eq('id', id)
+        .select()
+        .single();
+      if (error) {
+        logger.error('Supabase update story error:', error);
+        throw new ApiError(HTTP_STATUS.INTERNAL_SERVER_ERROR, 'Failed to update story');
+      }
+      return data;
+    }
+
+    const idx = mockStories.findIndex((s) => s.id === id);
+    if (idx === -1) throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Story not found');
+    mockStories[idx] = { ...mockStories[idx], ...payload };
+    return mockStories[idx];
+  }
+
+  static async delete(id) {
+    if (isConfigured && supabase) {
+      const { error } = await supabase.from('stories').delete().eq('id', id);
+      if (error) {
+        logger.error('Supabase delete story error:', error);
+        throw new ApiError(HTTP_STATUS.INTERNAL_SERVER_ERROR, 'Failed to delete story');
+      }
+      return true;
+    }
+
+    const idx = mockStories.findIndex((s) => s.id === id);
+    if (idx === -1) throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Story not found');
+    mockStories.splice(idx, 1);
+    return true;
   }
 }

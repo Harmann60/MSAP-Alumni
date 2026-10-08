@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { alumniLogout } from '../services/alumniService';
 
 const NAV_LINKS = [
   { label: 'About', to: '/about' },
@@ -43,7 +44,12 @@ export default function Navbar() {
   }, [location.pathname]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
+    try {
+      await alumniLogout();
+    } catch {
+      // Ignore network errors on logout
+    }
     sessionStorage.removeItem('msap_alumni_token');
     sessionStorage.removeItem('msap_alumni_user');
     setCurrentUser(null);
