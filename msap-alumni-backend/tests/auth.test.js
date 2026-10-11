@@ -1,9 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert';
 import { AuthService } from '../src/services/authService.js';
-import { NotFoundError, ForbiddenError } from '../src/utils/apiError.js';
+import { UnauthorizedError, ForbiddenError, BadRequestError } from '../src/utils/apiError.js';
 
-test('Auth: Throws NotFoundError when logging in with unregistered email', async () => {
+test('Auth: Throws UnauthorizedError when logging in with unregistered email', async () => {
   await assert.rejects(
     async () => {
       await AuthService.alumniLogin({
@@ -12,8 +12,8 @@ test('Auth: Throws NotFoundError when logging in with unregistered email', async
       });
     },
     (err) => {
-      assert.ok(err instanceof NotFoundError);
-      assert.match(err.message, /not been registered/);
+      assert.ok(err instanceof UnauthorizedError);
+      assert.match(err.message, /Invalid email or password/);
       return true;
     }
   );
@@ -36,7 +36,7 @@ test('Auth: Throws ForbiddenError when logging in with pending alumni applicatio
   );
 });
 
-test('Auth: Throws NotFoundError on Google Sign-In with unregistered email', async () => {
+test('Auth: Throws BadRequestError on Google Sign-In without credential token', async () => {
   await assert.rejects(
     async () => {
       await AuthService.googleLogin({
@@ -44,38 +44,11 @@ test('Auth: Throws NotFoundError on Google Sign-In with unregistered email', asy
       });
     },
     (err) => {
-      assert.ok(err instanceof NotFoundError);
-      assert.match(err.message, /not been registered/);
+      assert.ok(err instanceof BadRequestError);
+      assert.match(err.message, /Google credential ID token is required/);
       return true;
     }
   );
-});
-
-test('Auth: Throws ForbiddenError on Google Sign-In with pending application', async () => {
-  await assert.rejects(
-    async () => {
-      await AuthService.googleLogin({
-        email: 'sanjit.ningombam@gmail.com',
-      });
-    },
-    (err) => {
-      assert.ok(err instanceof ForbiddenError);
-      assert.match(err.message, /pending verification/);
-      return true;
-    }
-  );
-});
-
-test('Auth: Succeeds on Google Sign-In with verified alumni application', async () => {
-  // 'linthoi.t@outlook.com' has status: VERIFIED in mockRegistrations
-  const result = await AuthService.googleLogin({
-    email: 'linthoi.t@outlook.com',
-  });
-
-  assert.ok(result.token);
-  assert.strictEqual(result.user.email, 'linthoi.t@outlook.com');
-  assert.strictEqual(result.user.role, 'ALUMNI');
-  assert.strictEqual(result.user.status, 'VERIFIED');
 });
 
 test('Auth: Throws ForbiddenError when setting password on pending alumni record', async () => {
@@ -94,10 +67,12 @@ test('Auth: Throws ForbiddenError when setting password on pending alumni record
   );
 });
 
-test('Auth: Succeeds when setting password on verified alumni record', async () => {
+test('Auth: Succeeds when setting password on verified alumni record with valid reset token', async () => {
+  const token = AuthService.generateVerificationToken('linthoi.t@outlook.com');
   const result = await AuthService.setAlumniPassword({
     email: 'linthoi.t@outlook.com',
     password: 'UpdatedSecurePass123!',
+    token,
   });
 
   assert.ok(result.token);

@@ -44,8 +44,12 @@ export const registerAlumniSchema = z.object({
     .or(z.literal('')),
   password: z
     .string()
-    .min(6, 'Password must be at least 6 characters')
-    .max(100, 'Password cannot exceed 100 characters')
+    .min(8, 'Password must be at least 8 characters')
+    .max(128, 'Password cannot exceed 128 characters')
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]).+$/,
+      'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+    )
     .optional(),
   // Anti-Spam Honeypot field (must be empty from legitimate UI forms)
   hp_website: z.string().max(0, 'Spam detected').optional().or(z.literal('')),

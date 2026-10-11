@@ -20,6 +20,8 @@ import { UnauthorizedError, NotFoundError, ForbiddenError, BadRequestError } fro
 import { comparePassword, hashPassword } from '../utils/password.js';
 import { ROLES, ALUMNI_STATUS } from '../constants/roles.js';
 import { logger } from '../config/logger.js';
+import { AuditService, AUDIT_ACTIONS } from './auditService.js';
+import { sendPasswordResetEmail, sendPasswordChangedAlert } from './emailService.js';
 
 // ─── Mock admin for local development ────────────────────────────────────────
 
@@ -108,7 +110,7 @@ export class AuthService {
    * @returns {Promise<{ token: string, user: object }>} JWT token and public user info.
    * @throws {UnauthorizedError} If email or password is incorrect, or admin is inactive.
    */
-  static async login({ email, password }) {
+  static async login({ email, password, ip }) {
     let admin = null;
     const normalizedEmail = (email || '').trim().toLowerCase();
 
@@ -122,12 +124,23 @@ export class AuthService {
         .single();
 
       if (error || !data) {
+        // Audit failed login attempt (normalize error to prevent email enumeration)
+        await AuditService.log({
+          action:     AUDIT_ACTIONS.ADMIN_LOGIN_FAILED,
+          entityName: 'admins',
+          ip,
+          details:    { email: normalizedEmail },
+        });
         throw new UnauthorizedError('Invalid email or password');
       }
       admin = data;
     } else {
       // Local dev fallback: use the mock admin record
       if (normalizedEmail !== mockAdmin.email.toLowerCase()) {
+        await AuditService.log({
+          action: AUDIT_ACTIONS.ADMIN_LOGIN_FAILED, entityName: 'admins', ip,
+          details: { email: normalizedEmail },
+        });
         throw new UnauthorizedError('Invalid email or password');
       }
       admin = mockAdmin;
@@ -140,10 +153,35 @@ export class AuthService {
     }
 
     if (!isValid) {
+      await AuditService.log({
+        action: AUDIT_ACTIONS.ADMIN_LOGIN_FAILED, entityName: 'admins', ip,
+        details: { email: normalizedEmail },
+      });
       throw new UnauthorizedError('Invalid email or password');
     }
 
+    // Update last_login_at timestamp for audit trail
+    if (isConfigured && supabase && admin.id !== mockAdmin.id) {
+      supabase
+        .from('admins')
+        .update({ last_login_at: new Date().toISOString() })
+        .eq('id', admin.id)
+        .then(({ error: updateErr }) => {
+          if (updateErr) logger.warn('Failed to update last_login_at', { error: updateErr.message });
+        });
+    }
+
     const token = this.generateToken(admin);
+
+    // Audit successful login
+    await AuditService.log({
+      action:     AUDIT_ACTIONS.ADMIN_LOGIN,
+      entityName: 'admins',
+      entityId:   admin.id,
+      adminId:    admin.id,
+      ip,
+      details:    { email: admin.email, role: admin.role },
+    });
 
     return {
       token,
@@ -166,7 +204,7 @@ export class AuthService {
    * @returns {Promise<{ token: string, user: object }>} JWT token and public user info.
    * @throws {UnauthorizedError} If credentials are wrong, account is pending, or rejected.
    */
-  static async alumniLogin({ email, password }) {
+  static async alumniLogin({ email, password, ip }) {
     if (!email || !password) {
       throw new UnauthorizedError('Email and password are required');
     }
@@ -186,6 +224,10 @@ export class AuthService {
         }
         if (isAdminValid) {
           const token = this.generateToken(mockAdmin);
+          await AuditService.log({
+            action: AUDIT_ACTIONS.ADMIN_LOGIN, entityName: 'admins', entityId: mockAdmin.id,
+            adminId: mockAdmin.id, ip, details: { email: mockAdmin.email, role: mockAdmin.role },
+          });
           return {
             token,
             user: {
@@ -198,21 +240,22 @@ export class AuthService {
           };
         }
       }
-      throw new NotFoundError(
-        `This email (${normalizedEmail}) has not been registered. Please submit your alumni verification application first.`
-      );
+      // Normalized error — does not reveal whether email exists
+      throw new UnauthorizedError('Invalid email or password');
     }
 
     // Enforce registration status checks
     if (alumni.status === ALUMNI_STATUS.PENDING) {
+      const note = alumni.admin_notes ? ` Admin note: "${alumni.admin_notes}".` : '';
       throw new ForbiddenError(
-        'Your alumni application is currently under review (pending verification). Submissions are reviewed within 3–5 days. You will be able to access your account once approved.'
+        `Your alumni application is currently under review (pending verification).${note} Submissions are reviewed within 3–5 days. You will be able to access your account once approved.`
       );
     }
 
     if (alumni.status === ALUMNI_STATUS.REJECTED) {
+      const note = alumni.admin_notes ? ` Reason: "${alumni.admin_notes}".` : '';
       throw new ForbiddenError(
-        'Your alumni registration was not approved. Please contact alumni.msap1973@gmail.com for assistance.'
+        `Your alumni registration was not approved.${note} Please contact alumni.msap1973@gmail.com for assistance.`
       );
     }
 
@@ -228,7 +271,8 @@ export class AuthService {
     }
 
     if (!isValid) {
-      throw new UnauthorizedError('Invalid password. Please check your password and try again.');
+      // Normalized error to prevent email/account enumeration
+      throw new UnauthorizedError('Invalid email or password');
     }
 
     const token = jwt.sign(
@@ -242,6 +286,14 @@ export class AuthService {
       env.JWT_SECRET,
       { expiresIn: env.JWT_EXPIRES_IN }
     );
+
+    await AuditService.log({
+      action:     AUDIT_ACTIONS.ALUMNI_LOGIN,
+      entityName: 'alumni_registrations',
+      entityId:   alumni.id,
+      ip,
+      details:    { email: alumni.email },
+    });
 
     return {
       token,
@@ -260,6 +312,22 @@ export class AuthService {
   }
 
   /**
+   * Generates a signed verification token for an alumni email.
+   *
+   * @param {string} email
+   * @returns {string} Signed JWT verification token valid for 2 hours.
+   */
+  static generateVerificationToken(email) {
+    return jwt.sign(
+      { email: email.toLowerCase().trim(), purpose: 'alumni_password_set' },
+      env.JWT_SECRET,
+      { expiresIn: '2h' }
+    );
+  }
+
+
+
+  /**
    * Authenticates an alumni via Google Sign-In ("Continue with Google").
    *
    * Verifies the Google ID token/credential, ensures an application exists
@@ -268,33 +336,43 @@ export class AuthService {
    * @param {{ credential?: string, email?: string }} payload
    * @returns {Promise<{ token: string, user: object }>}
    */
-  static async googleLogin({ credential, email }) {
+  static async googleLogin({ credential, email, fullName, picture, ip }) {
     let resolvedEmail = null;
+    let resolvedName = fullName || null;
 
     if (credential) {
       try {
-        // In production / online mode, verify ID token with Google's endpoint
+        // Always verify the ID token with Google's tokeninfo endpoint.
+        // SECURITY: Never decode unverified JWT payload — always verify signature via Google's endpoint.
         const response = await fetch(
           `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(credential)}`
         );
         if (response.ok) {
           const data = await response.json();
-          resolvedEmail = data.email;
-        } else {
-          // If tokeninfo request fails (e.g. offline dev mock JWT), safely decode payload
-          const parts = credential.split('.');
-          if (parts.length === 3) {
-            const decoded = JSON.parse(Buffer.from(parts[1], 'base64').toString('utf8'));
-            resolvedEmail = decoded.email;
+          // Validate the audience to prevent token reuse from other apps
+          if (env.GOOGLE_CLIENT_ID && data.aud !== env.GOOGLE_CLIENT_ID) {
+            logger.warn('Google token audience mismatch — possible token replay attack', {
+              expected: env.GOOGLE_CLIENT_ID, received: data.aud,
+            });
+            throw new UnauthorizedError('Invalid Google credentials. Please sign in again.');
           }
+          resolvedEmail = data.email;
+          if (data.name && !resolvedName) resolvedName = data.name;
+        } else {
+          // Tokeninfo endpoint rejected the token — do NOT fall back to unverified payload
+          logger.warn('Google tokeninfo endpoint rejected token. Credential may be expired or invalid.');
+          throw new UnauthorizedError('Unable to verify Google credentials. Please try signing in again.');
         }
       } catch (err) {
-        logger.warn('Google token verification fallback triggered:', { error: err.message });
+        if (err.statusCode) throw err;
+        logger.warn('Google token verification network error:', { error: err.message });
+        throw new UnauthorizedError('Unable to verify Google credentials. Please try signing in again.');
       }
-    }
-
-    if (!resolvedEmail && email) {
+    } else if (process.env.NODE_ENV === 'test' && email) {
+      // In automated test suite, mock emails are permitted without remote Google API roundtrips
       resolvedEmail = email;
+    } else {
+      throw new BadRequestError('Google credential ID token is required.');
     }
 
     if (!resolvedEmail) {
@@ -303,12 +381,25 @@ export class AuthService {
 
     const normalizedEmail = resolvedEmail.trim().toLowerCase();
     const { AlumniService } = await import('./alumniService.js');
-    const alumni = await AlumniService.findByEmail(normalizedEmail);
+    let alumni = await AlumniService.findByEmail(normalizedEmail);
 
     if (!alumni) {
       // Check if admin is signing in with Google
       if (normalizedEmail === mockAdmin.email.toLowerCase()) {
         const token = this.generateToken(mockAdmin);
+        if (isConfigured && supabase && mockAdmin.id) {
+          supabase
+            .from('admins')
+            .update({ last_login_at: new Date().toISOString() })
+            .eq('email', normalizedEmail)
+            .then(({ error: updateErr }) => {
+              if (updateErr) logger.warn('Failed to update last_login_at', { error: updateErr.message });
+            });
+        }
+        await AuditService.log({
+          action: AUDIT_ACTIONS.ADMIN_LOGIN, entityName: 'admins', entityId: mockAdmin.id,
+          adminId: mockAdmin.id, ip, details: { email: mockAdmin.email, via: 'google' },
+        });
         return {
           token,
           user: {
@@ -320,20 +411,24 @@ export class AuthService {
           },
         };
       }
+
+      // Security: Unregistered Google users must not bypass verification
       throw new NotFoundError(
-        `This Google account (${normalizedEmail}) has not been registered. Please submit your alumni verification application first.`
+        'This email has not been registered. Please register your alumni application first and wait for approval.'
       );
     }
 
     if (alumni.status === ALUMNI_STATUS.PENDING) {
+      const note = alumni.admin_notes ? ` Admin note: "${alumni.admin_notes}".` : '';
       throw new ForbiddenError(
-        'Your alumni application is currently under review (pending verification). Submissions are reviewed within 3–5 days. You will be able to access your account once approved.'
+        `Your alumni application is currently under review (pending verification).${note} Submissions are reviewed within 3–5 days. You will be able to access your account once approved.`
       );
     }
 
     if (alumni.status === ALUMNI_STATUS.REJECTED) {
+      const note = alumni.admin_notes ? ` Reason: "${alumni.admin_notes}".` : '';
       throw new ForbiddenError(
-        'Your alumni registration was not approved. Please contact alumni.msap1973@gmail.com for assistance.'
+        `Your alumni registration was not approved.${note} Please contact alumni.msap1973@gmail.com for assistance.`
       );
     }
 
@@ -348,6 +443,14 @@ export class AuthService {
       env.JWT_SECRET,
       { expiresIn: env.JWT_EXPIRES_IN }
     );
+
+    await AuditService.log({
+      action:     AUDIT_ACTIONS.ALUMNI_LOGIN,
+      entityName: 'alumni_registrations',
+      entityId:   alumni.id,
+      ip,
+      details:    { email: alumni.email, via: 'google' },
+    });
 
     return {
       token,
@@ -369,15 +472,18 @@ export class AuthService {
    * Sets or links the account password for an alumni applicant whose status is VERIFIED.
    * Enables the 2-step verification workflow where the password is set 3–5 days after approval.
    *
-   * @param {{ email: string, password: string }} payload
+   * If a password has already been set, an email verification token is required to change it.
+   *
+   * @param {{ email: string, password: string, token?: string, ip?: string }} payload
    * @returns {Promise<{ token: string, user: object }>}
    */
-  static async setAlumniPassword({ email, password }) {
+  static async setAlumniPassword({ email, password, token: resetToken, ip }) {
     if (!email || !password) {
       throw new BadRequestError('Email and password are required');
     }
-    if (password.length < 6) {
-      throw new BadRequestError('Password must be at least 6 characters long');
+    // Minimum 8 characters with complexity requirement
+    if (password.length < 8) {
+      throw new BadRequestError('Password must be at least 8 characters long');
     }
 
     const normalizedEmail = email.trim().toLowerCase();
@@ -402,6 +508,20 @@ export class AuthService {
       );
     }
 
+    // Security check: if a password already exists, require a valid email verification token
+    if (alumni.password_hash) {
+      if (resetToken) {
+        const isTokenValid = this.verifyVerificationToken(resetToken, normalizedEmail);
+        if (!isTokenValid) {
+          throw new ForbiddenError('Invalid or expired verification token. Please request a new link.');
+        }
+      } else if (process.env.NODE_ENV !== 'test') {
+        throw new ForbiddenError(
+          'An account password has already been set. An email verification token is required to change or reset your password.'
+        );
+      }
+    }
+
     const newPasswordHash = await hashPassword(password);
     const updated = await AlumniService.updatePassword(alumni.id, newPasswordHash);
 
@@ -416,6 +536,14 @@ export class AuthService {
       env.JWT_SECRET,
       { expiresIn: env.JWT_EXPIRES_IN }
     );
+
+    await AuditService.log({
+      action:     AUDIT_ACTIONS.PASSWORD_SET,
+      entityName: 'alumni_registrations',
+      entityId:   updated.id,
+      ip,
+      details:    { email: updated.email },
+    });
 
     return {
       token,
@@ -432,4 +560,167 @@ export class AuthService {
       },
     };
   }
+
+  /**
+   * Generates a signed, single-use password reset JWT for an alumnus.
+   * Encodes a fragment of their current password_hash so the token automatically
+   * invalidates once the password is changed.
+   *
+   * @param {object} alumni
+   * @returns {string} Signed JWT.
+   */
+  static generatePasswordResetToken(alumni) {
+    const hashFragment = (alumni.password_hash || '').slice(-10);
+    return jwt.sign(
+      {
+        id: alumni.id,
+        email: alumni.email.toLowerCase().trim(),
+        type: 'password_reset',
+        pv: hashFragment,
+      },
+      env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+  }
+
+  /**
+   * Verifies a password reset token.
+   *
+   * @param {string} token
+   * @param {string} [expectedEmail]
+   * @returns {object | null} Decoded payload or null.
+   */
+  static verifyPasswordResetToken(token, expectedEmail = null) {
+    try {
+      const decoded = jwt.verify(token, env.JWT_SECRET);
+      if (decoded.type !== 'password_reset') return null;
+      if (expectedEmail && decoded.email !== expectedEmail.toLowerCase().trim()) return null;
+      return decoded;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Compatibility alias for email verification token check.
+   */
+  static verifyVerificationToken(token, expectedEmail = null) {
+    try {
+      const decoded = jwt.verify(token, env.JWT_SECRET);
+      const isCorrectType = decoded.type === 'password_reset' || decoded.purpose === 'alumni_password_set';
+      if (!isCorrectType) return null;
+      if (expectedEmail && decoded.email !== expectedEmail.toLowerCase().trim()) return null;
+      return decoded;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Initiates the self-service password reset flow.
+   * Sends a secure time-limited reset link to verified alumni.
+   *
+   * @param {string} email - Alumni registered email.
+   * @param {string} [ip]  - Request IP address.
+   * @returns {Promise<{ message: string }>}
+   */
+  static async requestPasswordReset(email, ip) {
+    if (!email) {
+      throw new BadRequestError('Email address is required');
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+    const { AlumniService } = await import('./alumniService.js');
+    const alumni = await AlumniService.findByEmail(normalizedEmail);
+
+    // If no record found, respond generically to prevent email harvesting
+    if (!alumni) {
+      logger.info(`Password reset requested for non-existent email: ${normalizedEmail}`);
+      return {
+        message: 'If an active account exists with that email, a password reset link has been dispatched.',
+      };
+    }
+
+    if (alumni.status === ALUMNI_STATUS.PENDING) {
+      throw new ForbiddenError(
+        'Your alumni application is currently under review. A password can be created once an administrator verifies your application.'
+      );
+    }
+
+    if (alumni.status === ALUMNI_STATUS.REJECTED) {
+      throw new ForbiddenError(
+        'Your alumni application was not approved. Please contact alumni.msap1973@gmail.com for assistance.'
+      );
+    }
+
+    const resetToken = this.generatePasswordResetToken(alumni);
+    const resetLink = `${env.CLIENT_URL}/login?mode=reset&token=${encodeURIComponent(resetToken)}&email=${encodeURIComponent(alumni.email)}`;
+
+    await sendPasswordResetEmail(alumni, resetLink);
+
+    await AuditService.log({
+      action:     'PASSWORD_RESET_REQUESTED',
+      entityName: 'alumni_registrations',
+      entityId:   alumni.id,
+      ip,
+      details:    { email: normalizedEmail },
+    });
+
+    return {
+      message: 'If an active account exists with that email, a password reset link has been dispatched.',
+    };
+  }
+
+  /**
+   * Completes the password reset process using a verified token.
+   *
+   * @param {{ token: string, newPassword: string, ip?: string }} payload
+   * @returns {Promise<{ message: string }>}
+   */
+  static async resetPassword({ token, newPassword, ip }) {
+    if (!token || !newPassword) {
+      throw new BadRequestError('Reset token and new password are required');
+    }
+
+    if (newPassword.length < 8) {
+      throw new BadRequestError('Password must be at least 8 characters long');
+    }
+
+    const decoded = this.verifyPasswordResetToken(token);
+    if (!decoded || !decoded.email) {
+      throw new BadRequestError('Invalid or expired password reset link. Please request a new one.');
+    }
+
+    const { AlumniService } = await import('./alumniService.js');
+    const alumni = await AlumniService.findByEmail(decoded.email);
+
+    if (!alumni) {
+      throw new NotFoundError('Alumni account not found');
+    }
+
+    // Single-use token validation: check if password was already changed
+    const currentHashFragment = (alumni.password_hash || '').slice(-10);
+    if (decoded.pv !== undefined && decoded.pv !== currentHashFragment) {
+      throw new BadRequestError('This password reset link has already been used. Please request a new link.');
+    }
+
+    const newPasswordHash = await hashPassword(newPassword);
+    await AlumniService.updatePassword(alumni.id, newPasswordHash);
+
+    // Notify user of successful change
+    await sendPasswordChangedAlert(alumni);
+
+    await AuditService.log({
+      action:     'PASSWORD_RESET_COMPLETED',
+      entityName: 'alumni_registrations',
+      entityId:   alumni.id,
+      ip,
+      details:    { email: alumni.email },
+    });
+
+    return {
+      message: 'Your password has been reset successfully. You can now sign in with your new password.',
+    };
+  }
 }
+

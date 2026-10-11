@@ -58,8 +58,8 @@ const envSchema = z.object({
    */
   JWT_SECRET: z.string().min(16).default('development_secret_key_msap_alumni_at_least_32_characters_long'),
 
-  /** Short-lived access token expiry (e.g. "15m", "1h"). */
-  JWT_EXPIRES_IN: z.string().default('15m'),
+  /** Access token expiry (e.g. "7d", "14d"). Kept long for uninterrupted sessions. */
+  JWT_EXPIRES_IN: z.string().default('7d'),
 
   /** Refresh token expiry (e.g. "7d", "30d"). */
   REFRESH_TOKEN_EXPIRES_IN: z.string().default('7d'),

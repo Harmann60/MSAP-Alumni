@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS audit_logs CASCADE;
 DROP TABLE IF EXISTS community_groups CASCADE;
 DROP TABLE IF EXISTS financial_accounts CASCADE;
 DROP TABLE IF EXISTS stories CASCADE;
+DROP TABLE IF EXISTS events CASCADE;
 DROP TABLE IF EXISTS alumni_registrations CASCADE;
 DROP TABLE IF EXISTS admins CASCADE;
 
@@ -48,7 +49,26 @@ CREATE TABLE alumni_registrations (
 CREATE INDEX idx_alumni_reg_status ON alumni_registrations(status);
 CREATE INDEX idx_alumni_reg_email ON alumni_registrations(email);
 
--- 5. Stories Table
+-- 5. Events Table
+CREATE TABLE events (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title VARCHAR(200) NOT NULL,
+    category VARCHAR(50) NOT NULL, -- 'Community', 'Career', 'Cultural', 'Onboarding'
+    date_display VARCHAR(50) NOT NULL, -- e.g. "Aug 15, 2026"
+    time_display VARCHAR(50) NOT NULL, -- e.g. "10 AM – 6 PM"
+    event_timestamp TIMESTAMPTZ,
+    location VARCHAR(200) NOT NULL,
+    description TEXT NOT NULL,
+    is_featured BOOLEAN DEFAULT FALSE,
+    registration_link VARCHAR(500),
+    created_by UUID REFERENCES admins(id) ON DELETE SET NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX idx_events_category ON events(category);
+CREATE INDEX idx_events_featured ON events(is_featured);
+
+-- 6. Stories Table
 CREATE TABLE stories (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     title VARCHAR(255) NOT NULL,
@@ -56,6 +76,7 @@ CREATE TABLE stories (
     published_date VARCHAR(50) NOT NULL,
     image_url VARCHAR(500) NOT NULL,
     excerpt TEXT NOT NULL,
+    category VARCHAR(50) DEFAULT 'Spotlight',
     content TEXT,
     is_featured BOOLEAN DEFAULT FALSE,
     created_by UUID REFERENCES admins(id) ON DELETE SET NULL,
@@ -102,22 +123,43 @@ CREATE TABLE audit_logs (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- 10. Gallery Table (Event Photos & Historical Archives)
+CREATE TABLE gallery (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title VARCHAR(200),
+    caption TEXT,
+    image_url TEXT NOT NULL,
+    source_type VARCHAR(20) DEFAULT 'SUPABASE' CHECK (source_type IN ('VERCEL', 'SUPABASE', 'EXTERNAL')),
+    category VARCHAR(50) DEFAULT 'General',
+    display_order INTEGER DEFAULT 0,
+    created_by UUID REFERENCES admins(id) ON DELETE SET NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX idx_gallery_category ON gallery(category);
+
 -- ====================================================================
 -- ROW LEVEL SECURITY (RLS) POLICIES
 -- ====================================================================
 ALTER TABLE admins ENABLE ROW LEVEL SECURITY;
 ALTER TABLE alumni_registrations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE stories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE financial_accounts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE community_groups ENABLE ROW LEVEL SECURITY;
 ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE gallery ENABLE ROW LEVEL SECURITY;
 
--- Public can read published stories, accounts, groups
+-- Public can read published events, stories, accounts, groups, gallery
+CREATE POLICY "Public Read Events" ON events FOR SELECT USING (true);
 CREATE POLICY "Public Read Stories" ON stories FOR SELECT USING (true);
 CREATE POLICY "Public Read Accounts" ON financial_accounts FOR SELECT USING (true);
 CREATE POLICY "Public Read Community Groups" ON community_groups FOR SELECT USING (is_active = true);
+DROP POLICY IF EXISTS "Public Read Gallery" ON gallery;
+CREATE POLICY "Public Read Gallery" ON gallery FOR SELECT USING (true);
 
 -- Public can insert new alumni registration submissions
 CREATE POLICY "Public Insert Alumni Registration" ON alumni_registrations FOR INSERT WITH CHECK (status = 'PENDING');
 
 -- Service role / backend server has full bypass access when using SUPABASE_SERVICE_ROLE_KEY
+

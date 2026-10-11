@@ -16,7 +16,7 @@
 import crypto from 'crypto';
 import { supabase, isConfigured } from '../config/supabase.js';
 import { ALUMNI_STATUS } from '../constants/roles.js';
-import { NotFoundError } from '../utils/apiError.js';
+import { NotFoundError, ConflictError } from '../utils/apiError.js';
 import { logger } from '../config/logger.js';
 import { sendNewRegistrationAlert, sendStatusUpdateEmail } from './emailService.js';
 import { hashPassword } from '../utils/password.js';
@@ -127,9 +127,11 @@ export class AlumniService {
       passwordHash = await hashPassword(data.password);
     }
 
+    const email = data.email.toLowerCase().trim();
+
     const newRecord = {
       full_name: data.fullName,
-      email: data.email.toLowerCase().trim(),
+      email,
       password_hash: passwordHash,
       phone: data.phone || null,
       pune_college: data.puneCollege || null,
@@ -143,6 +145,38 @@ export class AlumniService {
     let savedRecord;
 
     if (isConfigured && supabase) {
+      // 1. Proactively check if an application with this email already exists
+      const { data: existing, error: queryError } = await supabase
+        .from('alumni_registrations')
+        .select('id, email, status, full_name')
+        .eq('email', email)
+        .maybeSingle();
+
+      if (queryError) {
+        logger.warn('Failed to check existing alumni registration by email', { error: queryError.message });
+      }
+
+      if (existing) {
+        if (existing.status === ALUMNI_STATUS.VERIFIED) {
+          throw new ConflictError(
+            'An alumni account with this email address is already registered and verified. Please sign in instead.'
+          );
+        } else if (existing.status === ALUMNI_STATUS.PENDING) {
+          throw new ConflictError(
+            'A registration application with this email address has already been submitted and is currently pending verification by our administrator.'
+          );
+        } else if (existing.status === ALUMNI_STATUS.REJECTED) {
+          throw new ConflictError(
+            'A previous registration application with this email was reviewed. Please contact the administrator for assistance.'
+          );
+        } else {
+          throw new ConflictError(
+            'An alumni registration with this email address already exists.'
+          );
+        }
+      }
+
+      // 2. Insert new record
       const { data: inserted, error } = await supabase
         .from('alumni_registrations')
         .insert([newRecord])
@@ -150,12 +184,40 @@ export class AlumniService {
         .single();
 
       if (error) {
-        logger.error('Supabase registration insert error', { error: error.message });
+        logger.error('Supabase registration insert error', { error: error.message, code: error.code });
+        if (
+          error.code === '23505' ||
+          error.message?.includes('duplicate key') ||
+          error.message?.includes('alumni_registrations_email_key')
+        ) {
+          throw new ConflictError(
+            'An alumni registration with this email address has already been submitted.'
+          );
+        }
         throw new Error('Failed to persist registration details');
       }
       savedRecord = inserted;
     } else {
       // In-memory fallback for local development
+      const existing = mockRegistrations.find(
+        (r) => r.email.toLowerCase() === email
+      );
+      if (existing) {
+        if (existing.status === ALUMNI_STATUS.VERIFIED) {
+          throw new ConflictError(
+            'An alumni account with this email address is already registered and verified. Please sign in instead.'
+          );
+        } else if (existing.status === ALUMNI_STATUS.PENDING) {
+          throw new ConflictError(
+            'A registration application with this email address has already been submitted and is currently pending verification by our administrator.'
+          );
+        } else {
+          throw new ConflictError(
+            'An alumni registration with this email address already exists.'
+          );
+        }
+      }
+
       savedRecord = {
         id: crypto.randomUUID(),
         ...newRecord,
@@ -169,6 +231,50 @@ export class AlumniService {
     sendNewRegistrationAlert(savedRecord);
 
     return savedRecord;
+  }
+
+  /**
+   * Automatically stores and verifies a new user authenticated via Google OAuth.
+   *
+   * @param {object} data - User details from Google OAuth.
+   * @param {string} data.fullName - User's full name.
+   * @param {string} data.email - User's verified Google email.
+   * @returns {Promise<object>} The persisted alumni record.
+   */
+  static async createVerified(data) {
+    const newRecord = {
+      full_name: data.fullName || data.email.split('@')[0],
+      email: data.email.toLowerCase().trim(),
+      pune_college: data.puneCollege || 'Pune Alumni (Google Verified)',
+      batch_year: data.batchYear || new Date().getFullYear(),
+      current_location: data.currentLocation || 'Verified Alumnus',
+      profession: data.profession || 'Alumnus',
+      status: ALUMNI_STATUS.VERIFIED,
+      admin_notes: 'Automatically verified via Google Sign-In',
+    };
+
+    if (isConfigured && supabase) {
+      const { data: inserted, error } = await supabase
+        .from('alumni_registrations')
+        .insert([newRecord])
+        .select()
+        .single();
+
+      if (error) {
+        logger.error('Supabase createVerified error', { error: error.message });
+        throw new Error('Failed to persist Google alumni profile');
+      }
+      return inserted;
+    }
+
+    const saved = {
+      id: crypto.randomUUID(),
+      ...newRecord,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+    mockRegistrations.unshift(saved);
+    return saved;
   }
 
   /**
@@ -265,9 +371,9 @@ export class AlumniService {
       }
 
       if (data) {
-        // Non-blocking: notify applicant of approval or rejection
+        // Notify applicant of approval or rejection
         if (status === ALUMNI_STATUS.VERIFIED || status === ALUMNI_STATUS.REJECTED) {
-          sendStatusUpdateEmail(data);
+          await sendStatusUpdateEmail(data);
         }
         return data;
       }
@@ -289,7 +395,7 @@ export class AlumniService {
     Object.assign(item, fallbackPayload);
 
     if (status === ALUMNI_STATUS.VERIFIED || status === ALUMNI_STATUS.REJECTED) {
-      sendStatusUpdateEmail(item);
+      await sendStatusUpdateEmail(item);
     }
 
     return item;
@@ -340,7 +446,12 @@ export class AlumniService {
     if (updates.batchYear !== undefined) payload.batch_year = updates.batchYear || null;
     if (updates.currentLocation !== undefined) payload.current_location = updates.currentLocation || null;
     if (updates.profession !== undefined) payload.profession = updates.profession || null;
-    if (updates.status !== undefined) payload.status = updates.status;
+    if (updates.status !== undefined) {
+      payload.status = updates.status;
+      if (updates.status === ALUMNI_STATUS.VERIFIED) {
+        payload.reviewed_at = new Date().toISOString();
+      }
+    }
     if (updates.adminNotes !== undefined) payload.admin_notes = updates.adminNotes || null;
     payload.updated_at = new Date().toISOString();
 
@@ -356,7 +467,12 @@ export class AlumniService {
         logger.error('Supabase update alumni profile error:', { error: error.message, id });
         throw new Error(`Failed to update profile: ${error.message}`);
       }
-      if (data) return data;
+      if (data) {
+        if (updates.status === ALUMNI_STATUS.VERIFIED || updates.status === ALUMNI_STATUS.REJECTED) {
+          await sendStatusUpdateEmail(data);
+        }
+        return data;
+      }
     }
 
     const item = mockRegistrations.find((r) => r.id === id);
@@ -364,6 +480,9 @@ export class AlumniService {
       throw new NotFoundError('Alumni registration record not found');
     }
     Object.assign(item, payload);
+    if (updates.status === ALUMNI_STATUS.VERIFIED || updates.status === ALUMNI_STATUS.REJECTED) {
+      await sendStatusUpdateEmail(item);
+    }
     return item;
   }
 
