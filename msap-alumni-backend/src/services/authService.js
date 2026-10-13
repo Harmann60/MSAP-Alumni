@@ -275,12 +275,34 @@ export class AuthService {
       throw new UnauthorizedError('Invalid email or password');
     }
 
+    // Check if alumnus has been assigned a staff/editorial role in admins table
+    let staffRole = 'ALUMNI';
+    let isStaff = false;
+    let isContentManager = false;
+    let isAdmin = false;
+
+    if (isConfigured && supabase) {
+      const { data: adminRecord } = await supabase
+        .from('admins')
+        .select('*')
+        .eq('email', normalizedEmail)
+        .eq('is_active', true)
+        .maybeSingle();
+
+      if (adminRecord) {
+        staffRole = adminRecord.role;
+        isStaff = true;
+        isContentManager = adminRecord.role === 'MODERATOR' || adminRecord.role === 'CONTENT_MANAGER';
+        isAdmin = adminRecord.role === 'ADMIN' || adminRecord.role === 'SUPER_ADMIN';
+      }
+    }
+
     const token = jwt.sign(
       {
         id: alumni.id,
         email: alumni.email,
         fullName: alumni.full_name,
-        role: 'ALUMNI',
+        role: staffRole,
         status: alumni.status,
       },
       env.JWT_SECRET,
@@ -305,7 +327,10 @@ export class AuthService {
         batchYear: alumni.batch_year,
         currentLocation: alumni.current_location,
         profession: alumni.profession,
-        role: 'ALUMNI',
+        role: staffRole,
+        isStaff,
+        isContentManager,
+        isAdmin,
         status: alumni.status,
       },
     };
@@ -432,12 +457,34 @@ export class AuthService {
       );
     }
 
+    // Check if user has an active staff role in admins table
+    let staffRole = 'ALUMNI';
+    let isStaff = false;
+    let isContentManager = false;
+    let isAdmin = false;
+
+    if (isConfigured && supabase) {
+      const { data: adminRecord } = await supabase
+        .from('admins')
+        .select('*')
+        .eq('email', normalizedEmail)
+        .eq('is_active', true)
+        .maybeSingle();
+
+      if (adminRecord) {
+        staffRole = adminRecord.role;
+        isStaff = true;
+        isContentManager = adminRecord.role === 'MODERATOR' || adminRecord.role === 'CONTENT_MANAGER';
+        isAdmin = adminRecord.role === 'ADMIN' || adminRecord.role === 'SUPER_ADMIN';
+      }
+    }
+
     const token = jwt.sign(
       {
         id: alumni.id,
         email: alumni.email,
         fullName: alumni.full_name,
-        role: 'ALUMNI',
+        role: staffRole,
         status: alumni.status,
       },
       env.JWT_SECRET,
@@ -462,7 +509,10 @@ export class AuthService {
         batchYear: alumni.batch_year,
         currentLocation: alumni.current_location,
         profession: alumni.profession,
-        role: 'ALUMNI',
+        role: staffRole,
+        isStaff,
+        isContentManager,
+        isAdmin,
         status: alumni.status,
       },
     };

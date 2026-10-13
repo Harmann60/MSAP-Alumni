@@ -18,6 +18,7 @@ export default function ArticlesAdminView({ darkMode = false }) {
   const [editingStory, setEditingStory] = useState(null);
   const [saving, setSaving] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [conflictError, setConflictError] = useState(null);
   const fileInputRef = useRef(null);
 
   // Form fields
@@ -63,6 +64,10 @@ export default function ArticlesAdminView({ darkMode = false }) {
     }
   };
 
+  const [additionalImages, setAdditionalImages] = useState([]);
+  const [uploadingAdditional, setUploadingAdditional] = useState(false);
+  const additionalFileInputRef = useRef(null);
+
   const openCreateModal = () => {
     setEditingStory(null);
     setTitle('');
@@ -74,11 +79,14 @@ export default function ArticlesAdminView({ darkMode = false }) {
     setExcerpt('');
     setContent('');
     setIsFeatured(false);
+    setAdditionalImages([]);
+    setConflictError(null);
     setModalOpen(true);
   };
 
   const openEditModal = (story) => {
     setEditingStory(story);
+    setConflictError(null);
     setTitle(story.title || '');
     setSource(story.source || '');
     setCategory(story.category || 'Spotlight');
@@ -86,8 +94,36 @@ export default function ArticlesAdminView({ darkMode = false }) {
     setImageUrl(story.image_url || story.image || '');
     setImageMode(story.image_url?.startsWith('http') || story.image_url?.startsWith('/images') ? 'url' : 'upload');
     setExcerpt(story.excerpt || '');
-    setContent(story.content || '');
     setIsFeatured(Boolean(story.is_featured || story.isFeatured));
+
+    // Parse existing additional/gallery photos from story properties or embedded content
+    let cleanContent = story.content || '';
+    let existingAddtl = [];
+    if (Array.isArray(story.galleryImages)) {
+      existingAddtl = story.galleryImages.map((g) => ({
+        url: g.src || g.url || (typeof g === 'string' ? g : ''),
+        caption: g.caption || '',
+      }));
+    } else if (typeof cleanContent === 'string') {
+      const match = cleanContent.match(/<!--\s*GALLERY_PHOTOS:\s*(\[.*?\])\s*-->/s);
+      if (match) {
+        try {
+          const parsed = JSON.parse(match[1]);
+          if (Array.isArray(parsed)) {
+            existingAddtl = parsed.map((p) => ({
+              url: p.url || p.src || (typeof p === 'string' ? p : ''),
+              caption: p.caption || '',
+            }));
+          }
+        } catch (e) {
+          console.warn('Error parsing gallery photos in modal:', e);
+        }
+        cleanContent = cleanContent.replace(/<!--\s*GALLERY_PHOTOS:\s*(\[.*?\])\s*-->/gs, '').trim();
+      }
+    }
+
+    setAdditionalImages(existingAddtl);
+    setContent(cleanContent);
     setModalOpen(true);
   };
 
@@ -108,13 +144,60 @@ export default function ArticlesAdminView({ darkMode = false }) {
     }
   };
 
+  const handleAdditionalUpload = async (e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    setUploadingAdditional(true);
+    try {
+      for (const file of files) {
+        const res = await uploadImage(file, 'stories');
+        if (res?.url) {
+          setAdditionalImages((prev) => [
+            ...prev,
+            { url: res.url, caption: file.name.replace(/\.[^/.]+$/, '') }
+          ]);
+        }
+      }
+    } catch (err) {
+      alert(`Additional image upload failed: ${err.message}`);
+    } finally {
+      setUploadingAdditional(false);
+      if (additionalFileInputRef.current) {
+        additionalFileInputRef.current.value = '';
+      }
+    }
+  };
+
+  const addImageUrlEntry = () => {
+    setAdditionalImages((prev) => [...prev, { url: '', caption: '' }]);
+  };
+
+  const updateAdditionalImage = (index, field, value) => {
+    setAdditionalImages((prev) => {
+      const copy = [...prev];
+      copy[index] = { ...copy[index], [field]: value };
+      return copy;
+    });
+  };
+
+  const removeAdditionalImage = (index) => {
+    setAdditionalImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const handleSave = async (e) => {
     e.preventDefault();
     if (!title.trim()) return alert('Title is required');
-    if (!imageUrl.trim()) return alert('Image URL or upload is required');
+    if (!imageUrl.trim()) return alert('Cover image URL or upload is required');
 
     setSaving(true);
     try {
+      let finalContent = content.trim();
+      const validAdditional = additionalImages.filter((img) => img.url && img.url.trim());
+      if (validAdditional.length > 0) {
+        finalContent = `${finalContent}\n\n<!-- GALLERY_PHOTOS: ${JSON.stringify(validAdditional)} -->`;
+      }
+
       const payload = {
         title: title.trim(),
         source: source.trim() || 'MSAP News',
@@ -122,19 +205,32 @@ export default function ArticlesAdminView({ darkMode = false }) {
         publishedDate: publishedDate.trim() || new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
         imageUrl: imageUrl.trim(),
         excerpt: excerpt.trim(),
-        content: content.trim() || null,
+        content: finalContent || null,
         isFeatured: Boolean(isFeatured),
       };
 
       if (editingStory) {
+        payload.lastKnownUpdatedAt = editingStory.updated_at || editingStory.updatedAt;
         await updateStory(editingStory.id, payload);
       } else {
         await createStory(payload);
       }
       setModalOpen(false);
+      setConflictError(null);
       await loadStories();
     } catch (err) {
-      alert(`Failed to save article: ${err.message}`);
+      if (
+        err.status === 409 ||
+        err.message?.includes('Conflict detected') ||
+        err.message?.includes('modified by another editor')
+      ) {
+        setConflictError(
+          err.message ||
+            'Conflict detected: Another team member updated this article while you were editing it. To prevent silent overwrites, your changes have not been saved.'
+        );
+      } else {
+        alert(`Failed to save article: ${err.message}`);
+      }
     } finally {
       setSaving(false);
     }
@@ -469,6 +565,49 @@ export default function ArticlesAdminView({ darkMode = false }) {
             </div>
 
             <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              {conflictError && (
+                <div
+                  style={{
+                    background: darkMode ? '#3b1219' : '#FEF2F2',
+                    border: '1px solid #DC2626',
+                    borderRadius: 8,
+                    padding: '12px 16px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 8,
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#DC2626', fontWeight: 700, fontSize: 13 }}>
+                    <span>⚠️</span>
+                    <span>Concurrency Conflict (Silent Overwrite Prevented)</span>
+                  </div>
+                  <p style={{ margin: 0, fontSize: 12, color: darkMode ? '#FCA5A5' : '#B91C1C', lineHeight: 1.4 }}>
+                    {conflictError}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      await loadStories();
+                      setModalOpen(false);
+                      setConflictError(null);
+                    }}
+                    style={{
+                      alignSelf: 'flex-start',
+                      marginTop: 4,
+                      background: '#DC2626',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: 4,
+                      padding: '6px 14px',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    ↻ Reload Latest Version from Server
+                  </button>
+                </div>
+              )}
               <div>
                 <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: textPrimary, marginBottom: 4 }}>
                   Article Title *
@@ -613,6 +752,137 @@ export default function ArticlesAdminView({ darkMode = false }) {
                   <div style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 10, padding: 8, background: darkMode ? '#150F26' : '#F9F8FC', borderRadius: 6, border: `1px solid ${cardBorder}` }}>
                     <img src={imageUrl} alt="Preview" style={{ width: 64, height: 44, objectFit: 'cover', borderRadius: 4, border: '1px solid #ddd' }} />
                     <span style={{ fontSize: 11, color: textSecondary, wordBreak: 'break-all' }}>{imageUrl}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Additional Article Photos & Gallery */}
+              <div style={{ padding: 14, background: darkMode ? '#150F26' : '#F9F8FC', borderRadius: 8, border: `1px solid ${cardBorder}` }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8, flexWrap: 'wrap', gap: 8 }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: 13, fontWeight: 700, color: textPrimary, margin: 0 }}>
+                      📸 Additional Article Photos &amp; Gallery ({additionalImages.length})
+                    </label>
+                    <p style={{ margin: '2px 0 0', fontSize: 11, color: textSecondary }}>
+                      Add more photos to this article (e.g. event albums, award ceremonies, reunions). Displayed in high-res on the article page.
+                    </p>
+                  </div>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <input
+                      type="file"
+                      ref={additionalFileInputRef}
+                      accept="image/*"
+                      multiple
+                      style={{ display: 'none' }}
+                      onChange={handleAdditionalUpload}
+                      disabled={uploadingAdditional}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => additionalFileInputRef.current?.click()}
+                      disabled={uploadingAdditional}
+                      style={{
+                        padding: '6px 12px',
+                        background: 'linear-gradient(135deg, #7C5CFC 0%, #583B9C 100%)',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: 6,
+                        fontSize: 12,
+                        fontWeight: 600,
+                        cursor: uploadingAdditional ? 'not-allowed' : 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 4,
+                      }}
+                    >
+                      {uploadingAdditional ? 'Uploading…' : '+ Upload Photo(s)'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={addImageUrlEntry}
+                      style={{
+                        padding: '6px 12px',
+                        background: 'transparent',
+                        color: textPrimary,
+                        border: `1px solid ${inputBorder}`,
+                        borderRadius: 6,
+                        fontSize: 12,
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      + Add URL
+                    </button>
+                  </div>
+                </div>
+
+                {additionalImages.length > 0 ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 12 }}>
+                    {additionalImages.map((img, idx) => (
+                      <div
+                        key={idx}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 10,
+                          padding: 8,
+                          background: darkMode ? '#1A152B' : '#FFFFFF',
+                          border: `1px solid ${cardBorder}`,
+                          borderRadius: 6,
+                        }}
+                      >
+                        {img.url ? (
+                          <img
+                            src={img.url}
+                            alt="Thumbnail"
+                            style={{ width: 52, height: 40, objectFit: 'cover', borderRadius: 4, border: '1px solid #ddd', flexShrink: 0 }}
+                          />
+                        ) : (
+                          <div style={{ width: 52, height: 40, background: darkMode ? '#261F3B' : '#ECE8F4', borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, color: textSecondary, flexShrink: 0 }}>
+                            No img
+                          </div>
+                        )}
+
+                        <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 8 }}>
+                          <input
+                            type="text"
+                            value={img.url}
+                            onChange={(e) => updateAdditionalImage(idx, 'url', e.target.value)}
+                            placeholder="Image URL or uploaded path..."
+                            style={{ width: '100%', padding: '6px 10px', background: inputBg, color: textPrimary, border: `1px solid ${inputBorder}`, borderRadius: 4, fontSize: 12, boxSizing: 'border-box' }}
+                          />
+                          <input
+                            type="text"
+                            value={img.caption}
+                            onChange={(e) => updateAdditionalImage(idx, 'caption', e.target.value)}
+                            placeholder="Caption (e.g. Stage Ceremony)..."
+                            style={{ width: '100%', padding: '6px 10px', background: inputBg, color: textPrimary, border: `1px solid ${inputBorder}`, borderRadius: 4, fontSize: 12, boxSizing: 'border-box' }}
+                          />
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => removeAdditionalImage(idx)}
+                          title="Remove photo"
+                          style={{
+                            padding: '6px 10px',
+                            background: 'rgba(239, 68, 68, 0.1)',
+                            color: '#EF4444',
+                            border: 'none',
+                            borderRadius: 4,
+                            fontSize: 13,
+                            cursor: 'pointer',
+                            flexShrink: 0,
+                          }}
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div style={{ padding: '10px 0', textAlign: 'center', fontSize: 12, color: textSecondary }}>
+                    No additional photos attached yet. You can attach multiple photos to any article by clicking <strong>+ Upload Photo(s)</strong> or <strong>+ Add URL</strong>.
                   </div>
                 )}
               </div>

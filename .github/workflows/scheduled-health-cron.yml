@@ -1,0 +1,45 @@
+name: Scheduled System Health Check & Monitor Cron
+
+on:
+  schedule:
+    # Runs every 6 hours (00:00, 06:00, 12:00, 18:00 UTC)
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      target_url:
+        description: 'Target API URL to inspect (defaults to secret or configured URL)'
+        required: false
+        default: ''
+
+jobs:
+  health-check:
+    name: API & Database Liveness Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Inspect API Endpoint Health
+        id: health_check
+        run: |
+          TARGET_URL="${{ inputs.target_url || secrets.API_PROD_URL || 'http://localhost:5000' }}"
+          echo "Targeting API at: ${TARGET_URL}"
+
+          # If targeting local runner or CI fallback, test the Node.js health module directly
+          if [[ "${TARGET_URL}" == *"localhost"* ]] || [[ -z "${{ secrets.API_PROD_URL }}" && -z "${{ inputs.target_url }}" ]]; then
+            echo "::notice title=Health Cron Notification::Running in local/fallback CI mode. Setting up synthetic liveness verification."
+          fi
+
+      - name: Check Out Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run Synthetic Health & Database Connectivity Verification
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'https://uyhjeveenzpgsveqkfpz.supabase.co' }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY || '' }}
+          API_URL: ${{ inputs.target_url || secrets.API_PROD_URL }}
+        run: |
+          node scripts/cron-health-check.js

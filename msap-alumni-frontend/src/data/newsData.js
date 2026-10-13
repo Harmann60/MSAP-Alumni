@@ -10,6 +10,24 @@ const newsImage = (name) => {
   return match ? match[1] : null;
 };
 
+export const resolveNewsImage = (imagePathOrName) => {
+  if (!imagePathOrName) return null;
+  if (
+    typeof imagePathOrName === 'string' &&
+    (imagePathOrName.startsWith('http://') ||
+      imagePathOrName.startsWith('https://') ||
+      imagePathOrName.startsWith('data:'))
+  ) {
+    return imagePathOrName;
+  }
+  const cleanName = String(imagePathOrName).split('/').pop().trim().toLowerCase();
+  const match = Object.entries(newsImages).find(([key]) =>
+    key.toLowerCase().includes(cleanName)
+  );
+  if (match) return match[1];
+  return imagePathOrName;
+};
+
 const REUNION_IMAGE = newsImage('1st Reunion Meet — Manipur University, 2025.png');
 const NEW_YEAR_IMAGE = newsImage('new year.jpeg');
 const AGBM_IMAGE = newsImage('Annual Body Meeting.jpeg');

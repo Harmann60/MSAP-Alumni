@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ALUMNI_STATUS } from '../constants/roles.js';
+import { ALUMNI_STATUS, ROLES } from '../constants/roles.js';
 
 export const registerAlumniSchema = z.object({
   fullName: z
@@ -58,6 +58,8 @@ export const registerAlumniSchema = z.object({
 export const updateAlumniStatusSchema = z.object({
   status: z.enum([ALUMNI_STATUS.PENDING, ALUMNI_STATUS.VERIFIED, ALUMNI_STATUS.REJECTED]),
   adminNotes: z.string().max(1000).optional().nullable(),
+  expectedStatus: z.enum([ALUMNI_STATUS.PENDING, ALUMNI_STATUS.VERIFIED, ALUMNI_STATUS.REJECTED]).optional(),
+  lastKnownUpdatedAt: z.string().optional(),
 });
 
 export const updateAlumniProfileSchema = z.object({
@@ -80,4 +82,22 @@ export const updateAlumniProfileSchema = z.object({
   profession: z.string().max(200).optional().nullable().or(z.literal('')),
   status: z.enum([ALUMNI_STATUS.PENDING, ALUMNI_STATUS.VERIFIED, ALUMNI_STATUS.REJECTED]).optional(),
   adminNotes: z.string().max(1000).optional().nullable(),
+  lastKnownUpdatedAt: z.string().optional(),
+});
+
+export const assignRoleSchema = z.object({
+  email: z
+    .string({ required_error: 'Email is required' })
+    .email('Please enter a valid email address')
+    .toLowerCase()
+    .trim(),
+  role: z.enum([ROLES.CONTENT_MANAGER, ROLES.MODERATOR]).default(ROLES.CONTENT_MANAGER),
+});
+
+export const revokeRoleSchema = z.object({
+  email: z
+    .string({ required_error: 'Email is required' })
+    .email('Please enter a valid email address')
+    .toLowerCase()
+    .trim(),
 });

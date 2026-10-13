@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getAllNews } from '../data/newsData';
+import { getAllNews, resolveNewsImage } from '../data/newsData';
 import { fetchStories } from '../services/dataService';
 import NewsCard from './NewsCard';
 
@@ -12,20 +12,57 @@ export default function NewsSection() {
     fetchStories()
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
-          const mapped = data.map((story) => ({
-            id: story.id,
-            slug: story.id,
-            title: story.title,
-            category: story.category || 'Spotlight',
-            dateDisplay: story.published_date || 'Recent',
-            cardLabel: `${story.published_date || 'Recent'} · ${story.category || 'Association'}`,
-            coverImage: story.image_url,
-            excerpt: story.excerpt,
-            content: typeof story.content === 'string' ? story.content.split('\n\n') : story.content || [],
-            isFeatured: Boolean(story.is_featured),
-            source: story.source,
-            updatedAt: story.updated_at || story.created_at || '2026-01-01',
-          }));
+          const staticAll = getAllNews();
+          const mapped = data.map((story) => {
+            const staticMatch = staticAll.find(
+              (item) =>
+                item.title.trim().toLowerCase() === story.title.trim().toLowerCase() ||
+                item.id === story.id ||
+                item.slug === story.id
+            );
+
+            const resolvedImage =
+              resolveNewsImage(story.image_url) ||
+              staticMatch?.coverImage ||
+              story.image_url;
+
+            if (staticMatch) {
+              return {
+                ...staticMatch,
+                id: story.id,
+                title: story.title || staticMatch.title,
+                category: story.category || staticMatch.category,
+                dateDisplay: story.published_date || staticMatch.dateDisplay,
+                cardLabel: `${story.published_date || staticMatch.dateDisplay} · ${story.category || staticMatch.category}`,
+                coverImage: resolvedImage,
+                excerpt: story.excerpt || staticMatch.excerpt,
+                content:
+                  typeof story.content === 'string'
+                    ? story.content.split('\n\n')
+                    : story.content || staticMatch.content,
+                isFeatured:
+                  story.is_featured !== undefined ? Boolean(story.is_featured) : staticMatch.isFeatured,
+                source: story.source || staticMatch.source,
+                updatedAt: story.updated_at || story.created_at || '2026-01-01',
+              };
+            }
+
+            return {
+              id: story.id,
+              slug: story.id,
+              title: story.title,
+              category: story.category || 'Spotlight',
+              dateDisplay: story.published_date || 'Recent',
+              cardLabel: `${story.published_date || 'Recent'} · ${story.category || 'Association'}`,
+              coverImage: resolvedImage,
+              excerpt: story.excerpt,
+              content:
+                typeof story.content === 'string' ? story.content.split('\n\n') : story.content || [],
+              isFeatured: Boolean(story.is_featured),
+              source: story.source,
+              updatedAt: story.updated_at || story.created_at || '2026-01-01',
+            };
+          });
 
           // Sort mapped items: featured first, then by most recently updated
           mapped.sort((a, b) => {
@@ -36,7 +73,7 @@ export default function NewsSection() {
           });
 
           const dbTitles = new Set(mapped.map((m) => m.title.trim().toLowerCase()));
-          const staticRemain = getAllNews().filter(
+          const staticRemain = staticAll.filter(
             (item) => !dbTitles.has(item.title.trim().toLowerCase())
           );
           setNewsItems([...mapped, ...staticRemain]);

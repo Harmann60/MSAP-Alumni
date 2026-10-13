@@ -105,7 +105,28 @@ export class AuthController {
 
   static async me(req, res, next) {
     try {
-      return ApiResponse.success(res, { user: req.user }, 'Current session verified');
+      let fullProfile = null;
+      if (req.user?.email) {
+        const { AlumniService } = await import('../services/alumniService.js');
+        const alumni = await AlumniService.findByEmail(req.user.email);
+        if (alumni) {
+          fullProfile = {
+            id: alumni.id,
+            email: alumni.email,
+            fullName: alumni.full_name,
+            phone: alumni.phone,
+            puneCollege: alumni.pune_college,
+            batchYear: alumni.batch_year,
+            currentLocation: alumni.current_location,
+            profession: alumni.profession,
+            status: alumni.status,
+            adminNotes: alumni.admin_notes,
+            createdAt: alumni.created_at,
+            reviewedAt: alumni.reviewed_at,
+          };
+        }
+      }
+      return ApiResponse.success(res, { user: req.user, profile: fullProfile }, 'Current session verified');
     } catch (error) {
       next(error);
     }

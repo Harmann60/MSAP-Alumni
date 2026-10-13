@@ -44,4 +44,6 @@ export const createStorySchema = z.object({
   isFeatured: z.boolean().default(false),
 });
 
-export const updateStorySchema = createStorySchema.partial();
+export const updateStorySchema = createStorySchema.partial().extend({
+  lastKnownUpdatedAt: z.string().optional(),
+});

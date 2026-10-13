@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getAllNews, NEWS_CAMPAIGNS } from '../data/newsData';
+import { getAllNews, NEWS_CAMPAIGNS, resolveNewsImage } from '../data/newsData';
 import { fetchStories } from '../services/dataService';
 import NewsCard from '../components/NewsCard';
 
@@ -15,23 +15,60 @@ export default function NewsPage() {
     fetchStories()
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
-          const mapped = data.map((story) => ({
-            id: story.id,
-            slug: story.id,
-            title: story.title,
-            category: story.category || 'Spotlight',
-            dateDisplay: story.published_date || 'Recent',
-            cardLabel: `${story.published_date || 'Recent'} · ${story.category || 'Association'}`,
-            coverImage: story.image_url,
-            excerpt: story.excerpt,
-            content: typeof story.content === 'string' ? story.content.split('\n\n') : story.content || [],
-            isFeatured: Boolean(story.is_featured),
-            source: story.source,
-            year: story.published_date?.includes('2025') ? 2025 : 2026,
-          }));
+          const staticAll = getAllNews();
+          const mapped = data.map((story) => {
+            const staticMatch = staticAll.find(
+              (item) =>
+                item.title.trim().toLowerCase() === story.title.trim().toLowerCase() ||
+                item.id === story.id ||
+                item.slug === story.id
+            );
+
+            const resolvedImage =
+              resolveNewsImage(story.image_url) ||
+              staticMatch?.coverImage ||
+              story.image_url;
+
+            if (staticMatch) {
+              return {
+                ...staticMatch,
+                id: story.id,
+                title: story.title || staticMatch.title,
+                category: story.category || staticMatch.category,
+                dateDisplay: story.published_date || staticMatch.dateDisplay,
+                cardLabel: `${story.published_date || staticMatch.dateDisplay} · ${story.category || staticMatch.category}`,
+                coverImage: resolvedImage,
+                excerpt: story.excerpt || staticMatch.excerpt,
+                content:
+                  typeof story.content === 'string'
+                    ? story.content.split('\n\n')
+                    : story.content || staticMatch.content,
+                isFeatured:
+                  story.is_featured !== undefined ? Boolean(story.is_featured) : staticMatch.isFeatured,
+                source: story.source || staticMatch.source,
+                year: staticMatch.year || (story.published_date?.includes('2025') ? 2025 : 2026),
+              };
+            }
+
+            return {
+              id: story.id,
+              slug: story.id,
+              title: story.title,
+              category: story.category || 'Spotlight',
+              dateDisplay: story.published_date || 'Recent',
+              cardLabel: `${story.published_date || 'Recent'} · ${story.category || 'Association'}`,
+              coverImage: resolvedImage,
+              excerpt: story.excerpt,
+              content:
+                typeof story.content === 'string' ? story.content.split('\n\n') : story.content || [],
+              isFeatured: Boolean(story.is_featured),
+              source: story.source,
+              year: story.published_date?.includes('2025') ? 2025 : 2026,
+            };
+          });
 
           const dbTitles = new Set(mapped.map((m) => m.title.trim().toLowerCase()));
-          const staticRemain = getAllNews().filter(
+          const staticRemain = staticAll.filter(
             (item) => !dbTitles.has(item.title.trim().toLowerCase())
           );
           setAllNews([...mapped, ...staticRemain]);

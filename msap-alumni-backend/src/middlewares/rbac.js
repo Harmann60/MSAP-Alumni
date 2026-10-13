@@ -47,7 +47,14 @@ export function authorize(...allowedRoles) {
       return next(new ForbiddenError('Access denied: Unauthenticated user.'));
     }
 
-    if (!allowedRoles.includes(req.user.role)) {
+    const currentRole = (req.user.role || '').toUpperCase();
+    const effectiveRoles = [currentRole];
+    if (currentRole === 'CONTENT_MANAGER') effectiveRoles.push('MODERATOR');
+    if (currentRole === 'MODERATOR') effectiveRoles.push('CONTENT_MANAGER');
+
+    const isPermitted = allowedRoles.some((r) => effectiveRoles.includes(r.toUpperCase()));
+
+    if (!isPermitted) {
       return next(
         new ForbiddenError(
           `Access denied: Required role (${allowedRoles.join(' or ')}), current role (${req.user.role})`
