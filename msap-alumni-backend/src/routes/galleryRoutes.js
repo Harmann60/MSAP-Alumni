@@ -11,29 +11,29 @@ const router = Router();
 // Public: Retrieve gallery items
 router.get('/', GalleryController.list);
 
-// Protected: Add gallery item (Admin only) — validated by Zod schema
+// Protected: Add gallery item (Admin & Media Moderators) — validated by Zod schema
 router.post(
   '/',
   authenticate,
-  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
+  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MODERATOR),
   validateRequest({ body: createGalleryItemSchema }),
   GalleryController.create
 );
 
-// Protected: Update gallery item (Admin only) — validated by Zod schema
+// Protected: Update gallery item (Admin & Media Moderators) — validated by Zod schema
 router.put(
   '/:id',
   authenticate,
-  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
+  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MODERATOR),
   validateRequest({ body: updateGalleryItemSchema }),
   GalleryController.update
 );
 
-// Protected: Delete gallery item (Admin only)
+// Protected: Delete gallery item (Admin & Media Moderators)
 router.delete(
   '/:id',
   authenticate,
-  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
+  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MODERATOR),
   GalleryController.delete
 );
 

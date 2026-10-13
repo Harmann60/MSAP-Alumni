@@ -11,27 +11,39 @@ import {
 export default function AlumniLoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [mode, setMode] = useState('login'); // 'login' | 'setPassword' | 'forgot' | 'reset'
-  const [email, setEmail] = useState('');
+  const [mode, setMode] = useState(() => {
+    if (typeof window === 'undefined') return 'login';
+    const params = new URLSearchParams(window.location.search);
+    return params.get('mode') === 'reset' && params.get('token') ? 'reset' : 'login';
+  });
+  const [email, setEmail] = useState(() => {
+    if (typeof window === 'undefined') return '';
+    return new URLSearchParams(window.location.search).get('email') || '';
+  });
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [resetToken, setResetToken] = useState('');
+  const [resetToken, setResetToken] = useState(() => {
+    if (typeof window === 'undefined') return '';
+    return new URLSearchParams(window.location.search).get('token') || '';
+  });
   const [error, setError] = useState('');
   const [errorType, setErrorType] = useState(''); // 'not_registered' | 'pending' | 'needs_password' | 'rejected' | 'generic'
   const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Read URL search params for reset token link (e.g., /login?mode=reset&token=...&email=...)
+  // Sync mode and token if query params change after mount
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const modeParam = params.get('mode');
     const tokenParam = params.get('token');
     const emailParam = params.get('email');
     if (modeParam === 'reset' && tokenParam) {
-      setMode('reset');
-      setResetToken(tokenParam);
-      if (emailParam) setEmail(emailParam);
+      setTimeout(() => {
+        setMode('reset');
+        setResetToken(tokenParam);
+        if (emailParam) setEmail(emailParam);
+      }, 0);
     }
   }, [location.search]);
 

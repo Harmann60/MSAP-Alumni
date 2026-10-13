@@ -96,7 +96,7 @@ export class EventsService {
    * @param {boolean}        [options.isFeatured]    - Filter by featured flag.
    * @returns {Promise<object[]>} Array of event records.
    */
-  static async list({ category, isFeatured }) {
+  static async list({ category, isFeatured } = {}) {
     if (isConfigured && supabase) {
       let query = supabase.from('events').select('*');
       if (category) {

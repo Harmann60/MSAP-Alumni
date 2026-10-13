@@ -3,10 +3,14 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   fetchRegistrations,
+  downloadAlumniCSV,
   updateRegistrationStatus,
   deleteRegistration,
   updateAlumniProfile,
   adminLogout,
+  fetchEditorialTeam,
+  assignAlumniRole,
+  revokeAlumniRole,
 } from '../services/adminService';
 import ArticlesAdminView from '../components/admin/ArticlesAdminView';
 import GalleryAdminView from '../components/admin/GalleryAdminView';
@@ -31,7 +35,7 @@ function formatDate(iso) {
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-function Sidebar({ user, activeFilter, onFilterChange, activeTab, onTabChange, counts, onLogout }) {
+function Sidebar({ user, isSuperOrAdmin, activeFilter, onFilterChange, activeTab, onTabChange, counts, onLogout }) {
   return (
     <aside style={{ background: '#1A1429', minHeight: '100vh', width: 230, flexShrink: 0, display: 'flex', flexDirection: 'column', padding: '0' }}>
       {/* Brand */}
@@ -42,53 +46,57 @@ function Sidebar({ user, activeFilter, onFilterChange, activeTab, onTabChange, c
             MSAP Alumni
           </p>
           <p style={{ margin: 0, fontFamily: 'Playfair Display, Georgia, serif', fontSize: 18, color: '#FAF9FC', lineHeight: 1.2 }}>
-            Admin Portal
+            {isSuperOrAdmin ? 'Admin Portal' : 'Editorial Portal'}
           </p>
         </div>
       </div>
 
       {/* Navigation */}
       <nav style={{ padding: '20px 0', flex: 1 }}>
-        {/* Main Section */}
-        <p style={{ margin: '0 0 8px', padding: '0 24px', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#6B5E82' }}>
-          Registrations
-        </p>
-        {STATUS_FILTERS.map((f) => {
-          const active = activeTab === 'REGISTRATIONS' && activeFilter === f;
-          const count = f === 'ALL' ? counts.all : f === 'PENDING' ? counts.pending : f === 'VERIFIED' ? counts.verified : counts.rejected;
-          return (
-            <button
-              key={f}
-              id={`filter-${f.toLowerCase()}`}
-              onClick={() => {
-                onTabChange('REGISTRATIONS');
-                onFilterChange(f);
-              }}
-              style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                width: '100%', padding: '10px 24px', background: active ? 'rgba(88,59,156,0.18)' : 'transparent',
-                border: 'none', borderLeft: active ? '3px solid #583B9C' : '3px solid transparent',
-                cursor: 'pointer', color: active ? '#FAF9FC' : '#9E92B5',
-                fontSize: 13, fontWeight: active ? 600 : 400, textAlign: 'left',
-                transition: 'all 0.15s',
-              }}
-            >
-              <span style={{ textTransform: 'capitalize' }}>{f.charAt(0) + f.slice(1).toLowerCase()}</span>
-              {count !== undefined && (
-                <span style={{
-                  fontSize: 11, fontWeight: 700, padding: '1px 8px',
-                  borderRadius: 10, background: active ? '#583B9C' : 'rgba(250,249,252,0.08)',
-                  color: active ? '#fff' : '#9E92B5',
-                }}>
-                  {count}
-                </span>
-              )}
-            </button>
-          );
-        })}
+        {/* Registrations Section — ONLY for Super Admin & Admin */}
+        {isSuperOrAdmin && (
+          <>
+            <p style={{ margin: '0 0 8px', padding: '0 24px', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#6B5E82' }}>
+              Registrations
+            </p>
+            {STATUS_FILTERS.map((f) => {
+              const active = activeTab === 'REGISTRATIONS' && activeFilter === f;
+              const count = f === 'ALL' ? counts.all : f === 'PENDING' ? counts.pending : f === 'VERIFIED' ? counts.verified : counts.rejected;
+              return (
+                <button
+                  key={f}
+                  id={`filter-${f.toLowerCase()}`}
+                  onClick={() => {
+                    onTabChange('REGISTRATIONS');
+                    onFilterChange(f);
+                  }}
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    width: '100%', padding: '10px 24px', background: active ? 'rgba(88,59,156,0.18)' : 'transparent',
+                    border: 'none', borderLeft: active ? '3px solid #583B9C' : '3px solid transparent',
+                    cursor: 'pointer', color: active ? '#FAF9FC' : '#9E92B5',
+                    fontSize: 13, fontWeight: active ? 600 : 400, textAlign: 'left',
+                    transition: 'all 0.15s',
+                  }}
+                >
+                  <span style={{ textTransform: 'capitalize' }}>{f.charAt(0) + f.slice(1).toLowerCase()}</span>
+                  {count !== undefined && (
+                    <span style={{
+                      fontSize: 11, fontWeight: 700, padding: '1px 8px',
+                      borderRadius: 10, background: active ? '#583B9C' : 'rgba(250,249,252,0.08)',
+                      color: active ? '#fff' : '#9E92B5',
+                    }}>
+                      {count}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </>
+        )}
 
-        {/* Content Management Section */}
-        <p style={{ margin: '24px 0 8px', padding: '0 24px', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#6B5E82' }}>
+        {/* Content Management Section — Accessible to both Content Managers & Admins */}
+        <p style={{ margin: isSuperOrAdmin ? '24px 0 8px' : '0 0 8px', padding: '0 24px', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#6B5E82' }}>
           Content Management
         </p>
         <button
@@ -137,6 +145,31 @@ function Sidebar({ user, activeFilter, onFilterChange, activeTab, onTabChange, c
           <span>Photo Gallery</span>
         </button>
 
+        {/* Roles & Permissions Section — ONLY for Super Admin & Admin */}
+        {isSuperOrAdmin && (
+          <>
+            <p style={{ margin: '24px 0 8px', padding: '0 24px', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#6B5E82' }}>
+              Administration & Access
+            </p>
+            <button
+              id="tab-roles-mgmt"
+              onClick={() => onTabChange('ROLES_MGMT')}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 10,
+                width: '100%', padding: '10px 24px',
+                background: activeTab === 'ROLES_MGMT' ? 'rgba(88,59,156,0.18)' : 'transparent',
+                border: 'none', borderLeft: activeTab === 'ROLES_MGMT' ? '3px solid #583B9C' : '3px solid transparent',
+                cursor: 'pointer', color: activeTab === 'ROLES_MGMT' ? '#FAF9FC' : '#9E92B5',
+                fontSize: 13, fontWeight: activeTab === 'ROLES_MGMT' ? 600 : 400, textAlign: 'left',
+                transition: 'all 0.15s',
+              }}
+            >
+              <span>👥</span>
+              <span>Editorial Team & Roles</span>
+            </button>
+          </>
+        )}
+
         <div style={{ marginTop: 24, padding: '0 24px' }}>
           <Link
             to="/"
@@ -155,12 +188,24 @@ function Sidebar({ user, activeFilter, onFilterChange, activeTab, onTabChange, c
 
       {/* User + Logout */}
       <div style={{ padding: '20px 24px', borderTop: '1px solid rgba(245,240,232,0.08)' }}>
-        <p style={{ margin: '0 0 2px', fontSize: 11, fontWeight: 600, color: '#F5F0E8' }}>
-          {user?.fullName || 'Admin'}
+        <p style={{ margin: '0 0 4px', fontSize: 12, fontWeight: 600, color: '#F5F0E8' }}>
+          {user?.fullName || (isSuperOrAdmin ? 'Admin' : 'Content Manager')}
         </p>
-        <p style={{ margin: '0 0 12px', fontSize: 11, color: '#5C5347' }}>
-          {user?.role?.replace('_', ' ')}
-        </p>
+        <div style={{ marginBottom: 12 }}>
+          <span style={{
+            display: 'inline-block',
+            fontSize: 10,
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.06em',
+            padding: '2px 8px',
+            borderRadius: 10,
+            background: isSuperOrAdmin ? 'rgba(217, 119, 6, 0.2)' : 'rgba(124, 92, 252, 0.25)',
+            color: isSuperOrAdmin ? '#FBBF24' : '#C4B5FD',
+          }}>
+            {isSuperOrAdmin ? (user?.role === 'SUPER_ADMIN' ? 'Super Admin' : 'Admin') : 'Content Manager'}
+          </span>
+        </div>
         <button
           id="admin-logout-btn"
           onClick={onLogout}
@@ -954,16 +999,335 @@ function RegistrationRow({ reg, isExpanded, onToggle, onSetStatus, onApprove, on
   );
 }
 
+// ─── Editorial Team Management Component ─────────────────────────────────────
+
+function EditorialTeamManagementView({ darkMode = false }) {
+  const [team, setTeam] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [emailInput, setEmailInput] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState(null);
+
+  const cardBg = darkMode ? '#1A152B' : '#fff';
+  const cardBorder = darkMode ? 'rgba(168, 143, 240, 0.15)' : '#EAE5F2';
+  const textPrimary = darkMode ? '#FAF9FC' : '#1A1429';
+  const textSecondary = darkMode ? '#A89EC4' : '#7E7394';
+  const inputBg = darkMode ? '#140F24' : '#FFFFFF';
+  const inputBorder = darkMode ? '#3E3263' : '#D1C9DE';
+
+  const loadTeam = useCallback(async () => {
+    setLoading(true);
+    try {
+      const data = await fetchEditorialTeam();
+      setTeam(data || []);
+    } catch (err) {
+      console.error('Failed to load team roster:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadTeam();
+  }, [loadTeam]);
+
+  const handleAssign = async (e) => {
+    e.preventDefault();
+    if (!emailInput.trim()) return;
+    setSubmitting(true);
+    setFeedback(null);
+    try {
+      await assignAlumniRole(emailInput.trim(), 'CONTENT_MANAGER');
+      setFeedback({
+        type: 'success',
+        text: `Granted Content Manager role to "${emailInput.trim()}". They can now log in to manage stories, events, and galleries.`,
+      });
+      setEmailInput('');
+      await loadTeam();
+    } catch (err) {
+      setFeedback({
+        type: 'error',
+        text: err.message || 'Failed to assign role. Make sure the user has submitted an alumni registration first.',
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleRevoke = async (memberEmail) => {
+    if (!window.confirm(`Are you sure you want to revoke editorial permissions for "${memberEmail}"?`)) return;
+    try {
+      await revokeAlumniRole(memberEmail);
+      await loadTeam();
+    } catch (err) {
+      alert(err.message || 'Failed to revoke role');
+    }
+  };
+
+  return (
+    <div>
+      {/* Header */}
+      <div style={{ marginBottom: 24, borderBottom: darkMode ? '1px solid rgba(168, 143, 240, 0.12)' : '1px solid #EAE5F2', paddingBottom: 20 }}>
+        <h1 style={{ margin: '0 0 6px', fontFamily: 'Playfair Display, Georgia, serif', fontSize: 28, fontWeight: 600, color: textPrimary }}>
+          Editorial Team & Roles
+        </h1>
+        <p style={{ margin: 0, fontSize: 13, color: textSecondary }}>
+          Assign Content Manager roles to registered alumni by email. Content Managers can publish and update articles, events, and gallery records without access to membership registrations.
+        </p>
+      </div>
+
+      {/* Role Assignment Card */}
+      <div style={{
+        background: cardBg,
+        border: `1px solid ${cardBorder}`,
+        borderRadius: 8,
+        padding: 24,
+        marginBottom: 24,
+        boxShadow: darkMode ? '0 4px 12px rgba(0,0,0,0.25)' : '0 2px 6px rgba(0,0,0,0.02)',
+      }}>
+        <h3 style={{ margin: '0 0 8px', fontFamily: 'Playfair Display, Georgia, serif', fontSize: 18, color: textPrimary }}>
+          Grant Editorial Access to a Registered Alumnus
+        </h3>
+        <p style={{ margin: '0 0 16px', fontSize: 13, color: textSecondary }}>
+          Enter the email address of a registered alumnus. They will receive Content Manager permissions to curate stories, events, and gallery assets.
+        </p>
+
+        {feedback && (
+          <div style={{
+            padding: '12px 16px',
+            borderRadius: 6,
+            marginBottom: 16,
+            fontSize: 13,
+            background: feedback.type === 'success'
+              ? (darkMode ? 'rgba(22, 163, 74, 0.15)' : '#edfbf2')
+              : (darkMode ? 'rgba(220, 38, 38, 0.15)' : '#fef2f2'),
+            border: `1px solid ${feedback.type === 'success' ? '#16A34A' : '#DC2626'}`,
+            color: feedback.type === 'success' ? '#16A34A' : '#DC2626',
+          }}>
+            {feedback.text}
+          </div>
+        )}
+
+        <form onSubmit={handleAssign} style={{ display: 'flex', gap: 12, alignItems: 'flex-end', flexWrap: 'wrap' }}>
+          <div style={{ flex: 1, minWidth: 260 }}>
+            <label style={{ display: 'block', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: textSecondary, marginBottom: 6 }}>
+              Registered Alumnus Email Address *
+            </label>
+            <input
+              type="email"
+              required
+              placeholder="e.g. sanjit.ningombam@gmail.com"
+              value={emailInput}
+              onChange={(e) => setEmailInput(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '10px 14px',
+                borderRadius: 6,
+                background: inputBg,
+                color: textPrimary,
+                border: `1px solid ${inputBorder}`,
+                fontSize: 13,
+                boxSizing: 'border-box',
+                outline: 'none',
+              }}
+            />
+          </div>
+
+          <div style={{ width: 180 }}>
+            <label style={{ display: 'block', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: textSecondary, marginBottom: 6 }}>
+              Assigned Role
+            </label>
+            <div style={{
+              padding: '10px 14px',
+              borderRadius: 6,
+              background: darkMode ? '#261C3D' : '#F4F0FA',
+              color: '#7C5CFC',
+              fontWeight: 700,
+              fontSize: 13,
+              border: '1px solid rgba(124, 92, 252, 0.3)',
+            }}>
+              Content Manager
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={submitting || !emailInput.trim()}
+            style={{
+              padding: '10px 20px',
+              background: submitting ? '#9E92B5' : '#7C5CFC',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 6,
+              fontSize: 13,
+              fontWeight: 700,
+              cursor: submitting ? 'not-allowed' : 'pointer',
+              transition: 'background 0.15s',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {submitting ? 'Assigning…' : '+ Grant Role'}
+          </button>
+        </form>
+      </div>
+
+      {/* Team Roster Table */}
+      <div style={{
+        background: cardBg,
+        border: `1px solid ${cardBorder}`,
+        borderRadius: 8,
+        overflow: 'hidden',
+      }}>
+        <div style={{
+          padding: '16px 20px',
+          borderBottom: `1px solid ${cardBorder}`,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          background: darkMode ? '#161126' : '#FAF9FC',
+        }}>
+          <h3 style={{ margin: 0, fontFamily: 'Playfair Display, Georgia, serif', fontSize: 17, color: textPrimary }}>
+            Current Staff & Editorial Roster
+          </h3>
+          <span style={{ fontSize: 12, fontWeight: 600, color: textSecondary }}>
+            {team.length} member{team.length === 1 ? '' : 's'}
+          </span>
+        </div>
+
+        {loading ? (
+          <div style={{ padding: '40px 20px', textAlign: 'center', color: textSecondary, fontSize: 13 }}>
+            Loading team roster…
+          </div>
+        ) : team.length === 0 ? (
+          <div style={{ padding: '40px 20px', textAlign: 'center', color: textSecondary, fontSize: 13 }}>
+            No staff or content managers found.
+          </div>
+        ) : (
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', minWidth: 650, borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ background: darkMode ? '#150F26' : '#F9F7FC', borderBottom: `1px solid ${cardBorder}` }}>
+                  {['Name & Email', 'Assigned Role', 'Access Scope', 'Status', 'Actions'].map((h) => (
+                    <th key={h} style={{
+                      padding: '12px 16px',
+                      textAlign: 'left',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.06em',
+                      color: textSecondary,
+                    }}>
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {team.map((m) => {
+                  const isSuperAdmin = m.role === 'SUPER_ADMIN';
+                  const isModerator = m.role === 'MODERATOR' || m.role === 'CONTENT_MANAGER';
+                  return (
+                    <tr key={m.id || m.email} style={{ borderBottom: `1px solid ${cardBorder}` }}>
+                      <td style={{ padding: '14px 16px' }}>
+                        <div style={{ fontWeight: 600, fontSize: 13, color: textPrimary }}>
+                          {m.full_name || 'Staff Member'}
+                        </div>
+                        <div style={{ fontSize: 12, color: textSecondary, marginTop: 2 }}>
+                          {m.email}
+                        </div>
+                      </td>
+                      <td style={{ padding: '14px 16px' }}>
+                        <span style={{
+                          display: 'inline-block',
+                          padding: '3px 10px',
+                          borderRadius: 12,
+                          fontSize: 11,
+                          fontWeight: 700,
+                          background: isSuperAdmin
+                            ? 'rgba(217, 119, 6, 0.15)'
+                            : isModerator
+                            ? 'rgba(124, 92, 252, 0.15)'
+                            : 'rgba(22, 163, 74, 0.15)',
+                          color: isSuperAdmin ? '#D97706' : isModerator ? '#7C5CFC' : '#16A34A',
+                        }}>
+                          {isSuperAdmin ? 'Super Admin' : isModerator ? 'Content Manager' : m.role}
+                        </span>
+                      </td>
+                      <td style={{ padding: '14px 16px', fontSize: 12, color: textSecondary }}>
+                        {isSuperAdmin
+                          ? 'Full Access (Registrations + Content + Roles)'
+                          : 'Editorial Only (Articles, Events, Gallery)'}
+                      </td>
+                      <td style={{ padding: '14px 16px' }}>
+                        <span style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 6,
+                          fontSize: 11,
+                          fontWeight: 700,
+                          color: m.is_active ? '#16A34A' : '#DC2626',
+                        }}>
+                          <span style={{ width: 6, height: 6, borderRadius: '50%', background: m.is_active ? '#16A34A' : '#DC2626' }} />
+                          {m.is_active ? 'Active' : 'Revoked'}
+                        </span>
+                      </td>
+                      <td style={{ padding: '14px 16px' }}>
+                        {!isSuperAdmin && m.is_active && (
+                          <button
+                            type="button"
+                            onClick={() => handleRevoke(m.email)}
+                            style={{
+                              padding: '5px 12px',
+                              background: 'transparent',
+                              border: '1px solid #DC2626',
+                              color: '#DC2626',
+                              borderRadius: 4,
+                              fontSize: 11,
+                              fontWeight: 700,
+                              cursor: 'pointer',
+                              transition: 'all 0.15s',
+                            }}
+                          >
+                            Revoke Access
+                          </button>
+                        )}
+                        {isSuperAdmin && (
+                          <span style={{ fontSize: 11, color: textSecondary, fontStyle: 'italic' }}>
+                            Permanent
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ─── Main Dashboard ───────────────────────────────────────────────────────────
 
 export default function AdminDashboardPage() {
   const navigate = useNavigate();
 
   // Retrieve session
-  const user = (() => { try { return JSON.parse(sessionStorage.getItem('msap_admin_user')); } catch { return null; } })();
-  const isAdmin = Boolean(user && ['ADMIN', 'SUPER_ADMIN'].includes(user.role));
+  const user = (() => {
+    try {
+      const stored = sessionStorage.getItem('msap_admin_user') || sessionStorage.getItem('msap_alumni_user');
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  })();
+  const isSuperOrAdmin = Boolean(user && ['ADMIN', 'SUPER_ADMIN'].includes(user.role));
+  const isContentManager = Boolean(user && ['MODERATOR', 'CONTENT_MANAGER'].includes(user.role));
+  const isAuthorizedStaff = isSuperOrAdmin || isContentManager;
 
-  const [activeTab, setActiveTab] = useState('REGISTRATIONS'); // 'REGISTRATIONS' | 'ARTICLES' | 'GALLERY'
+  const [activeTab, setActiveTab] = useState(isSuperOrAdmin ? 'REGISTRATIONS' : 'ARTICLES');
   const [activeFilter, setActiveFilter] = useState('ALL');
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('msap_admin_dark_mode') === 'true');
 
@@ -984,17 +1348,31 @@ export default function AdminDashboardPage() {
   const [total, setTotal] = useState(0);
   const LIMIT = 25;
 
-  // RBAC guard: redirect if not authenticated or not an admin
+  // Search & Filter toolbar states
+  const [searchQuery, setSearchQuery] = useState('');
+  const [collegeFilter, setCollegeFilter] = useState('');
+  const [decadeFilter, setDecadeFilter] = useState('');
+  const [exportingCSV, setExportingCSV] = useState(false);
+
+  // RBAC guard: redirect if not authenticated or not authorized staff
   useEffect(() => {
-    if (!isAdmin) navigate('/admin/login', { replace: true });
-  }, [isAdmin, navigate]);
+    if (!isAuthorizedStaff) navigate('/admin/login', { replace: true });
+  }, [isAuthorizedStaff, navigate]);
 
   const loadRegistrations = useCallback(async () => {
+    if (!isSuperOrAdmin) return;
     setLoading(true);
     setErrorMsg('');
     try {
       const statusParam = activeFilter === 'ALL' ? '' : activeFilter;
-      const data = await fetchRegistrations({ status: statusParam, page, limit: LIMIT });
+      const data = await fetchRegistrations({
+        status: statusParam,
+        search: searchQuery,
+        puneCollege: collegeFilter,
+        batchDecade: decadeFilter,
+        page,
+        limit: LIMIT,
+      });
       setRegistrations(data?.items || []);
       setTotal(data?.total || 0);
 
@@ -1021,7 +1399,7 @@ export default function AdminDashboardPage() {
     } finally {
       setLoading(false);
     }
-  }, [activeFilter, page, navigate]);
+  }, [activeFilter, searchQuery, collegeFilter, decadeFilter, page, navigate, isSuperOrAdmin]);
 
   useEffect(() => { loadRegistrations(); }, [loadRegistrations]);
 
@@ -1031,10 +1409,33 @@ export default function AdminDashboardPage() {
     setExpandedId(null);
   };
 
+  const handleExportCSV = async () => {
+    setExportingCSV(true);
+    try {
+      await downloadAlumniCSV(
+        {
+          status: activeFilter === 'ALL' ? '' : activeFilter,
+          search: searchQuery,
+          puneCollege: collegeFilter,
+          batchDecade: decadeFilter,
+        },
+        registrations
+      );
+    } catch (err) {
+      alert(`Export failed: ${err.message}`);
+    } finally {
+      setExportingCSV(false);
+    }
+  };
+
   const handleAction = async (id, newStatus, notes) => {
     setActionLoading(id);
     try {
-      await updateRegistrationStatus(id, newStatus, notes);
+      const target = registrations.find((r) => r.id === id);
+      await updateRegistrationStatus(id, newStatus, notes, {
+        expectedStatus: target?.status,
+        lastKnownUpdatedAt: target?.updated_at,
+      });
       // Optimistically update the local row
       setRegistrations((prev) =>
         prev.map((r) => r.id === id ? { ...r, status: newStatus, admin_notes: notes } : r)
@@ -1046,7 +1447,12 @@ export default function AdminDashboardPage() {
       }));
       setExpandedId(null);
     } catch (err) {
-      alert(err.message || 'Failed to update status. Please try again.');
+      if (err.status === 409 || err.message?.includes('Conflict')) {
+        alert(`Concurrency Conflict: ${err.message}\n\nThe record was updated by another administrator. Reloading registrations.`);
+        await loadRegistrations();
+      } else {
+        alert(err.message || 'Failed to update status. Please try again.');
+      }
     } finally {
       setActionLoading(null);
     }
@@ -1135,6 +1541,7 @@ export default function AdminDashboardPage() {
     }}>
       <Sidebar
         user={user}
+        isSuperOrAdmin={isSuperOrAdmin}
         activeFilter={activeFilter}
         onFilterChange={handleFilterChange}
         activeTab={activeTab}
@@ -1167,7 +1574,15 @@ export default function AdminDashboardPage() {
             </span>
             <span style={{ fontSize: 12, color: darkMode ? '#6B5E82' : '#B8B0C8' }}>/</span>
             <span style={{ fontSize: 12, fontWeight: 600, color: darkMode ? '#A89EC4' : '#7E7394' }}>
-              {activeTab === 'ARTICLES' ? 'Articles & Stories' : activeTab === 'GALLERY' ? 'Photo Gallery' : 'Alumni Registrations'}
+              {activeTab === 'ARTICLES'
+                ? 'Articles & Stories'
+                : activeTab === 'EVENTS'
+                ? 'Events & Calendar'
+                : activeTab === 'GALLERY'
+                ? 'Photo Gallery'
+                : activeTab === 'ROLES_MGMT'
+                ? 'Editorial Team & Roles'
+                : 'Alumni Registrations'}
             </span>
           </div>
 
@@ -1214,7 +1629,9 @@ export default function AdminDashboardPage() {
           <EventsAdminView darkMode={darkMode} />
         ) : activeTab === 'GALLERY' ? (
           <GalleryAdminView darkMode={darkMode} />
-        ) : (
+        ) : activeTab === 'ROLES_MGMT' && isSuperOrAdmin ? (
+          <EditorialTeamManagementView darkMode={darkMode} />
+        ) : isSuperOrAdmin ? (
           <>
             {/* Header */}
             <div style={{ marginBottom: 24, borderBottom: darkMode ? '1px solid rgba(168, 143, 240, 0.12)' : '1px solid #EAE5F2', paddingBottom: 20 }}>
@@ -1279,6 +1696,156 @@ export default function AdminDashboardPage() {
           })}
         </div>
 
+        {/* Search, College Filter, Batch Decade & CSV Export Toolbar */}
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 12,
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          background: darkMode ? '#1A152B' : '#FFFFFF',
+          border: darkMode ? '1px solid rgba(168, 143, 240, 0.15)' : '1px solid #EAE5F2',
+          borderRadius: 8,
+          padding: '12px 16px',
+          marginBottom: 20,
+          boxShadow: darkMode ? '0 4px 12px rgba(0,0,0,0.2)' : '0 2px 6px rgba(0,0,0,0.02)',
+        }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, flex: 1, minWidth: 280, alignItems: 'center' }}>
+            {/* Text Search Input */}
+            <div style={{ position: 'relative', flex: '1 1 200px', minWidth: 160 }}>
+              <input
+                type="text"
+                placeholder="🔍 Search name, email, phone, location..."
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setPage(1);
+                }}
+                style={{
+                  width: '100%',
+                  padding: '8px 14px',
+                  background: darkMode ? '#140F24' : '#FAF9FC',
+                  border: darkMode ? '1px solid #3E3263' : '1px solid #D1C9DE',
+                  borderRadius: 6,
+                  color: darkMode ? '#FAF9FC' : '#1A1429',
+                  fontSize: 13,
+                  outline: 'none',
+                }}
+              />
+            </div>
+
+            {/* College Filter Dropdown */}
+            <select
+              value={collegeFilter}
+              onChange={(e) => {
+                setCollegeFilter(e.target.value);
+                setPage(1);
+              }}
+              style={{
+                padding: '8px 12px',
+                background: darkMode ? '#140F24' : '#FAF9FC',
+                border: darkMode ? '1px solid #3E3263' : '1px solid #D1C9DE',
+                borderRadius: 6,
+                color: darkMode ? '#FAF9FC' : '#1A1429',
+                fontSize: 12,
+                fontWeight: 500,
+                outline: 'none',
+                cursor: 'pointer',
+              }}
+            >
+              <option value="">🏛️ All Colleges</option>
+              <option value="Fergusson">Fergusson College</option>
+              <option value="COEP">COEP</option>
+              <option value="Symbiosis">Symbiosis International</option>
+              <option value="BMCC">BMCC</option>
+              <option value="SPPU">SPPU / Pune University</option>
+              <option value="Bharati Vidyapeeth">Bharati Vidyapeeth</option>
+              <option value="MIT">MIT Pune</option>
+              <option value="DY Patil">D.Y. Patil University</option>
+              <option value="AFMC">AFMC</option>
+            </select>
+
+            {/* Batch Decade Dropdown */}
+            <select
+              value={decadeFilter}
+              onChange={(e) => {
+                setDecadeFilter(e.target.value);
+                setPage(1);
+              }}
+              style={{
+                padding: '8px 12px',
+                background: darkMode ? '#140F24' : '#FAF9FC',
+                border: darkMode ? '1px solid #3E3263' : '1px solid #D1C9DE',
+                borderRadius: 6,
+                color: darkMode ? '#FAF9FC' : '#1A1429',
+                fontSize: 12,
+                fontWeight: 500,
+                outline: 'none',
+                cursor: 'pointer',
+              }}
+            >
+              <option value="">🎓 All Batch Decades</option>
+              <option value="1970">1970s (1970–1979)</option>
+              <option value="1980">1980s (1980–1989)</option>
+              <option value="1990">1990s (1990–1999)</option>
+              <option value="2000">2000s (2000–2009)</option>
+              <option value="2010">2010s (2010–2019)</option>
+              <option value="2020">2020s (2020–2029)</option>
+            </select>
+
+            {/* Reset Filters */}
+            {(searchQuery || collegeFilter || decadeFilter) && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery('');
+                  setCollegeFilter('');
+                  setDecadeFilter('');
+                  setPage(1);
+                }}
+                style={{
+                  padding: '6px 10px',
+                  background: 'transparent',
+                  border: 'none',
+                  color: darkMode ? '#A89EC4' : '#7E7394',
+                  fontSize: 12,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                }}
+              >
+                Clear Filters
+              </button>
+            )}
+          </div>
+
+          {/* Export to CSV Action */}
+          <button
+            type="button"
+            onClick={handleExportCSV}
+            disabled={exportingCSV}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '8px 16px',
+              background: darkMode ? 'rgba(124, 92, 252, 0.2)' : '#F3F0FA',
+              color: darkMode ? '#FAF9FC' : '#583B9C',
+              border: darkMode ? '1px solid rgba(124, 92, 252, 0.4)' : '1px solid #D5CCF5',
+              borderRadius: 6,
+              fontSize: 12,
+              fontWeight: 700,
+              cursor: exportingCSV ? 'not-allowed' : 'pointer',
+              transition: 'all 0.15s',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+            }}
+            title="Download verified and registered alumni roster as CSV spreadsheet"
+          >
+            <span>{exportingCSV ? '⏳' : '📥'}</span>
+            <span>{exportingCSV ? 'Exporting...' : 'Export to CSV'}</span>
+          </button>
+        </div>
+
         {/* Error */}
         {errorMsg && (
           <div style={{ padding: '12px 16px', background: darkMode ? 'rgba(239, 68, 68, 0.15)' : '#fef1ee', border: '1px solid #D64933', color: darkMode ? '#FCA5A5' : '#D64933', borderRadius: 6, marginBottom: 16, fontSize: 13 }}>
@@ -1311,7 +1878,11 @@ export default function AdminDashboardPage() {
                 No registrations found
               </p>
               <p style={{ fontSize: 13, color: darkMode ? '#A89EC4' : '#9B9484', margin: 0 }}>
-                {activeFilter !== 'ALL' ? `No ${activeFilter.toLowerCase()} submissions yet.` : 'No one has registered yet.'}
+                {searchQuery || collegeFilter || decadeFilter
+                  ? 'No registrations found matching your search or filter criteria. Try clearing your filters.'
+                  : activeFilter !== 'ALL'
+                  ? `No ${activeFilter.toLowerCase()} submissions yet.`
+                  : 'No one has registered yet.'}
               </p>
             </div>
           ) : (
@@ -1383,6 +1954,8 @@ export default function AdminDashboardPage() {
               </div>
             )}
           </>
+        ) : (
+          <ArticlesAdminView darkMode={darkMode} />
         )}
       </main>
     </div>

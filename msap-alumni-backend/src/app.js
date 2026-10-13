@@ -52,7 +52,10 @@ app.use(csrfProtection);
 // 10. Rate Limiting on API routes
 app.use('/api', globalLimiter);
 
-// 10. API Routes
+// 10. Root & API Routes
+app.get('/health', (_req, res) => {
+  res.status(200).json({ status: 'ok', service: 'msap-alumni-backend', timestamp: new Date().toISOString() });
+});
 app.use('/api/v1', routes);
 
 // 11. Handle 404 for undefined endpoints

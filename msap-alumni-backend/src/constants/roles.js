@@ -9,10 +9,10 @@
  */
 
 export const ROLES = {
-
   SUPER_ADMIN: 'SUPER_ADMIN',
   ADMIN: 'ADMIN',
-  MODERATOR: 'MODERATOR',
+  MODERATOR: 'MODERATOR', // Content Manager / Editorial staff
+  CONTENT_MANAGER: 'CONTENT_MANAGER', // Editorial role alias
 };
 
 export const ALUMNI_STATUS = {

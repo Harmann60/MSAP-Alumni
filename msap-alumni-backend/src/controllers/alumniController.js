@@ -55,9 +55,13 @@ export class AlumniController {
 
   static async list(req, res, next) {
     try {
-      const { status, page, limit } = req.query;
+      const { status, search, puneCollege, batchDecade, batchYear, page, limit } = req.query;
       const result = await AlumniService.list({
         status,
+        search,
+        puneCollege,
+        batchDecade,
+        batchYear,
         page: page ? parseInt(page, 10) : 1,
         limit: limit ? parseInt(limit, 10) : 20,
       });
@@ -67,16 +71,37 @@ export class AlumniController {
     }
   }
 
+  static async exportCSV(req, res, next) {
+    try {
+      const { status, search, puneCollege, batchDecade, batchYear } = req.query;
+      const csvString = await AlumniService.exportCSV({
+        status,
+        search,
+        puneCollege,
+        batchDecade,
+        batchYear,
+      });
+      const dateStr = new Date().toISOString().split('T')[0];
+      res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+      res.setHeader('Content-Disposition', `attachment; filename="msap_alumni_roster_${dateStr}.csv"`);
+      return res.status(200).send(csvString);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async updateStatus(req, res, next) {
     try {
       const { id } = req.params;
-      const { status, adminNotes } = req.body;
+      const { status, adminNotes, expectedStatus, lastKnownUpdatedAt } = req.body;
       const adminId = req.user?.id;
 
       const updated = await AlumniService.updateStatus(id, {
         status,
         adminNotes,
         adminId,
+        expectedStatus,
+        lastKnownUpdatedAt,
       });
 
       // Audit the status change
@@ -131,6 +156,60 @@ export class AlumniController {
       });
 
       return ApiResponse.success(res, result, 'Alumni profile updated successfully');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async listTeam(req, res, next) {
+    try {
+      const team = await AlumniService.listTeam();
+      return ApiResponse.success(res, team, 'Editorial and staff team retrieved successfully');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async assignRole(req, res, next) {
+    try {
+      const { email, role } = req.body;
+      const adminId = req.user?.id;
+      const result = await AlumniService.assignRole({ email, role, adminId });
+
+      await AuditService.log({
+        action:     AUDIT_ACTIONS.ROLE_ASSIGNED,
+        entityName: 'admins',
+        entityId:   result.id,
+        adminId,
+        ip:         req.ip,
+        details:    { email: result.email, role: result.role },
+      });
+
+      return ApiResponse.success(
+        res,
+        result,
+        `Assigned ${result.role === 'MODERATOR' ? 'Content Manager' : result.role} role to ${result.email}`
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async revokeRole(req, res, next) {
+    try {
+      const { email } = req.body;
+      const adminId = req.user?.id;
+      const result = await AlumniService.revokeRole({ email, adminId });
+
+      await AuditService.log({
+        action:     AUDIT_ACTIONS.ROLE_REVOKED,
+        entityName: 'admins',
+        adminId,
+        ip:         req.ip,
+        details:    { email },
+      });
+
+      return ApiResponse.success(res, result, `Editorial role revoked for ${email}`);
     } catch (error) {
       next(error);
     }

@@ -11,29 +11,29 @@ const router = Router();
 // Public: Retrieve events
 router.get('/', EventsController.list);
 
-// Protected: Create event
+// Protected: Create event (Admin & Event Managers/Moderators)
 router.post(
   '/',
   authenticate,
-  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
+  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MODERATOR),
   validateRequest({ body: createEventSchema }),
   EventsController.create
 );
 
-// Protected: Update event
+// Protected: Update event (Admin & Event Managers/Moderators)
 router.put(
   '/:id',
   authenticate,
-  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
+  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MODERATOR),
   validateRequest({ body: updateEventSchema }),
   EventsController.update
 );
 
-// Protected: Delete event
+// Protected: Delete event (Admin & Event Managers/Moderators)
 router.delete(
   '/:id',
   authenticate,
-  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
+  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MODERATOR),
   EventsController.delete
 );
 

@@ -12,29 +12,29 @@ const router = Router();
 router.get('/', StoriesController.list);
 router.get('/:id', StoriesController.getById);
 
-// Protected: Publish story (Admin only) — validated by Zod schema
+// Protected: Publish story (Admin & Moderator/Content Writer) — validated by Zod schema
 router.post(
   '/',
   authenticate,
-  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
+  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MODERATOR),
   validateRequest({ body: createStorySchema }),
   StoriesController.create
 );
 
-// Protected: Update story (Admin only) — validated by Zod schema
+// Protected: Update story (Admin & Moderator/Content Writer) — validated by Zod schema
 router.put(
   '/:id',
   authenticate,
-  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
+  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MODERATOR),
   validateRequest({ body: updateStorySchema }),
   StoriesController.update
 );
 
-// Protected: Delete story (Admin only)
+// Protected: Delete story (Admin & Content Managers/Moderators)
 router.delete(
   '/:id',
   authenticate,
-  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
+  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MODERATOR),
   StoriesController.delete
 );
 

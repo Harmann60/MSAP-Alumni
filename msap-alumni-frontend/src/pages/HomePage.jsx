@@ -33,7 +33,7 @@ export default function HomePage() {
             help strengthen the alumni community for generations to come.
           </p>
           <Link
-            to="/register"
+            to="/membership"
             className="inline-block bg-[#FAF8F4] hover:bg-white text-ink text-base font-bold px-9 py-4 rounded-sm transition-colors"
           >
             Join the alumni network

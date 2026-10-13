@@ -5,6 +5,8 @@ import {
   registerAlumniSchema,
   updateAlumniStatusSchema,
   updateAlumniProfileSchema,
+  assignRoleSchema,
+  revokeRoleSchema,
 } from '../validators/alumniValidator.js';
 import { registrationLimiter } from '../middlewares/rateLimiter.js';
 import { authenticate } from '../middlewares/auth.js';
@@ -21,12 +23,46 @@ router.post(
   AlumniController.register
 );
 
-// Protected: Admin list of submissions
+// Protected: Admin list of submissions (RESTRICTED to SUPER_ADMIN & ADMIN — Content managers/moderators cannot access)
 router.get(
   '/',
   authenticate,
-  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MODERATOR),
+  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
   AlumniController.list
+);
+
+// Protected: Admin export alumni roster as CSV
+router.get(
+  '/export',
+  authenticate,
+  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
+  AlumniController.exportCSV
+);
+
+// Protected: Admin list staff & editorial team
+router.get(
+  '/team',
+  authenticate,
+  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
+  AlumniController.listTeam
+);
+
+// Protected: Admin assign role (Content Manager) to registered alumni
+router.post(
+  '/assign-role',
+  authenticate,
+  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
+  validateRequest({ body: assignRoleSchema }),
+  AlumniController.assignRole
+);
+
+// Protected: Admin revoke staff/editorial role
+router.post(
+  '/revoke-role',
+  authenticate,
+  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
+  validateRequest({ body: revokeRoleSchema }),
+  AlumniController.revokeRole
 );
 
 // Protected: Admin approve/reject submission
