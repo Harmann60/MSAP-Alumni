@@ -11,7 +11,7 @@ import crypto from 'crypto';
 
 import { supabase, isConfigured } from '../config/supabase.js';
 import { logger } from '../config/logger.js';
-import { ApiError } from '../utils/apiError.js';
+import { ApiError, ConflictError } from '../utils/apiError.js';
 import { HTTP_STATUS } from '../constants/httpStatus.js';
 
 const initialStories = [];
@@ -114,6 +114,25 @@ export class StoriesService {
   }
 
   static async update(id, storyData) {
+    // Optimistic Concurrency Check: Prevent race conditions and silent overwrites
+    if (storyData.lastKnownUpdatedAt) {
+      try {
+        const current = await this.getById(id);
+        if (current) {
+          const currentUpdatedTime = new Date(current.updated_at || current.created_at || 0).getTime();
+          const clientKnownTime = new Date(storyData.lastKnownUpdatedAt).getTime();
+          if (!isNaN(currentUpdatedTime) && !isNaN(clientKnownTime) && currentUpdatedTime > clientKnownTime + 1000) {
+            throw new ConflictError(
+              'Conflict detected: This article was modified by another editor while you were working on it. Please reload the latest version to prevent overwriting their changes.'
+            );
+          }
+        }
+      } catch (err) {
+        if (err instanceof ConflictError) throw err;
+        // If not found or transient error, proceed with standard handling
+      }
+    }
+
     const payload = {};
     if (storyData.title !== undefined) payload.title = storyData.title;
     if (storyData.source !== undefined) payload.source = storyData.source;

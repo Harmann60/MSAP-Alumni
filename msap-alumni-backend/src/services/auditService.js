@@ -17,11 +17,13 @@ import { logger } from '../config/logger.js';
 // ─── Audit event name constants ────────────────────────────────────────────────
 
 export const AUDIT_ACTIONS = {
-  // Alumni
+  // Alumni & Team
   ALUMNI_REGISTERED:      'ALUMNI_REGISTERED',
   ALUMNI_STATUS_UPDATED:  'ALUMNI_STATUS_UPDATED',
   ALUMNI_DELETED:         'ALUMNI_DELETED',
   ALUMNI_PROFILE_UPDATED: 'ALUMNI_PROFILE_UPDATED',
+  ROLE_ASSIGNED:          'ROLE_ASSIGNED',
+  ROLE_REVOKED:           'ROLE_REVOKED',
   // Auth
   ADMIN_LOGIN:            'ADMIN_LOGIN',
   ADMIN_LOGIN_FAILED:     'ADMIN_LOGIN_FAILED',

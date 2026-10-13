@@ -318,6 +318,21 @@ export default function RegisterPage() {
       </div>
 
       <div className="relative max-w-3xl mx-auto px-5">
+        {/* Membership Tier Info Banner */}
+        <div className="mb-6 p-4 rounded-sm bg-lavender/10 border border-lavender/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2.5">
+            <span className="w-5 h-5 rounded-full bg-lavender text-white font-bold flex items-center justify-center text-[10px] shrink-0">
+              ✓
+            </span>
+            <p className="text-stone">
+              <strong className="text-ink font-bold">Lifetime Membership: ₹3,000</strong> &middot; One-time contribution upon credential verification
+            </p>
+          </div>
+          <Link to="/membership" className="font-bold text-lavender hover:text-lavender-dark hover:underline shrink-0">
+            ← Review Membership Perks &amp; FAQs
+          </Link>
+        </div>
+
         <div className="bg-card border border-main overflow-hidden">
           {/* Card Top Banner */}
           <div className="p-6 sm:p-8 bg-section-alt border-b border-main flex flex-col sm:flex-row sm:items-center justify-between gap-3">

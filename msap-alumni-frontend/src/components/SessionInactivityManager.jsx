@@ -12,28 +12,37 @@ export default function SessionInactivityManager() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return Boolean(sessionStorage.getItem('msap_admin_user') || sessionStorage.getItem('msap_alumni_user'));
+  });
+  const [isAdmin, setIsAdmin] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return Boolean(sessionStorage.getItem('msap_admin_user'));
+  });
   const [showWarning, setShowWarning] = useState(false);
   const [remainingSeconds, setRemainingSeconds] = useState(300);
 
   const lastWriteRef = useRef(0);
 
-  // Check current auth status from storage
-  const checkAuth = useCallback(() => {
-    const adminUser = typeof window !== 'undefined' ? sessionStorage.getItem('msap_admin_user') : null;
-    const alumniUser = typeof window !== 'undefined' ? sessionStorage.getItem('msap_alumni_user') : null;
-    const hasAdmin = Boolean(adminUser);
-    const hasAlumni = Boolean(alumniUser);
+  // Pure check of current auth status from storage without side-effects
+  const isCurrentlyAuthed = useCallback(() => {
+    if (typeof window === 'undefined') return false;
+    return Boolean(sessionStorage.getItem('msap_admin_user') || sessionStorage.getItem('msap_alumni_user'));
+  }, []);
 
+  // Update component state when auth changes (invoked from event handlers)
+  const syncAuthState = useCallback(() => {
+    if (typeof window === 'undefined') return;
+    const hasAdmin = Boolean(sessionStorage.getItem('msap_admin_user'));
+    const hasAlumni = Boolean(sessionStorage.getItem('msap_alumni_user'));
     setIsAdmin(hasAdmin);
     setIsAuthenticated(hasAdmin || hasAlumni);
-    return hasAdmin || hasAlumni;
   }, []);
 
   // Update activity timestamp in localStorage (throttled to once every 30 seconds)
   const recordActivity = useCallback(() => {
-    if (!checkAuth()) return;
+    if (!isCurrentlyAuthed()) return;
     const now = Date.now();
     if (now - lastWriteRef.current > 30000) {
       lastWriteRef.current = now;
@@ -43,7 +52,7 @@ export default function SessionInactivityManager() {
         // Safe fallback
       }
     }
-  }, [checkAuth]);
+  }, [isCurrentlyAuthed]);
 
   // Execute clean sign out due to inactivity
   const performInactivityLogout = useCallback(async () => {
@@ -97,9 +106,7 @@ export default function SessionInactivityManager() {
 
   // Monitor activity timestamps on a timer
   useEffect(() => {
-    const isAuthed = checkAuth();
-    if (!isAuthed) {
-      setShowWarning(false);
+    if (!isCurrentlyAuthed()) {
       return;
     }
 
@@ -110,7 +117,7 @@ export default function SessionInactivityManager() {
     }
 
     const interval = setInterval(() => {
-      if (!checkAuth()) {
+      if (!isCurrentlyAuthed()) {
         setShowWarning(false);
         return;
       }
@@ -137,7 +144,7 @@ export default function SessionInactivityManager() {
     }, 10000); // Check every 10 seconds
 
     return () => clearInterval(interval);
-  }, [checkAuth, performInactivityLogout]);
+  }, [isCurrentlyAuthed, performInactivityLogout]);
 
   // Listen to user interaction events across the window
   useEffect(() => {
@@ -157,10 +164,10 @@ export default function SessionInactivityManager() {
           setShowWarning(false);
         }
       }
-      checkAuth();
+      syncAuthState();
     };
 
-    const handleAuthEvent = () => checkAuth();
+    const handleAuthEvent = () => syncAuthState();
 
     window.addEventListener('storage', handleStorage);
     window.addEventListener('msap_auth_change', handleAuthEvent);
@@ -170,7 +177,7 @@ export default function SessionInactivityManager() {
       window.removeEventListener('storage', handleStorage);
       window.removeEventListener('msap_auth_change', handleAuthEvent);
     };
-  }, [isAuthenticated, recordActivity, checkAuth]);
+  }, [isAuthenticated, recordActivity, syncAuthState]);
 
   // Modal countdown tick when warning is shown
   useEffect(() => {
@@ -196,7 +203,7 @@ export default function SessionInactivityManager() {
     try {
       if (localStorage.getItem('msap_inactivity_logout_notice') === 'true') {
         localStorage.removeItem('msap_inactivity_logout_notice');
-        setLogoutNotice(true);
+        setTimeout(() => setLogoutNotice(true), 0);
         const t = setTimeout(() => setLogoutNotice(false), 8000);
         return () => clearTimeout(t);
       }

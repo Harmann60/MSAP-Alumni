@@ -15,11 +15,24 @@
 
 import crypto from 'crypto';
 import { supabase, isConfigured } from '../config/supabase.js';
-import { ALUMNI_STATUS } from '../constants/roles.js';
-import { NotFoundError, ConflictError } from '../utils/apiError.js';
+import { ALUMNI_STATUS, ROLES } from '../constants/roles.js';
+import { NotFoundError, ConflictError, BadRequestError } from '../utils/apiError.js';
 import { logger } from '../config/logger.js';
 import { sendNewRegistrationAlert, sendStatusUpdateEmail } from './emailService.js';
 import { hashPassword } from '../utils/password.js';
+
+const mockAdmins = [
+  {
+    id: '00000000-0000-0000-0000-000000000001',
+    email: 'admin@msap.org',
+    full_name: 'MSAP Executive Admin',
+    role: 'SUPER_ADMIN',
+    is_active: true,
+    last_login_at: new Date().toISOString(),
+    created_at: '2024-01-01T00:00:00.000Z',
+    updated_at: new Date().toISOString(),
+  },
+];
 
 // ─── In-memory mock data (local development only) ─────────────────────────────
 
@@ -287,7 +300,20 @@ export class AlumniService {
    * @returns {Promise<{ items: object[], total: number, page: number, limit: number }>}
    *   Paginated result set.
    */
-  static async list({ status, page = 1, limit = 20 }) {
+  /**
+   * Lists alumni registrations with optional search, college, decade filtering and pagination.
+   *
+   * @param {object}           options              - Query options.
+   * @param {string}          [options.status]      - Filter by status: PENDING, VERIFIED, or REJECTED.
+   * @param {string}          [options.search]      - Search term across name, email, college, profession, location.
+   * @param {string}          [options.puneCollege] - Filter by Pune college name substring.
+   * @param {number|string}   [options.batchDecade] - Filter by batch decade start year (e.g. 1990).
+   * @param {number|string}   [options.batchYear]   - Filter by specific batch year.
+   * @param {number}          [options.page=1]      - 1-indexed page number.
+   * @param {number}          [options.limit=20]    - Number of records per page.
+   * @returns {Promise<{ items: object[], total: number, page: number, limit: number }>}
+   */
+  static async list({ status, search, puneCollege, batchDecade, batchYear, page = 1, limit = 20 }) {
     if (isConfigured && supabase) {
       let query = supabase
         .from('alumni_registrations')
@@ -295,6 +321,22 @@ export class AlumniService {
 
       if (status) {
         query = query.eq('status', status);
+      }
+      if (puneCollege) {
+        query = query.ilike('pune_college', `%${puneCollege}%`);
+      }
+      if (batchYear) {
+        query = query.eq('batch_year', Number(batchYear));
+      }
+      if (batchDecade) {
+        const decadeStart = Number(batchDecade);
+        query = query.gte('batch_year', decadeStart).lte('batch_year', decadeStart + 9);
+      }
+      if (search && search.trim()) {
+        const term = search.trim();
+        query = query.or(
+          `full_name.ilike.%${term}%,email.ilike.%${term}%,phone.ilike.%${term}%,pune_college.ilike.%${term}%,profession.ilike.%${term}%,current_location.ilike.%${term}%`
+        );
       }
 
       const offset = (page - 1) * limit;
@@ -307,7 +349,7 @@ export class AlumniService {
         throw new Error('Failed to retrieve alumni registrations');
       }
 
-      return { items: data, total: count, page, limit };
+      return { items: data || [], total: count || 0, page, limit };
     }
 
     // In-memory fallback
@@ -315,9 +357,79 @@ export class AlumniService {
     if (status) {
       filtered = filtered.filter((item) => item.status === status);
     }
+    if (puneCollege) {
+      filtered = filtered.filter((item) =>
+        item.pune_college?.toLowerCase().includes(puneCollege.toLowerCase())
+      );
+    }
+    if (batchYear) {
+      filtered = filtered.filter((item) => Number(item.batch_year) === Number(batchYear));
+    }
+    if (batchDecade) {
+      const decadeStart = Number(batchDecade);
+      filtered = filtered.filter(
+        (item) => Number(item.batch_year) >= decadeStart && Number(item.batch_year) <= decadeStart + 9
+      );
+    }
+    if (search && search.trim()) {
+      const q = search.trim().toLowerCase();
+      filtered = filtered.filter(
+        (item) =>
+          item.full_name?.toLowerCase().includes(q) ||
+          item.email?.toLowerCase().includes(q) ||
+          item.phone?.toLowerCase().includes(q) ||
+          item.pune_college?.toLowerCase().includes(q) ||
+          item.profession?.toLowerCase().includes(q) ||
+          item.current_location?.toLowerCase().includes(q)
+      );
+    }
     const offset = (page - 1) * limit;
     const paginated = filtered.slice(offset, offset + limit);
     return { items: paginated, total: filtered.length, page, limit };
+  }
+
+  /**
+   * Generates a UTF-8 RFC-4180 CSV string of alumni registrations for export.
+   *
+   * @param {object} options - Filter options matching list().
+   * @returns {Promise<string>}
+   */
+  static async exportCSV(options = {}) {
+    const { items } = await this.list({ ...options, page: 1, limit: 5000 });
+    const headers = [
+      'Full Name',
+      'Email Address',
+      'Phone Number',
+      'Pune College / Institution',
+      'Batch Year',
+      'Current Location',
+      'Profession / Designation',
+      'Status',
+      'Admin Notes',
+      'Registered Date',
+      'Reviewed At',
+    ];
+
+    const escape = (val) => {
+      if (val === null || val === undefined) return '""';
+      return `"${String(val).replace(/"/g, '""')}"`;
+    };
+
+    const rows = items.map((r) => [
+      escape(r.full_name),
+      escape(r.email),
+      escape(r.phone),
+      escape(r.pune_college),
+      escape(r.batch_year),
+      escape(r.current_location),
+      escape(r.profession),
+      escape(r.status),
+      escape(r.admin_notes),
+      escape(r.created_at ? new Date(r.created_at).toISOString().split('T')[0] : ''),
+      escape(r.reviewed_at ? new Date(r.reviewed_at).toISOString().split('T')[0] : ''),
+    ]);
+
+    return '\uFEFF' + [headers.join(','), ...rows.map((row) => row.join(','))].join('\r\n');
   }
 
   /**
@@ -334,10 +446,34 @@ export class AlumniService {
    * @returns {Promise<object>} The updated registration record.
    * @throws {NotFoundError} If no record with the given ID exists.
    */
-  static async updateStatus(id, { status, adminNotes, adminId }) {
+  static async updateStatus(id, { status, adminNotes, adminId, expectedStatus, lastKnownUpdatedAt }) {
     let validAdminId = null;
 
     if (isConfigured && supabase) {
+      // 1. Concurrency Check: Verify record exists and has not been updated concurrently
+      const { data: current, error: getErr } = await supabase
+        .from('alumni_registrations')
+        .select('*')
+        .eq('id', id)
+        .maybeSingle();
+
+      if (current) {
+        if (expectedStatus && current.status !== expectedStatus) {
+          throw new ConflictError(
+            `Conflict detected: This application has already been updated to ${current.status} by another administrator.`
+          );
+        }
+
+      if (lastKnownUpdatedAt) {
+        const currentUpdatedTime = new Date(current.updated_at || current.created_at || 0).getTime();
+        const clientKnownTime = new Date(lastKnownUpdatedAt).getTime();
+        if (!isNaN(currentUpdatedTime) && !isNaN(clientKnownTime) && currentUpdatedTime > clientKnownTime + 1000) {
+          throw new ConflictError(
+            'Conflict detected: This applicant record was modified by another administrator. Please refresh the list before proceeding.'
+          );
+        }
+      }
+
       // Validate adminId against admins table to avoid 23503 foreign key violation
       if (adminId && adminId !== '00000000-0000-0000-0000-000000000001') {
         const { data: adminExists } = await supabase
@@ -378,11 +514,28 @@ export class AlumniService {
         return data;
       }
     }
+  }
 
     // Fallback for mock records or local development
     const item = mockRegistrations.find((r) => r.id === id);
     if (!item) {
       throw new NotFoundError('Alumni registration record not found');
+    }
+
+    if (expectedStatus && item.status !== expectedStatus) {
+      throw new ConflictError(
+        `Conflict detected: This application has already been updated to ${item.status} by another administrator.`
+      );
+    }
+
+    if (lastKnownUpdatedAt) {
+      const currentUpdatedTime = new Date(item.updated_at || item.created_at || 0).getTime();
+      const clientKnownTime = new Date(lastKnownUpdatedAt).getTime();
+      if (!isNaN(currentUpdatedTime) && !isNaN(clientKnownTime) && currentUpdatedTime > clientKnownTime + 1000) {
+        throw new ConflictError(
+          'Conflict detected: This applicant record was modified by another administrator. Please refresh the list before proceeding.'
+        );
+      }
     }
 
     const fallbackPayload = {
@@ -552,5 +705,222 @@ export class AlumniService {
     }
     Object.assign(item, updatePayload);
     return item;
+  }
+
+  /**
+   * Retrieves all staff and editorial team members from the admins table.
+   *
+   * @returns {Promise<Array<object>>} List of staff records with their roles and status.
+   */
+  static async listTeam() {
+    if (isConfigured && supabase) {
+      const { data, error } = await supabase
+        .from('admins')
+        .select('id, email, full_name, role, is_active, last_login_at, created_at, updated_at')
+        .order('created_at', { ascending: true });
+
+      if (error) {
+        logger.error('Supabase listTeam query error:', { error: error.message });
+        throw new Error('Failed to retrieve team members');
+      }
+
+      return data.map((admin) => ({
+        ...admin,
+        displayRole: admin.role === 'MODERATOR' ? 'Content Manager' : admin.role.replace('_', ' '),
+      }));
+    }
+
+    return mockAdmins.map((admin) => ({
+      ...admin,
+      displayRole: admin.role === 'MODERATOR' ? 'Content Manager' : admin.role.replace('_', ' '),
+    }));
+  }
+
+  /**
+   * Assigns an editorial role (Content Manager / MODERATOR) to a registered alumnus.
+   *
+   * Requirements:
+   *  1. Alumnus must exist in alumni_registrations.
+   *  2. Alumnus must not be REJECTED.
+   *  3. Creates or updates a record in the `admins` table with role = 'MODERATOR'
+   *     and copies their password_hash so they can sign in seamlessly.
+   *
+   * @param {object} params
+   * @param {string} params.email   - Email of the registered alumnus.
+   * @param {string} [params.role]  - Target role (default 'CONTENT_MANAGER' / 'MODERATOR').
+   * @param {string} [params.adminId]- UUID of admin executing the assignment.
+   * @returns {Promise<object>} The assigned staff record.
+   */
+  static async assignRole({ email, role = ROLES.CONTENT_MANAGER, adminId }) {
+    const normalizedEmail = (email || '').toLowerCase().trim();
+    const alumnus = await this.findByEmail(normalizedEmail);
+
+    if (!alumnus) {
+      throw new NotFoundError(
+        `No registered alumni found for "${normalizedEmail}". The member must register their alumni profile on the website before receiving an editorial role.`
+      );
+    }
+
+    if (alumnus.status === ALUMNI_STATUS.REJECTED) {
+      throw new BadRequestError(
+        'Cannot assign an editorial role to a rejected application. Please verify and approve the member first.'
+      );
+    }
+
+    // Role in database table is constrained to 'SUPER_ADMIN', 'ADMIN', 'MODERATOR'
+    const dbRole = 'MODERATOR';
+
+    if (isConfigured && supabase) {
+      // Check if admin already exists
+      const { data: existingAdmin, error: queryErr } = await supabase
+        .from('admins')
+        .select('*')
+        .eq('email', normalizedEmail)
+        .maybeSingle();
+
+      if (queryErr) {
+        logger.error('Supabase query error checking admin for role assignment:', queryErr);
+      }
+
+      let resultAdmin;
+      if (existingAdmin) {
+        // Reactivate or update role
+        const { data: updated, error: updateErr } = await supabase
+          .from('admins')
+          .update({
+            role: dbRole,
+            full_name: alumnus.full_name,
+            password_hash: alumnus.password_hash || existingAdmin.password_hash,
+            is_active: true,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', existingAdmin.id)
+          .select()
+          .single();
+
+        if (updateErr) {
+          logger.error('Failed to update admin role in Supabase:', updateErr);
+          throw new Error('Failed to update team member role');
+        }
+        resultAdmin = updated;
+      } else {
+        // Insert new admin row for content manager
+        const newAdminRecord = {
+          email: normalizedEmail,
+          full_name: alumnus.full_name,
+          role: dbRole,
+          password_hash: alumnus.password_hash || '$2b$12$4lNCXLOibuRwjRx6wzVdf.t.cj2Z9QWaMHSEA5cGyMMYahjAqtMzS',
+          is_active: true,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+
+        const { data: inserted, error: insertErr } = await supabase
+          .from('admins')
+          .insert([newAdminRecord])
+          .select()
+          .single();
+
+        if (insertErr) {
+          logger.error('Failed to insert new admin in Supabase:', insertErr);
+          throw new Error('Failed to assign editorial role');
+        }
+        resultAdmin = inserted;
+      }
+
+      // Also ensure alumnus record is verified if pending
+      if (alumnus.status === ALUMNI_STATUS.PENDING) {
+        await supabase
+          .from('alumni_registrations')
+          .update({
+            status: ALUMNI_STATUS.VERIFIED,
+            admin_notes: (alumnus.admin_notes ? `${alumnus.admin_notes} | ` : '') + 'Verified as Content Manager',
+            reviewed_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', alumnus.id);
+      }
+
+      return {
+        id: resultAdmin.id,
+        email: resultAdmin.email,
+        fullName: resultAdmin.full_name,
+        role: resultAdmin.role,
+        is_active: resultAdmin.is_active,
+      };
+    }
+
+    // Mock fallback
+    let existingMock = mockAdmins.find((a) => a.email.toLowerCase() === normalizedEmail);
+    if (existingMock) {
+      existingMock.role = dbRole;
+      existingMock.is_active = true;
+      existingMock.updated_at = new Date().toISOString();
+      if (alumnus.password_hash) existingMock.password_hash = alumnus.password_hash;
+    } else {
+      existingMock = {
+        id: crypto.randomUUID(),
+        email: normalizedEmail,
+        full_name: alumnus.full_name,
+        role: dbRole,
+        password_hash: alumnus.password_hash || '$2b$12$4lNCXLOibuRwjRx6wzVdf.t.cj2Z9QWaMHSEA5cGyMMYahjAqtMzS',
+        is_active: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      mockAdmins.push(existingMock);
+    }
+
+    if (alumnus.status === ALUMNI_STATUS.PENDING) {
+      alumnus.status = ALUMNI_STATUS.VERIFIED;
+      alumnus.admin_notes = (alumnus.admin_notes ? `${alumnus.admin_notes} | ` : '') + 'Verified as Content Manager';
+    }
+
+    return {
+      id: existingMock.id,
+      email: existingMock.email,
+      fullName: existingMock.full_name,
+      role: existingMock.role,
+      is_active: existingMock.is_active,
+    };
+  }
+
+  /**
+   * Revokes staff/editorial role for an email.
+   *
+   * @param {object} params
+   * @param {string} params.email - Staff email to revoke.
+   * @returns {Promise<object>} Status of revocation.
+   */
+  static async revokeRole({ email }) {
+    const normalizedEmail = (email || '').toLowerCase().trim();
+    if (normalizedEmail === 'admin@msap.org') {
+      throw new BadRequestError('Cannot revoke Super Administrator access.');
+    }
+
+    if (isConfigured && supabase) {
+      const { data, error } = await supabase
+        .from('admins')
+        .update({ is_active: false, updated_at: new Date().toISOString() })
+        .eq('email', normalizedEmail)
+        .select()
+        .maybeSingle();
+
+      if (error) {
+        logger.error('Failed to revoke role in Supabase:', error);
+        throw new Error('Failed to revoke role in database');
+      }
+
+      if (!data) {
+        throw new NotFoundError(`No staff record found for "${normalizedEmail}"`);
+      }
+
+      return { email: normalizedEmail, is_active: false, revoked: true };
+    }
+
+    const mock = mockAdmins.find((a) => a.email.toLowerCase() === normalizedEmail);
+    if (!mock) throw new NotFoundError(`No staff record found for "${normalizedEmail}"`);
+    mock.is_active = false;
+    return { email: normalizedEmail, is_active: false, revoked: true };
   }
 }

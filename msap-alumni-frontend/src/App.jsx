@@ -11,6 +11,9 @@ import AdminLoginPage from './pages/AdminLoginPage'
 import AdminDashboardPage from './pages/AdminDashboardPage'
 import AlumniLoginPage from './pages/AlumniLoginPage'
 import GalleryPage from './pages/GalleryPage'
+import ContactPage from './pages/ContactPage'
+import MembershipPage from './pages/MembershipPage'
+import ProfilePage from './pages/ProfilePage'
 import SessionInactivityManager from './components/SessionInactivityManager'
 
 function ScrollToTop() {
@@ -50,8 +53,12 @@ export default function App() {
           <Route path="/stories" element={<Navigate to="/news" replace />} />
           <Route path="/stories/:storyId" element={<Navigate to="/news" replace />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/membership" element={<MembershipPage />} />
+          <Route path="/join" element={<Navigate to="/membership" replace />} />
+          <Route path="/contact" element={<ContactPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<AlumniLoginPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/gallery" element={<GalleryPage />} />
         </Routes>
       </main>

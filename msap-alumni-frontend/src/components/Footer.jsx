@@ -1,15 +1,18 @@
 import { Link } from 'react-router-dom';
 
 const QUICK_LINKS = [
-  { label: 'About us', to: '/about' },
-  { label: 'News & events', to: '/news' },
-  { label: 'Photo gallery', to: '/gallery' },
+  { label: 'About Us', to: '/about' },
+  { label: 'News & Events', to: '/news' },
+  { label: 'Photo Gallery', to: '/gallery' },
+  { label: 'Membership & Fees', to: '/membership' },
+  { label: 'Contact Us', to: '/contact' },
 ];
 
 const ASSOCIATION_LINKS = [
-  { label: 'History & heritage', to: '/about' },
-  { label: 'Register for verification', to: '/register' },
-  { label: 'Alumni sign in', to: '/login' },
+  { label: 'History & Heritage', to: '/about' },
+  { label: 'Membership Queries / FAQ', to: '/membership#faq' },
+  { label: 'Register for Verification', to: '/membership' },
+  { label: 'Alumni Sign In', to: '/login' },
 ];
 
 export default function Footer() {
@@ -48,7 +51,7 @@ export default function Footer() {
           {/* Quick links */}
           <nav aria-label="Quick links" className="lg:col-span-2">
             <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-lavender mb-5">
-              Quick links
+              Quick Links
             </h3>
             <ul className="space-y-3.5">
               {QUICK_LINKS.map((link) => (
